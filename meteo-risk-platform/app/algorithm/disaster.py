@@ -53,20 +53,17 @@ GALE_LEVELS: tuple[tuple[float, int], ...] = ((24.5, 10), (20.8, 9), (17.2, 8))
 FROST_TMIN_C = 0.0
 HARD_FROST_TMIN_C = -2.0
 
-# GB/T 20481-2017《气象干旱等级》SPI 分档
-SPI_DROUGHT_BANDS: tuple[tuple[float, str], ...] = (
-    (-2.0, "特旱"), (-1.5, "重旱"), (-1.0, "中旱"), (-0.5, "轻旱"),
-)
-
-
 def classify_spi_drought(spi_value: float | None) -> str:
-    """按 GB/T 20481-2017 由 SPI 判定气象干旱等级。"""
-    if spi_value is None:
-        return "不可用"
-    for upper, label in SPI_DROUGHT_BANDS:
-        if spi_value <= upper:
-            return label
-    return "无旱"
+    """
+    按 GB/T 20481-2017 由 SPI 判定气象干旱等级。
+
+    直接委托给 spi 模块的全系统唯一分档表，避免同一 SPI 值在本模块与
+    /api/index/spi、/api/index/method-compare 之间给出不一致的等级名。
+    """
+    from app.algorithm.spi import classify_spi_gb
+
+    level = classify_spi_gb(spi_value)
+    return level if level is not None else "不可用"
 
 
 def classify_wind_level(speed_mps: float | None) -> int | None:

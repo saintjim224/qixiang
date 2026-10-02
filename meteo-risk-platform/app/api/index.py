@@ -41,21 +41,21 @@ _METHOD_COMPARE_CACHE: dict[str, Any] | None = None
 _METHOD_COMPARE_TS: float = 0.0
 _METHOD_COMPARE_TTL: float = 3600.0
 
-# 等级判定统一标尺: 新旧两种算法口径不同，必须换算到同一把尺子上才能比较
-_SPI_BANDS = [(-2.0, "特旱"), (-1.5, "重旱"), (-1.0, "中旱"), (1.0, "正常"),
-              (1.5, "轻涝"), (2.0, "中涝")]
 # Li et al. (2025) 曲率分级阈值 (与 gdi.py 保持一致)
 _GDI_THETA1, _GDI_THETA2, _GDI_THETA3 = 0.1589, 0.5032, 0.7502
 
 
 def _spi_class(value: float | None) -> str | None:
-    """按 SPI 标准分位区间归一化干旱等级 (消除新旧算法命名差异)."""
-    if value is None:
-        return None
-    for upper, label in _SPI_BANDS:
-        if value < upper:
-            return label
-    return "重涝"
+    """
+    按 SPI 标准分位区间归一化干旱等级 (消除新旧算法命名差异)。
+
+    原实现本地维护了一张分档表，其中 **漏掉了 "轻旱" 档**：SPI=-0.7 这类明确
+    轻旱的值会一路落到 <1.0 分支被判成 "正常"，使新旧算法对照的 level_changed
+    统计系统性偏低。现统一引用 spi 模块的 GB/T 20481-2017 分档表。
+    """
+    from app.algorithm.spi import classify_spi_gb
+
+    return classify_spi_gb(value)
 
 
 def _gdi_class(value: float | None) -> str | None:

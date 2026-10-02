@@ -65,6 +65,42 @@ def get_target_climate_month(region_id: str, records: list[dict[str, Any]] | Non
     return max(d[:7] for d in dates)
 
 
+# ---------------------------------------------------------------------------
+# GB/T 20481-2017《气象干旱等级》SPI 分档 —— 全系统唯一权威标尺
+# ---------------------------------------------------------------------------
+# 此前系统内存在三套互不相同的 SPI 分档:
+#   1. 本模块 classify_drought_level_standard: 极旱/重旱/轻旱(-1.5~-1.0)/正常/湿润
+#   2. disaster.py: 特旱/重旱/中旱/轻旱  (GB/T 20481 口径)
+#   3. api/index.py: 特旱/重旱/中旱/(缺 轻旱)/正常/轻涝/中涝
+# 第 3 套漏掉了 "轻旱" 档，导致 SPI=-0.7 这种明确轻旱的值被判成 "正常"，
+# 进而使新旧算法对照接口的 level_changed 统计系统性偏低。
+# 现统一以本表的 GB/T 分档为准；本模块原有的 drought_level 字段为保持
+# 与已复现指标一致而保留原口径，其 GB/T 对照名由 drought_level_gb 给出。
+SPI_BANDS_GB: tuple[tuple[float, float, str], ...] = (
+    (float("-inf"), -2.0, "特旱"),
+    (-2.0, -1.5, "重旱"),
+    (-1.5, -1.0, "中旱"),
+    (-1.0, -0.5, "轻旱"),
+    (-0.5, 0.5, "正常"),
+    (0.5, 1.0, "轻涝"),
+    (1.0, 1.5, "中涝"),
+    (1.5, 2.0, "重涝"),
+    (2.0, float("inf"), "特涝"),
+)
+SPI_BANDS_GB_SOURCE = "GB/T 20481-2017《气象干旱等级》"
+
+
+def classify_spi_gb(spi: float | None) -> str | None:
+    """按 GB/T 20481-2017 对 SPI 值分档，供全系统统一引用。"""
+    if spi is None:
+        return None
+    for lo, hi, label in SPI_BANDS_GB:
+        if lo < float(spi) <= hi:
+            return label
+    # 仅 -inf 边界不可能命中 else，兜底返回下界档
+    return "特旱" if float(spi) <= -2.0 else "特涝"
+
+
 def classify_drought_level_standard(spi: float | None) -> str:
     """
     根据气象科学与国家标准等级划分干旱程度:
@@ -350,6 +386,11 @@ def calculate_spi(
         "legacy_spi_value": legacy_val,
         "method": "gamma_fitted",
         "drought_level": drought_level,
+        # 本系统 drought_level 的历史口径 (-1.5~-1.0 记为"轻旱") 与 GB/T 20481-2017
+        # (同一区间为"中旱") 命名不同。为不扰动已复现结果，前者保留原名原值，
+        # 后者以独立字段并列给出，供方法材料与跨系统对照使用。
+        "drought_level_gb": classify_spi_gb(spi_value),
+        "drought_level_standard_source": SPI_BANDS_GB_SOURCE,
         "legacy_drought_level": legacy_res.get("drought_level", "未知"),
         "zero_precip_prob": round(q, 4),
         "params": {
