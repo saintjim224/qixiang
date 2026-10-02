@@ -4,7 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>融天气象 - 高原多源时空融合气象灾害预警平台 | 2026 AIC 智慧气象</title>
-  <link rel="stylesheet" href="css/main.css">
+  <!--
+    缓存版本号规则：改任何一个本地 css/js 之后，把下面全部 ?v= 一起改成新值（当前 20261002_13）。
+    浏览器对 .css / .js 的强缓存不看文件内容，只认 URL；版本号不改，评委那边就会一直跑旧代码——
+    而且从页面表现上完全看不出是缓存问题（现象等同于"改了没生效"）。vendor/ 两个库从不改动，故不带版本号。
+    底部 17 个 <script> 的顺序即依赖顺序（IIFE + window.MR 全局命名空间，非 ES Module），
+    调整顺序前请先看 js/core/namespace.js 里的说明。
+  -->
+  <link rel="stylesheet" href="css/main.css?v=20261002_13">
   <!-- 本地 Vendor 零构建依赖 -->
   <script src="vendor/vue.global.prod.js"></script>
   <script src="vendor/echarts.min.js"></script>
@@ -586,7 +593,7 @@
         <div class="panel-header">
           <div class="panel-title-wrap">
             <h3>微网格风险矩阵 · {{ currentRegionName }}</h3>
-            <p class="panel-question">3 草场类型 × 4 季节，由本县微网格聚合</p>
+            <p class="panel-question">4 草场类型 × 4 季节 = 16 格，由本县 80 个微网格聚合</p>
           </div>
           <div class="btn-group">
             <span class="filter-lbl">受灾敏感生理群：</span>
@@ -1090,7 +1097,8 @@
         </p>
         <p>
           (2) 全域 26 县因地形海拔梯度大 (3000~4800m)，县际宏观均值差异显著主导了总离差平方和，
-          使得所有方案均呈现 R²≈0.996 的统计现象——这是县域间差异带来的，不是模型拟合能力的证据。
+          使各方案 R² 普遍高达 0.956~0.998——这是县域间差异带来的，不是模型拟合能力的证据。
+          其中「近 3 年移动平均」明显偏低 (0.9561)：它把前 3 年单点波动直接外推，在极端年份附近反而放大了噪声。
         </p>
         <p>
           (3) 在空间跨区 (LORO) 盲测中，缺失局地微地形土壤水热特征时空间外推极具挑战性
@@ -1141,22 +1149,22 @@
   </script>
 
   <!-- 零构建前端：经典 script + window.MR 命名空间，加载顺序即依赖顺序 -->
-  <script src="js/core/namespace.js?v=20261002_9"></script>
-  <script src="js/core/tokens.js?v=20261002_9"></script>
-  <script src="js/core/format.js?v=20261002_9"></script>
-  <script src="js/core/api.js?v=20261002_9"></script>
-  <script src="js/core/provenance.js?v=20261002_9"></script>
-  <script src="js/charts/theme.js?v=20261002_9"></script>
-  <script src="js/charts/manager.js?v=20261002_9"></script>
-  <script src="js/ui/states.js?v=20261002_9"></script>
-  <script src="js/ui/method.js?v=20261002_9"></script>
-  <script src="js/ui/router.js?v=20261002_9"></script>
-  <script src="js/state/store.js?v=20261002_9"></script>
-  <script src="js/charts/cockpit.js?v=20261002_9"></script>
-  <script src="js/charts/datasourceCharts.js?v=20261002_9"></script>
-  <script src="js/charts/indexCharts.js?v=20261002_9"></script>
-  <script src="js/charts/forecastCharts.js?v=20261002_9"></script>
-  <script src="js/charts/decisionCharts.js?v=20261002_9"></script>
-  <script src="js/app.js?v=20261002_9"></script>
+  <script src="js/core/namespace.js?v=20261002_13"></script>
+  <script src="js/core/tokens.js?v=20261002_13"></script>
+  <script src="js/core/format.js?v=20261002_13"></script>
+  <script src="js/core/api.js?v=20261002_13"></script>
+  <script src="js/core/provenance.js?v=20261002_13"></script>
+  <script src="js/charts/theme.js?v=20261002_13"></script>
+  <script src="js/charts/manager.js?v=20261002_13"></script>
+  <script src="js/ui/states.js?v=20261002_13"></script>
+  <script src="js/ui/method.js?v=20261002_13"></script>
+  <script src="js/ui/router.js?v=20261002_13"></script>
+  <script src="js/state/store.js?v=20261002_13"></script>
+  <script src="js/charts/cockpit.js?v=20261002_13"></script>
+  <script src="js/charts/datasourceCharts.js?v=20261002_13"></script>
+  <script src="js/charts/indexCharts.js?v=20261002_13"></script>
+  <script src="js/charts/forecastCharts.js?v=20261002_13"></script>
+  <script src="js/charts/decisionCharts.js?v=20261002_13"></script>
+  <script src="js/app.js?v=20261002_13"></script>
 </body>
 </html>

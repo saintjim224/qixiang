@@ -46,10 +46,10 @@
   /* 指标数值专用：KPI/方法对照卡里那个大号数字 */
   --font-metric: 20px;
   --font-3xl: 28px;
-  /* 三档字重 */
+  /* 三档字重（规格书 §3 第 4 条：全文只允许 400 / 600 / 700，禁止特粗） */
   --fw-normal: 400;
   --fw-medium: 600;
-  --fw-bold: 800;
+  --fw-bold: 700;
   /* 间距阶梯 */
   --space-1: 4px;
   --space-2: 8px;
@@ -135,7 +135,7 @@ body.dark-theme {
 .logo-badge {
   background: linear-gradient(135deg, var(--cyan), var(--blue));
   color: #fff;
-  font-weight: 800;
+  font-weight: var(--fw-bold);
   font-size: var(--font-md);
   padding: 4px 10px;
   border-radius: 6px;
@@ -143,8 +143,9 @@ body.dark-theme {
 }
 
 .title-wrap h1 {
-  font-size: 17px;
-  font-weight: 700;
+  /* 站名取字号阶梯里最接近的一档，不再单列 17px 散点 */
+  font-size: var(--font-xl);
+  font-weight: var(--fw-bold);
   color: #fff;
 }
 
@@ -168,7 +169,7 @@ body.dark-theme {
   border: none;
   color: var(--text-muted);
   font-size: var(--font-md);
-  font-weight: 500;
+  font-weight: var(--fw-normal);
   padding: 6px 14px;
   border-radius: 6px;
   cursor: pointer;
@@ -295,7 +296,9 @@ body.dark-theme {
 .degraded-notice em {
   font-style: normal;
   color: var(--text-primary);
-}.sub-tag {
+}
+
+.sub-tag {
   font-size: var(--font-xs);
   color: var(--text-muted);
   margin-left: 8px;
@@ -306,10 +309,15 @@ body.dark-theme {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 12px;
-}pit-main-grid {
+}
+
+/* 注意：这条基础定义此前因一次批量替换丢了选择器前缀的点号（前一条规则闭合后，
+   选择器只剩 pit-main-grid，缺了前导点），整条规则被浏览器当作非法选择器丢弃——
+   宽屏下只剩后面那份 min-width:1281px 覆盖在起作用，1280px 及以下则退化成块级堆叠。此处补回。 */
+.cockpit-main-grid {
   display: grid;
   grid-template-columns: 1fr 400px;
-  gap: 16px;
+  gap: var(--space-4);
   flex: 1;
 }
 
@@ -344,7 +352,10 @@ body.dark-theme {
   font-size: var(--font-xs);
   padding: 2px 6px;
   border-radius: 4px;
-}.badge-mid { background: rgba(0, 210, 255, 0.2); color: var(--cyan); }badge-danger { background: rgba(255, 51, 102, 0.2); color: var(--red); border: 1px solid rgba(255, 51, 102, 0.4); }
+}
+
+.badge-mid { background: rgba(0, 210, 255, 0.2); color: var(--cyan); }
+.badge-danger { background: rgba(255, 51, 102, 0.2); color: var(--red); border: 1px solid rgba(255, 51, 102, 0.4); }
 .badge-success { background: rgba(5, 213, 128, 0.2); color: var(--green); border: 1px solid rgba(5, 213, 128, 0.4); }
 .badge-warning { background: rgba(255, 159, 28, 0.2); color: var(--orange); border: 1px solid rgba(255, 159, 28, 0.4); }
 .badge-green { background: rgba(5, 213, 128, 0.2); color: var(--green); }
@@ -663,7 +674,7 @@ body.dark-theme {
 
 .pk-label { font-size: var(--font-xs); color: var(--text-muted); }
 .pk-val { font-size: var(--font-metric); font-weight: 600; color: #fff; margin: 2px 0 3px; }
-.pk-unit { font-size: var(--font-sm); font-weight: 500; color: var(--text-muted); margin-left: 2px; }
+.pk-unit { font-size: var(--font-sm); font-weight: var(--fw-normal); color: var(--text-muted); margin-left: 2px; }
 .pk-sub { font-size: var(--font-2xs); color: var(--text-muted); line-height: 1.4; }
 
 .status-legend {
@@ -697,9 +708,12 @@ body.dark-theme {
 }
 
 .text-cyan { color: var(--cyan); }
-.text-green { color: var(--green); }.text-danger { color: var(--red); }
+.text-green { color: var(--green); }
+.text-danger { color: var(--red); }
 .text-muted { color: var(--text-muted); }
-.text-bold { font-weight: 700; }mt-3 { margin-top: 14px; }
+.text-bold { font-weight: var(--fw-bold); }
+/* 此前选择器丢了前导点（".mt-3" 变成 "mt-3"），规则被丢弃，index.html 里 11 处 mt-3 全部失效 */
+.mt-3 { margin-top: var(--space-3); }
 
 /* PU Benchmark & SHAP Grid */
 .pu-benchmark-grid {

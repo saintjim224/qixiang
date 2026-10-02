@@ -48,12 +48,23 @@
       .map(function (d) { return Number(d.value); })
       .filter(function (n) { return Number.isFinite(n); });
 
-    // 色阶上下限严格取当日真实分布的最小/最大值，不钉死 0–90、也不吸附到 10 的整数倍：
-    // 9 月全域风险分只在 15–48 之间，吸附后区间变成 10–60，5 级色带只用掉中间 2 级，
-    // 26 个县看上去还是一色。
-    var mapMin = scores.length ? Math.floor(Math.min.apply(null, scores)) : 0;
-    var mapMax = scores.length ? Math.ceil(Math.max.apply(null, scores)) : 100;
-    if (mapMax - mapMin < 4) mapMax = mapMin + 4; // 全域几乎同分时才强行撑开
+    // 色阶分档阈值与后端 comp_risk 分级（app/api/overview.py）逐字一致：
+    // <40 低风险 / 40–60 中度 / 60–75 高 / ≥75 重特大，且与卡片上那个 risk_level
+    // 徽章同源，因此**色块与文字标签不可能互相矛盾**。
+    //
+    // 旧实现是把当日真实分布的 min–max 拉满到 5 色连续带上。风险分被后端钳在
+    // [15, 95]，实测常在 15–74 之间，于是"低风险"的县也会落在暖色段里被涂成橙黄，
+    // 全图看上去像满屏告警，与同一屏右侧"低风险 14"的计数自相矛盾。
+    // 必须用 gte/lt 这种半开区间，不能用 min/max 闭区间：后端的判级是 comp_risk >= 40
+    // 才算中度风险，而 ECharts 闭区间会把恰好等于 40 的值匹配给前一段。实测真有县
+    // 落在边界上（海北州刚察县 = 40.0，标注"中度风险"），闭区间下会被涂成绿色——
+    // 色块与徽章当场打架。
+    var PIECES = [
+      { gte: 15, lt: 40, label: "低风险 (<40)", color: v.seq[0] }, // 翡翠绿
+      { gte: 40, lt: 60, label: "中度风险 (40–60)", color: v.seq[1] }, // 天空蓝
+      { gte: 60, lt: 75, label: "高风险 (60–75)", color: v.seq[3] }, // 警示橙
+      { gte: 75, label: "重特大预警 (≥75)", color: v.seq[4] }, // 烈焰红
+    ];
 
     var graticule = [];
     GRAT_LON.forEach(function (lon) {
@@ -67,8 +78,11 @@
       .concat(GRAT_LON.map(function (lon) { return { value: [lon, BOUNDING[1][1]], text: lon + "°E" }; }))
       .concat(GRAT_LAT.map(function (lat) { return { value: [BOUNDING[0][0], lat], text: lat + "°N" }; }));
 
+    // 热点阈值 = "高风险"分档下沿（60），与色阶、与卡片徽章同一把尺子。
+    // 旧实现取 50，会把"中度风险"的县也点成红点，等于抬高了一档。
+    var HOTSPOT_MIN = 60;
     var hotspots = mapData
-      .filter(function (d) { return Number.isFinite(Number(d.value)) && Number(d.value) >= 50; })
+      .filter(function (d) { return Number.isFinite(Number(d.value)) && Number(d.value) >= HOTSPOT_MIN; })
       .map(function (d) {
         var r = (store.regions.value || []).filter(function (x) { return x.region_id === d.region_id; })[0];
         if (!r || !Number.isFinite(Number(r.longitude))) return null;
@@ -101,17 +115,15 @@
         }),
       },
       visualMap: {
-        min: mapMin,
-        max: mapMax,
-        text: ["高险 " + mapMax, "低险 " + mapMin],
-        realtime: false,
-        calculable: false,
+        type: "piecewise",
+        pieces: PIECES,
+        // 缺风险分的县（当前 1 个）不着色，也不冒充"低风险"
+        outOfRange: { color: "rgba(71, 85, 105, 0.55)" },
+        selectedMode: false, // 禁止点图例把某一档藏掉——那会让"少数橙红县"凭空消失
         orient: "vertical",
-        itemWidth: 12,
-        itemHeight: 140,
-        // 注意 ECharts 把 color[0] 映射到 min、color[last] 映射到 max，
-        // 因此必须按原序传入，否则"低风险"会被涂成最深的红色，视觉上恰好说反。
-        inRange: { color: v.seq.slice() },
+        itemWidth: 14,
+        itemHeight: 12,
+        itemGap: 6,
         textStyle: { color: v.textMuted, fontSize: 11 },
         bottom: 18,
         left: 12,
@@ -175,7 +187,7 @@
           type: "scatter",
           coordinateSystem: "geo",
           z: 5,
-          symbolSize: function (val) { return 6 + (Number(val[2]) - 50) / 5; },
+          symbolSize: function (val) { return 6 + (Number(val[2]) - HOTSPOT_MIN) / 5; },
           itemStyle: {
             color: v.up,
             opacity: 0.85,
@@ -251,6 +263,32 @@
               {
                 type: "text",
                 style: { text: best + " km", x: 12 + px / 2, y: 6, fill: v().textMuted, font: "10px sans-serif", textAlign: "center" },
+              },
+            ],
+          },
+          {
+            // 北向标：本图用的是经纬度投影、始终 north-up，所以这个箭头表述的是
+            // 一个恒真的事实（与旧实现那枚跟缩放/漫游无关的"罗盘贴纸"不同）。
+            // 箭头用多边形画，不用 emoji，避免与图标体系不一致。
+            type: "group",
+            id: "mr-northarrow",
+            top: 14,
+            right: 16,
+            silent: true,
+            children: [
+              {
+                type: "rect",
+                shape: { width: 34, height: 46, r: 4 },
+                style: { fill: "rgba(11,17,30,0.82)", stroke: "rgba(255,255,255,0.14)", lineWidth: 1 },
+              },
+              {
+                type: "polygon",
+                shape: { points: [[17, 7], [24, 26], [17, 21], [10, 26]] },
+                style: { fill: v().textMuted },
+              },
+              {
+                type: "text",
+                style: { text: "N", x: 17, y: 30, fill: v().textMuted, font: "11px sans-serif", textAlign: "center" },
               },
             ],
           },
