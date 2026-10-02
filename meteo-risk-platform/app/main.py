@@ -78,14 +78,28 @@ def serve_index() -> FileResponse:
     return FileResponse(index_file, headers=NO_CACHE_HEADERS)
 
 
+FRONTEND_ROOT = FRONTEND_DIR.resolve()
+
+
 @app.get("/{path:path}")
 def serve_frontend_assets(path: str) -> FileResponse:
-    """提供前端静态资源与路由."""
-    target = FRONTEND_DIR / path
-    if target.exists() and target.is_file():
+    """
+    提供前端静态资源与路由。
+
+    安全边界：`{path:path}` 允许请求里带 `/`，若直接把用户输入拼到 FRONTEND_DIR 后面，
+    `GET /../../../../etc/passwd` 这类路径会在 resolve() 后逃出前端目录读到系统文件。
+    因此先解析为绝对路径，再校验它确实位于 FRONTEND_DIR 之内；越界一律当普通
+    前端路由处理（回退 index.html），不暴露"该文件是否存在"这一信息。
+    """
+    index_file = FRONTEND_DIR / "index.html"
+    target = (FRONTEND_DIR / path).resolve()
+
+    if target.is_relative_to(FRONTEND_ROOT) and target.is_file():
         return FileResponse(target, headers=NO_CACHE_HEADERS)
-    # 默认回退至 index.html
-    return FileResponse(FRONTEND_DIR / "index.html", headers=NO_CACHE_HEADERS)
+    # 默认回退至 index.html (SPA 路由)
+    if not index_file.exists():
+        raise HTTPException(status_code=404, detail="前端 index.html 尚未就绪")
+    return FileResponse(index_file, headers=NO_CACHE_HEADERS)
 
 
 def run(host: str = "127.0.0.1", port: int = 8001) -> None:

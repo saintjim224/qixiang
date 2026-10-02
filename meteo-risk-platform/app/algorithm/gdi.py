@@ -12,7 +12,10 @@ MeteoRiskPlatform - 草地退化指数 (GDI) 论文复现与改进模块
      容易出现 26 县全量同级的平庸结果。
 2. 复现原论文的 GDI 流程:
    - 空间特征构建: NPP、NDVI、植被覆盖度 (vegetation_cover)、产草量 (grass_yield)。
-   - 采用 PCA (主成分分析, sklearn.decomposition.PCA) 提取综合退化主成分并计算方差贡献率。
+   - 采用 PCA (主成分分析, sklearn.decomposition.PCA) 求解各生态指标的客观权重与方差贡献率，
+     并额外输出真正的第一主成分 (PC1) 投影得分作为交叉核对量 (pca_projection 字段)。
+     说明: GDI 主干分值是「PCA 载荷加权的归一化指标综合」，而非 PC1 投影本身；
+     两者在 26 县上的排序一致性随结果一并给出，供复核。
    - 结合高寒草甸 (alpine_meadow)、高寒草原 (alpine_steppe)、高寒荒漠 (alpine_desert)
      3 种典型草地类型设定物理脆弱性系数。
    - 采用分级聚类 (K-Means) 与曲率分析确定退化边界阈值，划分为:
@@ -243,6 +246,9 @@ class GdiSpatialModel:
         self.scaler = StandardScaler()
         self.weights: np.ndarray = np.zeros(4)
         self.explained_variance_ratio: float = 0.0
+        # 真正的第一主成分投影得分 (仅供交叉核对，不参与 GDI 主干公式)
+        self.pc1_scores: np.ndarray = np.zeros(0)
+        self.pc1_rank_consistency: float | None = None
         self.kmeans_centers: list[float] = []
         self.thresholds: dict[str, float] = {}
         self.results_by_region: dict[str, dict[str, Any]] = {}
@@ -349,6 +355,21 @@ class GdiSpatialModel:
         var_ratios = self.pca.explained_variance_ratio_
         self.explained_variance_ratio = float(var_ratios[0])
 
+        # ---------------------------------------------------------------
+        # 真正的主成分投影。
+        #
+        # 旧实现只 `fit` 而没有 `transform`：综合分实际是「PCA 载荷加权的归一化
+        # 指标之和」，却对外声称"提取综合退化主成分"(docstring / method 字段)，
+        # 属于名不副实。这里补上真实的 PC1 得分作为**独立交叉核对量**并列输出；
+        # GDI 主干公式保持原样，以免扰动已复现的头号指标 (59.55% / 4-11-8-3)。
+        # ---------------------------------------------------------------
+        X_pca = self.pca.transform(X_scaled)
+        pc1 = X_pca[:, 0]
+        # 主成分符号不可辨：统一翻转为"得分越高生态越健康"，便于阅读
+        if float(np.mean(self.pca.components_[0])) < 0:
+            pc1 = -pc1
+        self.pc1_scores = pc1
+
         # 基于 PCA 方差贡献率与载荷矩阵，求解各指标客观综合权重
         weights = np.zeros(4)
         for i in range(len(var_ratios)):
@@ -418,6 +439,20 @@ class GdiSpatialModel:
             "theta3_moderate_severe": round(theta3, 4),
         }
 
+        # GDI 与 PC1 投影的秩一致性：两者都刻画"生态越差分越高"，
+        # 若 Spearman 秩相关接近 1，说明实际使用的加权综合与真正的第一主成分
+        # 在排序上等价，PCA 的引入是站得住的；否则必须如实披露二者的分歧。
+        def _rank(arr: np.ndarray) -> np.ndarray:
+            order = np.argsort(np.argsort(arr))
+            return order.astype(float)
+
+        r_gdi = _rank(gdi_final)
+        r_pc1 = _rank(-self.pc1_scores)  # 取负号对齐方向：越大越退化
+        r_gdi -= r_gdi.mean()
+        r_pc1 -= r_pc1.mean()
+        denom_r = float(np.sqrt((r_gdi**2).sum() * (r_pc1**2).sum()))
+        self.pc1_rank_consistency = round(float((r_gdi * r_pc1).sum() / denom_r), 4) if denom_r else None
+
         # 组装 26 县全量计算结果
         for i, d in enumerate(self.indicator_rows):
             rid = d["region_id"]
@@ -465,6 +500,14 @@ class GdiSpatialModel:
                     "veg_cover": round(float(self.weights[2]), 4),
                     "yield": round(float(self.weights[3]), 4),
                 },
+                # 真实 PC1 投影得分及与 GDI 的秩一致性 (全模型单一值)，
+                # 用于证明"PCA 确实被用了"，同时不改变 GDI 主干结果。
+                "pca_projection": {
+                    "pc1_score": round(float(self.pc1_scores[i]), 4) if len(self.pc1_scores) > i else None,
+                    "pc1_sign_rule": "得分越高生态越健康 (已按载荷均值统一符号)",
+                    "rank_consistency_with_gdi": self.pc1_rank_consistency,
+                    "note": "GDI 主干为 PCA 载荷加权的归一化生态指标综合；PC1 为真正的第一主成分投影，二者排序一致时互为佐证。",
+                },
                 "thresholds": self.thresholds,
                 "indicators": {
                     "npp": round(d["npp"], 4),
@@ -473,7 +516,7 @@ class GdiSpatialModel:
                     "yield": round(d["yield"], 2),
                     "grass_yield_g_m2": round(d["yield"], 2),
                 },
-                "method": "Li et al. (2025) PCA + K-Means + Curvature",
+                "method": "Li et al. (2025) 四维生态指标 → PCA 载荷加权 → K-Means → 曲率阈值分级",
                 "is_derived": True,
             }
 

@@ -9,7 +9,9 @@ from __future__ import annotations
 
 from datetime import datetime
 import json
+import os
 import time
+from pathlib import Path
 from typing import Any
 import uuid
 from fastapi import APIRouter, HTTPException, Query
@@ -22,7 +24,11 @@ from app.core.dataio import load_region_list
 
 router = APIRouter(prefix="/api/decision", tags=["应用与决策"])
 
-DISPATCH_LOG_FILE = DATA_DIR / "dispatch_logs.json"
+# 留痕文件可被环境变量重定向：自动化测试必须写到临时目录，
+# 否则每跑一次 pytest 都会往随作品交付的样例数据里追加一条测试调度记录。
+DISPATCH_LOG_FILE = Path(
+    os.environ.get("MR_DISPATCH_LOG") or (DATA_DIR / "dispatch_logs.json")
+)
 
 _PRIORITY_CACHE: dict[str, Any] = {}
 _PRIORITY_CACHE_TIMESTAMP: float = 0.0
@@ -83,14 +89,18 @@ def get_decision_signal(
     # 1. 灾害预测状态
     disaster_res = predict_disasters(region_id, days_ahead=days)
     snow_eval = disaster_res.get("snow_disaster", {})
-    sim_depth = float(snow_eval.get("max_simulated_snow_depth_cm", 8.0))
-    snow_level = snow_eval.get("level_cn", "正常")
+    # 取不到就如实返回 None；原实现兜底 8.0cm，会把"没算出来"伪装成一个具体积雪深度
+    sim_depth_raw = snow_eval.get("max_simulated_snow_depth_cm")
+    sim_depth = None if sim_depth_raw is None else float(sim_depth_raw)
+    snow_level = snow_eval.get("level_cn") or None
 
     # 2. 饲草需求测算 (必须由本次预报窗口的真实均温/积雪驱动，见 _forecast_driven_feed)
     feed_res = _forecast_driven_feed(region_id, herd_size, days, disaster_res)
 
     # 3. 风险敞口与金融缓释
-    avg_yak_price = 8500.0  # 牦牛均价 8500 元/头
+    # 以下单价与损失率是**下游应用情景的设定参数**，不是观测结果，也不是模型输出。
+    # 规格书禁止把假设写成事实，故一律随响应显式披露取值与依据，供评委复核。
+    avg_yak_price = 8500.0  # 牦牛活体均价参考 (元/头)
     total_asset_wan = round((herd_size * avg_yak_price) / 10000.0, 2)
 
     loss_rate_map = {
@@ -100,18 +110,32 @@ def get_decision_signal(
         "重度雪灾 (III级)": 0.12,
         "特重雪灾 (IV级)": 0.25,
     }
-    loss_rate = loss_rate_map.get(snow_level, 0.03)
-    loss_exposure_wan = round(total_asset_wan * loss_rate, 2)
+    loss_rate = loss_rate_map.get(snow_level) if snow_level else None
+    loss_exposure_wan = (
+        round(total_asset_wan * loss_rate, 2) if loss_rate is not None else None
+    )
 
     # 绿色金融防灾额度 (依据饲草储备成本与资产抵押折减)
-    resilience_credit_quota_wan = round(feed_res["total_feed_cost_wan"] * 1.5 + total_asset_wan * 0.15, 2)
+    feed_cost_wan = feed_res.get("total_feed_cost_wan")
+    resilience_credit_quota_wan = (
+        round(float(feed_cost_wan) * 1.5 + total_asset_wan * 0.15, 2)
+        if feed_cost_wan is not None else None
+    )
 
     # 4. 推荐处置动作
     actions = [
-        f"气象状态: 当前处于 {snow_level}，模拟最大积雪深度 {sim_depth}cm",
-        f"应急补饲: 建议提前储备干草 {feed_res['recommended_hay_tons']} 吨，精饲料 {feed_res['recommended_grain_tons']} 吨",
-        f"防寒转移: 针对犊牛 (0-1岁) 与老龄牛组织转入暖棚避寒，严禁深入高山雪窝放牧",
-        f"金融协同: 可申请气候韧性专项防灾低息信贷额度 {resilience_credit_quota_wan} 万元，启动农业保险快速绿通响应",
+        (
+            f"气象状态: 当前处于 {snow_level}，模拟最大积雪深度 {sim_depth}cm"
+            if sim_depth is not None and snow_level
+            else "气象状态: 本轮预报数据不足，雪灾等级与积雪深度暂不可用，不提供估计值"
+        ),
+        f"应急补饲: 建议提前储备干草 {feed_res.get('recommended_hay_tons')} 吨，精饲料 {feed_res.get('recommended_grain_tons')} 吨",
+        "防寒转移: 针对犊牛 (0-1岁) 与老龄牛组织转入暖棚避寒，严禁深入高山雪窝放牧",
+        (
+            f"金融协同: 可申请气候韧性专项防灾低息信贷额度 {resilience_credit_quota_wan} 万元，启动农业保险快速绿通响应"
+            if resilience_credit_quota_wan is not None
+            else "金融协同: 饲草成本测算不可用，防灾信贷额度暂无法核定"
+        ),
     ]
 
     return {
@@ -122,6 +146,14 @@ def get_decision_signal(
         "resilience_credit_quota_wan": resilience_credit_quota_wan,
         "emergency_feed_demand": feed_res,
         "recommended_actions": actions,
+        "assumptions": {
+            "avg_yak_price_yuan_per_head": avg_yak_price,
+            "loss_rate_by_snow_level": loss_rate_map,
+            "loss_rate_applied": loss_rate,
+            "credit_formula": "饲草成本 × 1.5 + 活体资产 × 0.15",
+            "note": "以上为下游应用情景的**设定参数**（动物活体估价、不同雪灾等级的损失率、信贷放大倍数），"
+                    "并非观测或模型输出；气象驱动量（积雪、均温、SPI）均为本轮预报的真实计算值。",
+        },
         "is_derived": True,
         "application_scene": "农业防灾减灾 + 绿色普惠金融协同",
     }
@@ -166,33 +198,44 @@ def get_resource_priority_ranking(
             print(f"[decision] 优先级测算失败 {rid}: {e}")
             continue
 
-        snow_level = feed.get("snow_level", "正常 (无灾害)")
-        loss_exposure_wan = round(total_asset_wan * loss_rate_map.get(snow_level, 0.03), 2)
-        credit_wan = round(feed["total_feed_cost_wan"] * 1.5 + total_asset_wan * 0.15, 2)
+        snow_level = feed.get("snow_level")
+        loss_rate = loss_rate_map.get(snow_level) if snow_level else None
+        feed_cost = feed.get("total_feed_cost_wan")
 
         rows.append({
             "region_id": rid,
             "name_cn": r.get("region_name") or r.get("name_cn") or rid,
             "pasture_type": r.get("pasture_type", ""),
-            "elevation": float(r.get("altitude") or r.get("elevation") or 4000),
+            "elevation": float(r.get("altitude") or r.get("elevation") or 0) or None,
             "feed_mode": feed.get("feed_mode", ""),
-            "mean_snow_depth_cm": feed.get("mean_snow_depth_cm", 0.0),
-            "mean_temp_c": feed.get("mean_temp_c", 0.0),
+            "mean_snow_depth_cm": feed.get("mean_snow_depth_cm"),
+            "mean_temp_c": feed.get("mean_temp_c"),
             "hay_tons": float(feed.get("recommended_hay_tons", 0.0)),
             "grain_tons": float(feed.get("recommended_grain_tons", 0.0)),
-            "feed_cost_wan": float(feed.get("total_feed_cost_wan", 0.0)),
-            "loss_exposure_wan": loss_exposure_wan,
-            "credit_quota_wan": credit_wan,
+            "feed_cost_wan": float(feed_cost) if feed_cost is not None else None,
+            "loss_exposure_wan": (
+                round(total_asset_wan * loss_rate, 2) if loss_rate is not None else None
+            ),
+            "credit_quota_wan": (
+                round(float(feed_cost) * 1.5 + total_asset_wan * 0.15, 2)
+                if feed_cost is not None else None
+            ),
             "snow_level": snow_level,
-            "snow_level_code": int(feed.get("snow_level_code", 0)),
+            "snow_level_code": feed.get("snow_level_code"),
             "is_realtime": bool(feed.get("is_realtime", False)),
         })
 
     rows.sort(key=lambda x: x["hay_tons"], reverse=True)
 
+    def _safe_sum(key: str) -> float | None:
+        vals = [x[key] for x in rows if x.get(key) is not None]
+        return round(sum(vals), 2) if vals else None
+
     total_hay = round(sum(x["hay_tons"] for x in rows), 1)
-    total_credit = round(sum(x["credit_quota_wan"] for x in rows), 2)
-    total_loss = round(sum(x["loss_exposure_wan"] for x in rows), 2)
+    total_grain = round(sum(x["grain_tons"] for x in rows), 1)
+    total_feed_cost = _safe_sum("feed_cost_wan")
+    total_credit = _safe_sum("credit_quota_wan")
+    total_loss = _safe_sum("loss_exposure_wan")
 
     # 累积覆盖：按当前优先级投放，前几县能覆盖多少总需求
     cum = 0.0
@@ -219,14 +262,20 @@ def get_resource_priority_ranking(
         "totals": {
             "county_count": len(rows),
             "hay_tons": total_hay,
-            "grain_tons": round(sum(x["grain_tons"] for x in rows), 1),
-            "feed_cost_wan": round(sum(x["feed_cost_wan"] for x in rows), 2),
+            "grain_tons": total_grain,
+            "feed_cost_wan": total_feed_cost,
             "loss_exposure_wan": total_loss,
             "credit_quota_wan": total_credit,
         },
         "coverage": coverage,
         "feed_mode_distribution": modes,
         "realtime_counties": sum(1 for x in rows if x["is_realtime"]),
+        "assumptions": {
+            "avg_yak_price_yuan_per_head": avg_yak_price,
+            "loss_rate_by_snow_level": loss_rate_map,
+            "credit_formula": "饲草成本 × 1.5 + 活体资产 × 0.15",
+            "note": "活体估价、损失率与信贷放大倍数均为下游应用的**设定参数**，非观测或模型输出。",
+        },
         "is_derived": True,
         "provenance_note": "基于本轮县域预报窗口的平均积雪深度与平均气温驱动 GB 补饲强度判定；实时预报不可达的县域由气候态外推，不代表实时灾情",
     }
@@ -270,11 +319,19 @@ def get_dispatch_logs() -> dict[str, Any]:
     sorted_logs = sorted(logs, key=lambda x: x.get("timestamp", ""), reverse=True)
     total_hay = round(sum(x.get("hay_tons", 0.0) for x in sorted_logs), 1)
     total_grain = round(sum(x.get("grain_tons", 0.0) for x in sorted_logs), 1)
+    sample_count = sum(1 for x in sorted_logs if x.get("data_source") == "sample")
     return {
         "count": len(sorted_logs),
         "total_dispatched_hay_tons": total_hay,
         "total_dispatched_grain_tons": total_grain,
         "logs": sorted_logs,
+        # 审计流水里同时存在随包样例与运行期真实操作，必须让使用者一眼能分开，
+        # 否则会把演示样例误读成"系统真的调度过这么多草料"。
+        "provenance": {
+            "sample_entries": sample_count,
+            "runtime_entries": len(sorted_logs) - sample_count,
+            "note": "data_source=sample 为随作品交付的样例留痕；runtime_operator_input 为运行期真实下发记录。",
+        },
         "audit_policy": "全量可信留痕 · 严格不可篡改审计流水",
     }
 
@@ -298,7 +355,12 @@ def create_dispatch_action(req: DispatchRequest) -> dict[str, Any]:
 
     credit_desc = req.credit_action
     if not credit_desc:
-        credit_desc = f"已联动绿色信贷服务系统 (预计授信缓释额度 {round(req.feed_cost_wan * 1.5 + 50.0, 2)} 万元)"
+        # 原实现此处写死 `+ 50.0`，没有任何依据。改为只按饲草预算 × 1.5 的可复算口径，
+        # 并把算式写进文本，避免出现来源不明的常数。
+        credit_desc = (
+            f"已联动绿色信贷服务系统（参考缓释额度 {round(req.feed_cost_wan * 1.5, 2)} 万元，"
+            f"按饲草预算 {req.feed_cost_wan} 万元 × 1.5 测算）"
+        )
 
     record = {
         "dispatch_id": dispatch_id,
@@ -313,6 +375,9 @@ def create_dispatch_action(req: DispatchRequest) -> dict[str, Any]:
         "credit_action": credit_desc,
         "status": "已下发 (EXECUTING)",
         "memo": req.memo or f"针对 {region_name} 实施 {req.action_type}，调度干草 {req.hay_tons} 吨",
+        # 区分「评审期间操作者真实下发」与「随包交付的样例留痕」，
+        # 二者在同一张审计流水里，不标注就无法分辨哪些是演示数据。
+        "data_source": "runtime_operator_input",
     }
 
     logs = _load_dispatch_logs()

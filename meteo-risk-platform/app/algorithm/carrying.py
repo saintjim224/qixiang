@@ -12,7 +12,6 @@ from __future__ import annotations
 import math
 from typing import Any
 
-from app.core.config import TEMPERATURE_LAPSE_RATE
 from app.core.dataio import (
     get_npp_by_region,
     get_phenology_by_region,
@@ -32,23 +31,38 @@ def calculate_carrying_capacity(
     六维度生态载畜量精算模型 (全量派生值):
     Refined = NPP基准 × NDVI修正 × 季节系数 × 退化惩罚 × 积雪阻碍 × 物候修正
     """
+    # 本函数会记录哪些输入是"缺省/中性"而非实测，最终随结果一并披露，
+    # 避免读者把 identity 补位当成真实测量结果。
+    degraded_inputs: list[str] = []
+
     # 1. NPP 基准
+    # NPP 是载畜量的**主项**，缺了它就没有基准值。原实现兜底 0.45 这个"缺省均值"，
+    # 于是没有遥感数据的县会带着一个凭空数字算出完整载畜量——宁可不给，也不给假的。
     npp_data = get_npp_by_region(region_id)
-    npp_val = 0.45  # 缺省均值
-    if npp_data and "npp_annual" in npp_data:
-        annual_dict = npp_data["npp_annual"]
-        npp_val = annual_dict.get(str(target_year)) or annual_dict.get("2024", 0.45)
+    annual_dict = (npp_data or {}).get("npp_annual") or {}
+    npp_val = annual_dict.get(str(target_year)) or annual_dict.get("2024")
+    if npp_val is None:
+        raise ValueError(
+            f"县域 '{region_id}' 缺少 {target_year} 年 (或 2024 年) NPP 年值，"
+            "裁畜量主项无基准，拒绝用缺省均值替代。"
+        )
 
-    base_sheep_unit = int(npp_val * 150000 + 50000)
+    base_sheep_unit = int(float(npp_val) * 150000 + 50000)
 
-    # 2. NDVI 修正
+    # 2. NDVI 修正 (缺遥感序列时取中性因子 1.0 = 不做修正，并如实标注)
     rs_series = get_remote_sensing_series(region_id)
     ndvi_factor = 1.0
     if rs_series:
-        recent_ndvi = [r.get("ndvi", 0.5) for r in rs_series[-12:]]
-        mean_ndvi = sum(recent_ndvi) / len(recent_ndvi) if recent_ndvi else 0.5
-        current_ndvi = rs_series[-1].get("ndvi", mean_ndvi)
-        ndvi_factor = max(0.6, min(1.3, 1.0 + (current_ndvi - mean_ndvi)))
+        recent_ndvi = [r.get("ndvi") for r in rs_series[-12:] if r.get("ndvi") is not None]
+        if recent_ndvi:
+            mean_ndvi = sum(recent_ndvi) / len(recent_ndvi)
+            current = rs_series[-1].get("ndvi")
+            current_ndvi = float(current) if current is not None else mean_ndvi
+            ndvi_factor = max(0.6, min(1.3, 1.0 + (current_ndvi - mean_ndvi)))
+        else:
+            degraded_inputs.append("ndvi")
+    else:
+        degraded_inputs.append("ndvi")
 
     # 3. 季节系数 (冬少夏多)
     season_factors = {
@@ -88,6 +102,10 @@ def calculate_carrying_capacity(
         if length is not None:
             # 生长季长则草场恢复好
             pheno_factor = max(0.85, min(1.15, 1.0 + (float(length) - 120) * 0.002))
+        else:
+            degraded_inputs.append("phenology")
+    else:
+        degraded_inputs.append("phenology")
 
     # 综合精算载畜量
     refined_capacity = int(
@@ -104,6 +122,12 @@ def calculate_carrying_capacity(
         "target_year": target_year,
         "target_month": target_month,
         "refined_carrying_capacity_sheep_unit": refined_capacity,
+        # 哪些因子是"中性补位"而非由实测数据修正，必须随结果披露
+        "degraded_inputs": degraded_inputs,
+        "npp_source": {
+            "npp_annual_value": float(npp_val),
+            "year_used": str(target_year) if str(target_year) in annual_dict else "2024",
+        },
         "factors": {
             "npp_base_sheep_unit": base_sheep_unit,
             "ndvi_factor": round(ndvi_factor, 3),
