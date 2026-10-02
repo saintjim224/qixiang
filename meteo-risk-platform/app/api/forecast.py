@@ -15,6 +15,7 @@ from app.algorithm.yield_forecast import (
     evaluate_loro_protocol,
     load_npp_features_dataset,
 )
+from app.core.schemas import NppForecastResult
 
 router = APIRouter(prefix="/api/forecast", tags=["灾害预测与生态载畜"])
 
@@ -50,7 +51,7 @@ def get_carrying_capacity_forecast(
     )
 
 
-@router.get("/npp/{region_id}")
+@router.get("/npp/{region_id}", response_model=NppForecastResult | dict)
 def get_npp_forecast(
     region_id: str,
     year: int = Query(2026, ge=2001, le=2030, description="预测目标年份"),

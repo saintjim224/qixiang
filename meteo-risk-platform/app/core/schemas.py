@@ -9,10 +9,26 @@ MeteoRiskPlatform - Pydantic 数据模式与接口响应契约
 from __future__ import annotations
 
 from typing import Any
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, ConfigDict, Field
 
 
-class RegionMeta(BaseModel):
+class _LooseContract(BaseModel):
+    """
+    挂到 FastAPI `response_model` 上的契约基类。
+
+    `extra="allow"`：契约的职责是**声明并校验关键字段**，而不是把契约之外的
+    字段静默裁掉。若用默认的 extra="ignore" 挂 response_model，任何契约未列举
+    的字段（例如新增的 assumptions / degraded_inputs 等披露项）都会在出网时
+    被悄悄删除——契约就从"文档"变成了"隐形的删字段开关"。
+
+    仅用于对外响应契约；测试中用 `**res` 严格校验的 Schema 不继承此类，
+    以保留"多一个字段就报错"的强校验能力。
+    """
+
+    model_config = ConfigDict(extra="allow")
+
+
+class RegionMeta(_LooseContract):
     region_id: str
     name_cn: str
     province: str
@@ -65,23 +81,45 @@ class PuRiskPrediction(BaseModel):
     confidence_tier: str = Field("statistical_calibrated", description="置信层级")
 
 
-class NppForecastResult(BaseModel):
+class NppForecastResult(_LooseContract):
+    """
+    `/api/forecast/npp/{region_id}` 响应契约。
+
+    注：字段名必须与 `predict_single_county_npp` 的真实返回一致。原契约写的是
+    `forecast_year` / `predicted_npp` / `carrying_capacity_sheep_unit`，与实际
+    返回的 `target_year` / `npp_forecast` / `equivalent_sheep_units` 全不相同，
+    属于"有契约但从未接线"——照着契约写前端会全部取到 undefined。
+    """
+
     region_id: str
-    forecast_year: int
-    predicted_npp: float = Field(..., description="多元气象驱动预测 NPP (g C/m²/yr)")
-    baseline_climatology: float = Field(..., description="气候态均值基线")
-    baseline_linear_trend: float = Field(..., description="线性趋势基线")
-    carrying_capacity_sheep_unit: int = Field(..., description="理论草场载畜量 (羊单位)")
+    region_name: str
+    target_year: int
+    npp_forecast: float = Field(..., description="多元气象驱动预测 NPP (kgC/m²/yr)")
+    npp_ci95: list[float] | None = Field(None, description="95% 预测区间 [lower, upper]；样本不足时为 null")
+    ci_unavailable: bool = Field(..., description="true 表示本县样本不足以给出置信区间")
+    ci_basis: dict[str, Any] = Field(default_factory=dict, description="置信区间的构造口径与留一年残差")
+    unit: str
+    equivalent_sheep_units: int = Field(..., description="等效生态载畜量 (羊单位)")
+    baselines_comparison: dict[str, float] = Field(default_factory=dict, description="三条基线对照值")
+    driving_features: dict[str, Any] = Field(default_factory=dict, description="气象驱动因子归因")
     is_derived: bool = True
 
 
-class DecisionSignal(BaseModel):
+class DecisionSignal(_LooseContract):
+    """
+    `/api/decision/signal/{region_id}` 响应契约。
+
+    同 NppForecastResult：原契约的 `month` / `disaster_risk_level` / `feed_hay_tons`
+    等字段在实际返回中并不存在，且缺少 `assumptions`——而 assumptions 正是本系统
+    用来披露"哪些数字是下游情景设定、哪些是气象观测"的关键字段，绝不能被契约裁掉。
+    """
+
     region_id: str
-    month: str
-    disaster_risk_level: str
-    feed_hay_tons: float = Field(..., description="建议储备干草 (吨)")
-    feed_grain_tons: float = Field(..., description="建议储备精饲料 (吨)")
-    estimated_loss_exposure_wan: float = Field(..., description="预计灾害损失敞口 (万元)")
-    resilience_credit_quota_wan: float = Field(..., description="气候韧性防灾信贷额度建议 (万元)")
-    insurance_buffer_pct: float = Field(..., description="政策性农业保险覆盖缓释度 (%)")
+    disaster_status: str | None = Field(None, description="雪灾等级；数据不足时为 null")
+    total_exposed_assets_wan: float = Field(..., description="牲畜活体资产敞口 (万元)")
+    estimated_loss_exposure_wan: float | None = Field(None, description="预计灾害损失敞口 (万元)")
+    resilience_credit_quota_wan: float | None = Field(None, description="气候韧性防灾信贷额度建议 (万元)")
+    emergency_feed_demand: dict[str, Any] = Field(default_factory=dict, description="应急补饲测算明细")
     recommended_actions: list[str] = Field(default_factory=list, description="分级应急减灾动作清单")
+    assumptions: dict[str, Any] = Field(default_factory=dict, description="下游应用情景的设定参数披露(非观测值)")
+    is_derived: bool = True

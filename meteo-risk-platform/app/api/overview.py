@@ -16,6 +16,7 @@ from app.algorithm.disaster import predict_disasters
 from app.algorithm.pu_model import predict_county_pu_risk
 from app.algorithm.carrying import calculate_carrying_capacity
 from app.core.config import BOUNDARIES_DIR, DATA_DIR
+from app.core.schemas import RegionMeta
 
 router = APIRouter(prefix="/api/overview", tags=["态势总览"])
 
@@ -59,7 +60,7 @@ def get_system_status() -> dict[str, Any]:
     }
 
 
-@router.get("/regions")
+@router.get("/regions", response_model=list[RegionMeta])
 def list_monitored_regions() -> list[dict[str, Any]]:
     """获取 26 个典型县域清单及核心空间地理特征."""
     regions = load_region_list()

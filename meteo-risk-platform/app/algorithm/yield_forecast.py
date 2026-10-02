@@ -31,6 +31,7 @@ from typing import Any
 
 import numpy as np
 import pandas as pd
+from scipy import stats
 from sklearn.ensemble import GradientBoostingRegressor, RandomForestRegressor
 from sklearn.linear_model import Ridge, RidgeCV
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
@@ -303,8 +304,11 @@ class MovingAverageBaseline:
                 if y >= 2004:
                     ry = [y - 1, y - 2, y - 3]
                 else:
-                    avail_years = sorted(c_data["year"].unique())
-                    ry = [yr for yr in avail_years if yr != y][:self.window]
+                    # 序列初端年份不足 3 年时，只能取"目标年之前"的可用年份。
+                    # 原实现写的是 `yr != y` 后取前 window 个，会把 y 之后的年份也
+                    # 取进来（如预测 2002 年时用上 2003 年的数据），属未来信息泄漏。
+                    avail_years = sorted(c_data["year"].unique(), reverse=True)
+                    ry = [yr for yr in avail_years if yr < y][:self.window]
                 vals = [c_data[c_data["year"] == yr]["npp"].values[0] for yr in ry if len(c_data[c_data["year"] == yr]) > 0]
                 preds.append(float(np.mean(vals)) if vals else self.global_mean)
             else:
@@ -677,8 +681,44 @@ def predict_single_county_npp(
     # 载畜量映射: NPP * 150000 + 50000 羊单位
     sheep_units = int(pred_npp * 150000 + 50000)
 
-    # 误差边际 (基于 LOYO 交叉验证标准差 ± 0.0117)
-    ci95_half = 1.96 * 0.0117
+    # 预测区间：对**本县**自身序列做留一年交叉验证 (LOYO)，用折外残差的标准误
+    # 构造 95% 预测区间。
+    #
+    # 原实现写死 `ci95_half = 1.96 * 0.0117`——0.0117 是全模型的一个常数，导致
+    # 26 个县、所有年份的置信带宽度完全相同，看起来"有区间"实际上没有任何
+    # 统计含义，且把预测区间 (prediction interval) 当成均值标准误来用。
+    # 现在按县、按残差计算，样本不足时不返回区间并显式标注不可用。
+    ci95_half: float | None = None
+    residual_stat: dict[str, Any] = {"method": "本县留一年交叉验证 (LOYO) 折外残差"}
+    n_obs = len(c_df)
+    if n_obs >= 8:
+        loo_resid: list[float] = []
+        for idx in range(n_obs):
+            tr = c_df.drop(c_df.index[idx])
+            te = c_df.iloc[[idx]]
+            mu_i = tr[x_cols].mean()
+            std_i = tr[x_cols].std().replace(0, 1.0)
+            reg_i = Ridge(alpha=10.0, random_state=42).fit((tr[x_cols] - mu_i) / std_i, tr["npp"].values)
+            pred_i = float(reg_i.predict((te[x_cols] - mu_i) / std_i)[0])
+            loo_resid.append(float(te["npp"].values[0]) - pred_i)
+        resid_std = float(np.std(loo_resid, ddof=1))
+        # 预测区间 = t * se * sqrt(1 + 1/n)，n 较小时用正态近似略偏窄，
+        # 这里用保守的 t 近似 (自由度 n-1 的 97.5% 分位)。
+        t_crit = float(stats.t.ppf(0.975, df=n_obs - 1))
+        ci95_half = t_crit * resid_std * math.sqrt(1.0 + 1.0 / n_obs)
+        residual_stat.update({
+            "available": True,
+            "n_observations": n_obs,
+            "loo_residual_std": round(resid_std, 4),
+            "t_critical_975": round(t_crit, 3),
+            "formula": "t(0.975, n-1) × LOYO残差标准差 × sqrt(1 + 1/n)",
+        })
+    else:
+        residual_stat.update({
+            "available": False,
+            "n_observations": n_obs,
+            "reason": f"本县仅有 {n_obs} 个年度样本，不足以做留一年交叉验证，不返回置信区间",
+        })
 
     # 近5年真实观测与拟合对比时序 (供前端 NPP 图表真实绑定)
     recent_df = c_df.sort_values("year").tail(5)
@@ -696,7 +736,12 @@ def predict_single_county_npp(
         "region_name": last_row["region_name"],
         "target_year": target_year,
         "npp_forecast": pred_npp,
-        "npp_ci95": [round(max(0.01, pred_npp - ci95_half), 4), round(pred_npp + ci95_half, 4)],
+        "npp_ci95": (
+            [round(max(0.01, pred_npp - ci95_half), 4), round(pred_npp + ci95_half, 4)]
+            if ci95_half is not None else None
+        ),
+        "ci_unavailable": ci95_half is None,
+        "ci_basis": residual_stat,
         "unit": "kg_C/m²/yr",
         "equivalent_sheep_units": sheep_units,
         "baselines_comparison": {

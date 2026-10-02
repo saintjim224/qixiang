@@ -21,6 +21,7 @@ from app.algorithm.carrying import estimate_emergency_feed_demand
 from app.algorithm.disaster import predict_disasters
 from app.core.config import DATA_DIR
 from app.core.dataio import load_region_list
+from app.core.schemas import DecisionSignal
 
 router = APIRouter(prefix="/api/decision", tags=["应用与决策"])
 
@@ -73,7 +74,7 @@ def _forecast_driven_feed(
     return feed
 
 
-@router.get("/signal/{region_id}")
+@router.get("/signal/{region_id}", response_model=DecisionSignal)
 def get_decision_signal(
     region_id: str,
     herd_size: int = Query(1000, description="养殖规模 (牦牛头数)"),
