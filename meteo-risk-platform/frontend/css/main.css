@@ -43,6 +43,8 @@
   --font-lg: 15px;
   --font-xl: 18px;
   --font-2xl: 22px;
+  /* 指标数值专用：KPI/方法对照卡里那个大号数字 */
+  --font-metric: 20px;
   --font-3xl: 28px;
   /* 三档字重 */
   --fw-normal: 400;
@@ -134,7 +136,7 @@ body.dark-theme {
   background: linear-gradient(135deg, var(--cyan), var(--blue));
   color: #fff;
   font-weight: 800;
-  font-size: 13px;
+  font-size: var(--font-md);
   padding: 4px 10px;
   border-radius: 6px;
   letter-spacing: 0.8px;
@@ -147,7 +149,7 @@ body.dark-theme {
 }
 
 .subtitle {
-  font-size: 11px;
+  font-size: var(--font-xs);
   color: var(--text-muted);
 }
 
@@ -165,7 +167,7 @@ body.dark-theme {
   background: transparent;
   border: none;
   color: var(--text-muted);
-  font-size: 13px;
+  font-size: var(--font-md);
   font-weight: 500;
   padding: 6px 14px;
   border-radius: 6px;
@@ -196,7 +198,7 @@ body.dark-theme {
   border: 1px solid rgba(0, 210, 255, 0.25);
   padding: 4px 10px;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: var(--font-sm);
 }
 
 .region-selector-wrap select {
@@ -204,7 +206,7 @@ body.dark-theme {
   color: var(--cyan);
   border: none;
   font-weight: 600;
-  font-size: 12px;
+  font-size: var(--font-sm);
   outline: none;
   cursor: pointer;
 }
@@ -242,13 +244,13 @@ body.dark-theme {
 }
 
 .panel-header h2, .panel-header h3 {
-  font-size: 15px;
+  font-size: var(--font-lg);
   font-weight: 600;
   color: #fff;
 }
 
 .tag {
-  font-size: 11px;
+  font-size: var(--font-xs);
   padding: 2px 8px;
   border-radius: 4px;
   background: rgba(255, 255, 255, 0.08);
@@ -277,7 +279,7 @@ body.dark-theme {
 .degraded-notice {
   margin: 8px 0 12px;
   padding: 8px 10px;
-  font-size: 12px;
+  font-size: var(--font-sm);
   line-height: 1.6;
   border-radius: 6px;
   color: var(--text-muted);
@@ -294,7 +296,7 @@ body.dark-theme {
   font-style: normal;
   color: var(--text-primary);
 }.sub-tag {
-  font-size: 11px;
+  font-size: var(--font-xs);
   color: var(--text-muted);
   margin-left: 8px;
 }
@@ -321,7 +323,7 @@ body.dark-theme {
   align-items: center;
   flex-wrap: wrap;
   gap: 14px;
-  font-size: 11px;
+  font-size: var(--font-xs);
   color: var(--text-muted);
   margin-bottom: 8px;
 }
@@ -339,7 +341,7 @@ body.dark-theme {
 .map-legend-item strong.is-off { color: var(--text-muted); opacity: 0.55; }
 
 .badge {
-  font-size: 11px;
+  font-size: var(--font-xs);
   padding: 2px 6px;
   border-radius: 4px;
 }.badge-mid { background: rgba(0, 210, 255, 0.2); color: var(--cyan); }badge-danger { background: rgba(255, 51, 102, 0.2); color: var(--red); border: 1px solid rgba(255, 51, 102, 0.4); }
@@ -366,14 +368,14 @@ body.dark-theme {
   padding: 10px;
 }
 
-.m-label { font-size: 11px; color: var(--text-muted); }
-.m-val { font-size: 20px; font-weight: 700; color: #fff; margin: 4px 0; }
-.m-unit { font-size: 11px; color: var(--text-muted); }
-.m-sub { font-size: 10px; color: var(--text-muted); }
+.m-label { font-size: var(--font-xs); color: var(--text-muted); }
+.m-val { font-size: var(--font-metric); font-weight: 700; color: #fff; margin: 4px 0; }
+.m-unit { font-size: var(--font-xs); color: var(--text-muted); }
+.m-sub { font-size: var(--font-2xs); color: var(--text-muted); }
 
 .m-val-badge {
   display: inline-block;
-  font-size: 11px;
+  font-size: var(--font-xs);
   font-weight: 600;
   padding: 3px 8px;
   border-radius: 4px;
@@ -391,7 +393,7 @@ body.dark-theme {
   display: flex;
   gap: 16px;
   margin: 2px 0 6px;
-  font-size: 11px;
+  font-size: var(--font-xs);
   color: var(--text-muted);
 }
 .shap-legend .lg-item { display: flex; align-items: center; gap: 5px; }
@@ -400,7 +402,7 @@ body.dark-theme {
 }
 .shap-legend .lg-up { background: var(--viz-up); }
 .shap-legend .lg-down { background: var(--viz-down); }
-.chart-box-lg { height: 320px; width: 100%; } var(--text-muted) !important; }
+.chart-box-lg { height: 320px; width: 100%; }
 
 @media (max-width: 1180px) {
   .sample-tables-grid { grid-template-columns: 1fr; }
@@ -414,7 +416,7 @@ body.dark-theme {
 .data-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 12px;
+  font-size: var(--font-sm);
 }
 
 .data-table th, .data-table td {
@@ -441,9 +443,9 @@ body.dark-theme {
 }
 
 .method-stat { display: flex; flex-direction: column; gap: 1px; }
-.method-stat .ms-label { font-size: 10px; color: var(--text-muted); }
+.method-stat .ms-label { font-size: var(--font-2xs); color: var(--text-muted); }
 .method-stat .ms-value {
-  font-size: 15px;
+  font-size: var(--font-lg);
   font-weight: 600;
   color: var(--text-main);
   font-variant-numeric: tabular-nums;
@@ -453,7 +455,7 @@ body.dark-theme {
 /* 样本量这类"前提条件"附在数值后，字号小但不该淡到读不见 */
 .method-stat .ms-note {
   display: block;
-  font-size: 10px;
+  font-size: var(--font-2xs);
   font-weight: 400;
   color: var(--text-muted);
   margin-top: 1px;
@@ -480,7 +482,7 @@ body.dark-theme {
   gap: 10px;
 }
 .matrix-insight h4 {
-  font-size: 11px;
+  font-size: var(--font-xs);
   font-weight: 600;
   color: var(--text-muted);
   letter-spacing: .04em;
@@ -490,7 +492,7 @@ body.dark-theme {
   align-items: baseline;
   justify-content: space-between;
   gap: 10px;
-  font-size: 12px;
+  font-size: var(--font-sm);
   color: #cbd5e1;
 }
 .insight-row .ir-val {
@@ -500,7 +502,7 @@ body.dark-theme {
 }
 .insight-takeaway {
   margin-top: auto;
-  font-size: 11px;
+  font-size: var(--font-xs);
   line-height: 1.5;
   color: var(--text-muted);
   border-top: 1px solid rgba(255, 255, 255, 0.07);
@@ -518,13 +520,13 @@ body.dark-theme {
   gap: 6px;
 }
 
-.filter-lbl { font-size: 11px; color: var(--text-muted); }
+.filter-lbl { font-size: var(--font-xs); color: var(--text-muted); }
 
 .filter-chip {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--text-muted);
-  font-size: 11px;
+  font-size: var(--font-xs);
   padding: 4px 8px;
   border-radius: 4px;
   cursor: pointer;
@@ -577,16 +579,16 @@ body.dark-theme {
 }
 
 .dec-badge {
-  font-size: 11px;
+  font-size: var(--font-xs);
   font-weight: 600;
   color: var(--cyan);
   margin-bottom: 6px;
 }
 
-.dec-val { font-size: 18px; font-weight: 700; color: #fff; }
-.dec-unit { font-size: 11px; font-weight: 400; color: var(--text-muted); }
-.dec-val-sub { font-size: 11px; color: var(--text-muted); margin: 4px 0; }
-.dec-desc { font-size: 10px; color: var(--text-muted); line-height: 1.4; margin-top: 6px; }
+.dec-val { font-size: var(--font-xl); font-weight: 700; color: #fff; }
+.dec-unit { font-size: var(--font-xs); font-weight: 400; color: var(--text-muted); }
+.dec-val-sub { font-size: var(--font-xs); color: var(--text-muted); margin: 4px 0; }
+.dec-desc { font-size: var(--font-2xs); color: var(--text-muted); line-height: 1.4; margin-top: 6px; }
 
 .action-list-box {
   background: rgba(0, 0, 0, 0.2);
@@ -594,7 +596,7 @@ body.dark-theme {
   padding: 14px;
 }
 
-.action-list-box h3 { font-size: 13px; margin-bottom: 10px; color: #fff; }
+.action-list-box h3 { font-size: var(--font-md); margin-bottom: 10px; color: #fff; }
 
 .action-item {
   display: flex;
@@ -602,14 +604,14 @@ body.dark-theme {
   gap: 10px;
   padding: 8px 0;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
-  font-size: 12px;
+  font-size: var(--font-sm);
 }
 
 .action-idx {
   background: rgba(0, 210, 255, 0.15);
   color: var(--cyan);
   font-weight: 700;
-  font-size: 11px;
+  font-size: var(--font-xs);
   padding: 2px 6px;
   border-radius: 4px;
 }
@@ -629,9 +631,9 @@ body.dark-theme {
   text-align: center;
 }
 
-.st-label { font-size: 11px; color: var(--text-muted); }
-.st-val { font-size: 20px; font-weight: 700; color: #fff; margin: 4px 0; }
-.st-sub { font-size: 10px; color: var(--text-muted); }
+.st-label { font-size: var(--font-xs); color: var(--text-muted); }
+.st-val { font-size: var(--font-metric); font-weight: 700; color: #fff; margin: 4px 0; }
+.st-sub { font-size: var(--font-2xs); color: var(--text-muted); }
 
 .patent-box {
   background: rgba(0, 210, 255, 0.04);
@@ -640,8 +642,8 @@ body.dark-theme {
   border-radius: 0 6px 6px 0;
 }
 
-.patent-box h4 { font-size: 12px; color: #fff; margin-bottom: 6px; }
-.patent-box ul { list-style: none; font-size: 11px; color: var(--text-muted); display: flex; flex-direction: column; gap: 4px; }
+.patent-box h4 { font-size: var(--font-sm); color: #fff; margin-bottom: 6px; }
+.patent-box ul { list-style: none; font-size: var(--font-xs); color: var(--text-muted); display: flex; flex-direction: column; gap: 4px; }
 .patent-box strong { color: #e2e8f0; }
 
 /* 视图 5：全域资源投放优先级 */
@@ -659,10 +661,10 @@ body.dark-theme {
   padding: 10px 12px;
 }
 
-.pk-label { font-size: 11px; color: var(--text-muted); }
-.pk-val { font-size: 20px; font-weight: 600; color: #fff; margin: 2px 0 3px; }
-.pk-unit { font-size: 12px; font-weight: 500; color: var(--text-muted); margin-left: 2px; }
-.pk-sub { font-size: 10px; color: var(--text-muted); line-height: 1.4; }
+.pk-label { font-size: var(--font-xs); color: var(--text-muted); }
+.pk-val { font-size: var(--font-metric); font-weight: 600; color: #fff; margin: 2px 0 3px; }
+.pk-unit { font-size: var(--font-sm); font-weight: 500; color: var(--text-muted); margin-left: 2px; }
+.pk-sub { font-size: var(--font-2xs); color: var(--text-muted); line-height: 1.4; }
 
 .status-legend {
   display: flex;
@@ -670,7 +672,7 @@ body.dark-theme {
   align-items: center;
   gap: 16px;
   margin: 2px 0 6px;
-  font-size: 11px;
+  font-size: var(--font-xs);
   color: var(--text-muted);
 }
 
@@ -728,14 +730,14 @@ body.dark-theme {
 }
 
 .sub-title-box h4 {
-  font-size: 13px;
+  font-size: var(--font-md);
   font-weight: 600;
   color: #fff;
 }
 
 /* 图表口径说明：讲清楚这张图在预测什么、方向怎么读 */
 .sub-hint {
-  font-size: 10px;
+  font-size: var(--font-2xs);
   line-height: 1.5;
   color: var(--text-muted);
   margin-top: 3px;
@@ -750,7 +752,7 @@ body.dark-theme {
   padding: 11px 13px;
 }
 .baseline-diagnosis h5 {
-  font-size: 11px;
+  font-size: var(--font-xs);
   font-weight: 600;
   color: var(--text-muted);
   letter-spacing: .04em;
@@ -760,7 +762,7 @@ body.dark-theme {
 .baseline-diagnosis li {
   position: relative;
   padding-left: 11px;
-  font-size: 11px;
+  font-size: var(--font-xs);
   line-height: 1.55;
   color: #cbd5e1;
 }
@@ -779,14 +781,14 @@ body.dark-theme {
 /* 对照表里"没跑起来"的那一行：说明文字跨列铺开，视觉上就不该像一组数值 */
 .td-skip {
   color: var(--text-muted);
-  font-size: 11px;
+  font-size: var(--font-xs);
   font-style: normal;
   background: rgba(148, 163, 184, 0.06);
 }
 
 /* 第三方佐证段落：附在失效模式分析之后，语气是补充说明而非结论 */
 .verdict-note {
-  font-size: 11px;
+  font-size: var(--font-xs);
   line-height: 1.6;
   color: #cbd5e1;
   margin-top: 4px;
@@ -798,7 +800,7 @@ body.dark-theme {
   border-radius: 6px;
   padding: 10px;
   margin-top: 10px;
-  font-size: 11px;
+  font-size: var(--font-xs);
   color: #cbd5e1;
   line-height: 1.5;
 }
@@ -814,7 +816,7 @@ body.dark-theme {
   background: rgba(0, 210, 255, 0.1);
   border: 1px solid rgba(0, 210, 255, 0.25);
   color: var(--cyan);
-  font-size: 10px;
+  font-size: var(--font-2xs);
   padding: 3px 8px;
   border-radius: 4px;
 }
@@ -835,7 +837,7 @@ body.dark-theme {
 }
 
 .protocol-header h4 {
-  font-size: 12px;
+  font-size: var(--font-sm);
   font-weight: 600;
   color: #e2e8f0;
 }*/
@@ -860,7 +862,7 @@ body.dark-theme {
   display: inline-block;
   background: rgba(58, 134, 255, 0.15);
   color: var(--cyan);
-  font-size: 10px;
+  font-size: var(--font-2xs);
   font-weight: 600;
   padding: 2px 6px;
   border-radius: 4px;
@@ -869,21 +871,21 @@ body.dark-theme {
 }
 
 .standard-card h4 {
-  font-size: 12px;
+  font-size: var(--font-sm);
   color: #fff;
   font-weight: 600;
   margin-bottom: 8px;
 }
 
 .standard-thresholds {
-  font-size: 11px;
+  font-size: var(--font-xs);
   color: var(--text-muted);
   line-height: 1.6;
   margin-bottom: 8px;
 }
 
 .standard-rationale {
-  font-size: 10px;
+  font-size: var(--font-2xs);
   color: #94a3b8;
   background: rgba(0, 0, 0, 0.25);
   padding: 6px 8px;
@@ -912,7 +914,7 @@ body.dark-theme {
 
 .dispatch-field-group label {
   display: block;
-  font-size: 11px;
+  font-size: var(--font-xs);
   color: var(--text-muted);
   margin-bottom: 4px;
 }
@@ -924,7 +926,7 @@ body.dark-theme {
   border-radius: 4px;
   color: #fff;
   padding: 6px 10px;
-  font-size: 12px;
+  font-size: var(--font-sm);
   outline: none;
 }
 
@@ -939,7 +941,7 @@ body.dark-theme {
   border: none;
   border-radius: 6px;
   padding: 9px 16px;
-  font-size: 12px;
+  font-size: var(--font-sm);
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
@@ -962,7 +964,7 @@ body.dark-theme {
 
 .status-pill {
   display: inline-block;
-  font-size: 10px;
+  font-size: var(--font-2xs);
   padding: 2px 7px;
   border-radius: 10px;
   font-weight: 600;
@@ -988,7 +990,7 @@ body.dark-theme {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.14);
   color: var(--cyan);
-  font-size: 11px;
+  font-size: var(--font-xs);
   padding: 3px 8px;
   border-radius: 4px;
   cursor: pointer;
@@ -1242,7 +1244,7 @@ body.dark-theme {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 9px;
+  font-size: var(--font-2xs);
   color: var(--text-muted);
   padding: 3px 5px;
   border-radius: 3px;
@@ -1292,7 +1294,7 @@ body.dark-theme {
 .nonmeteo-tag {
   display: inline-block;
   margin-left: 6px;
-  font-size: 9px;
+  font-size: var(--font-2xs);
   padding: 1px 5px;
   border-radius: 3px;
   background: rgba(148, 163, 184, 0.16);
@@ -1402,6 +1404,23 @@ body.dark-theme {
 
 /* --- 风险等级徽章缺省态（等级未返回时不冒充"低风险"） ----------------- */
 .badge-muted { background: rgba(148, 163, 184, 0.14); color: var(--text-muted); }
+
+/* --- 驾驶舱主视图：左地图（Dominant Anchor）+ 右机理与演化 ---------------
+   HTML 早就写成了 .cockpit-main-grid / .map-panel / .cockpit-side-col 的两栏结构，
+   但 CSS 里只有窄屏那一份 grid-template-columns: 1fr 的覆盖，缺基础定义，
+   于是宽屏下退化成块级堆叠：地图被拉成约 3.4:1 的扁条，
+   投影只能靠高度撑满，左右各空掉近一半宽度。 */
+@media (min-width: 1281px) {
+  .cockpit-main-grid {
+    display: grid;
+    /* 62 : 38 —— 地图是本页唯一的重心，右侧两卡是它的注脚 */
+    grid-template-columns: 1.62fr 1fr;
+    gap: var(--space-4);
+    align-items: start;
+  }
+  /* 容器收到约 1.8:1，与 76.5–105.5°E / 25.5–38.5°N 的投影范围一致，四省才能填满视口 */
+  .cockpit-main-grid .chart-full { height: 520px; }
+}
 
 /* --- 驾驶舱两栏在窄屏折行 ---------------------------------------------- */
 @media (max-width: 1280px) {

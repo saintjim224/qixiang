@@ -41,9 +41,31 @@
 
   var errors = reactive({});
 
+  /**
+   * 状态落点 → 补渲染。
+   *
+   * 页面里每个图表容器都跟在 `<status-block v-if="meta.X !== 'ok'">` 的 v-else 之后：
+   * 该状态还没到 ok 时，容器**根本不在 DOM 里**，此时渲染器 getElementById 拿到 null
+   * 就静默返回；等状态到位、Vue 把容器插进来，却没有任何东西再去画它。
+   * 症状是"表出来了、图永远空白"，且只在深链直达该页时暴露（手工点页签时数据已就绪）。
+   *
+   * 因此任何状态**首次**落到 ok 都在 DOM 更新后补渲染一次；同一 tick 内多次落点合并成一次。
+   */
+  var rerenderScheduled = false;
+  function scheduleRerender() {
+    if (rerenderScheduled) return;
+    rerenderScheduled = true;
+    window.Vue.nextTick(function () {
+      rerenderScheduled = false;
+      renderActiveTab();
+    });
+  }
+
   function setMeta(key, state, error) {
+    var prev = meta[key];
     meta[key] = state;
     errors[key] = error || "";
+    if (state === "ok" && prev !== "ok") scheduleRerender();
   }
 
   // --- 基础状态 -------------------------------------------------------------
@@ -398,6 +420,9 @@
       var ok = rs.some(function (r) {
         return r.ok;
       });
+      // setMeta 落到 ok 时会自动排一次补渲染（见文件上方的 scheduleRerender），
+      // PU 消融区块整体挂在 v-else="meta.benchmarks === 'ok'" 上，
+      // 正是靠这个机制才能在深链直达时把 chartPuBenchmark / chartPuShap 画出来。
       setMeta("benchmarks", ok ? "ok" : "error", ok ? "" : (rs[0].error || rs[1].error));
       deriveVerifyKpis();
     });

@@ -263,6 +263,7 @@
 
   var mapData = [];
   var applySelection = null;
+  var lastMissingWarned = "";
 
   function renderMap() {
     var dom = document.getElementById("chartPlateauMap");
@@ -304,8 +305,11 @@
         };
       });
 
-      if (missing.length) {
-        console.warn("[MR] 以下县域缺少综合风险分，不着色：" + missing.join("、"));
+      // 地图会随状态到位重绘数次，同一份告警只需说一次，否则控制台被同一行刷屏
+      var missingKey = missing.join("、");
+      if (missingKey && missingKey !== lastMissingWarned) {
+        lastMissingWarned = missingKey;
+        console.warn("[MR] 以下县域缺少综合风险分，不着色：" + missingKey);
       }
 
       chart.setOption(buildMapOption(res.data, mapData), true);

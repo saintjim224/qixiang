@@ -51,7 +51,7 @@ def get_data_provenance_and_tiers() -> dict[str, Any]:
                     # 2192 条/县 = 2020-01-01 ~ 2025-12-31, 字段仅 date/temp_mean/precip_mm。
                     # 原先把区间写成 2015-2024、把风速与积雪深度也算进 ERA5, 两者都与文件不符
                     # (风速/积雪深度属于 CMFD 逐月表, 不在本表内)。
-                    {"name": "ECMWF ERA5 逐日格点再分析气候", "range": "2020-2025 (2192天)", "records": "5.7万+条", "fields": "逐日平均气温、降水"},
+                    {"name": "ECMWF ERA5 逐日格点再分析气候态", "range": "2020-2025 (2192天)", "records": "5.7万+条", "fields": "逐日平均气温、降水"},
                     {"name": "NASA MODIS MOD17A3HGF", "range": "2001-2025 (25年)", "records": "26县年度像元均值", "fields": "NPP 净初级生产力"},
                     {"name": "NASA MODIS MCD12Q2", "range": "2003-2024 (22年)", "records": "26县物候序列", "fields": "返青期、枯黄期、年生长季长度"},
                     {"name": "TPDC CMFD V0106", "range": "2015-2018", "records": "26县逐月气候", "fields": "青藏高原高精度地面气象要素驱动"},

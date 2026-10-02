@@ -118,6 +118,7 @@
           prov="D"
           :state="meta.countyRisks"
           sub="Gamma MLE 拟合降水指数 (SPI ≤ -1.0)"
+          title="Gamma 参数由该县历史同月累计降水拟合，ERA5 序列仅 6 年，每县可用样本 2–6 个，远低于 WMO 对 SPI 建议的 ≥30 年。用第三方 spei 独立实现交叉校验，26 县 × 2 尺度的分档一致率中位仅 30%（详见风险指数页 SPI 口径抽屉与 tools/cross_validate_spi.py），故 SPI 在此定位为同口径相对趋势与等级重判，不作为绝对气候统计量引用。"
         ></kpi-card>
 
         <kpi-card
@@ -1140,22 +1141,22 @@
   </script>
 
   <!-- 零构建前端：经典 script + window.MR 命名空间，加载顺序即依赖顺序 -->
-  <script src="js/core/namespace.js"></script>
-  <script src="js/core/tokens.js"></script>
-  <script src="js/core/format.js"></script>
-  <script src="js/core/api.js"></script>
-  <script src="js/core/provenance.js"></script>
-  <script src="js/charts/theme.js"></script>
-  <script src="js/charts/manager.js"></script>
-  <script src="js/ui/states.js"></script>
-  <script src="js/ui/method.js"></script>
-  <script src="js/ui/router.js"></script>
-  <script src="js/state/store.js"></script>
-  <script src="js/charts/cockpit.js"></script>
-  <script src="js/charts/datasourceCharts.js"></script>
-  <script src="js/charts/indexCharts.js"></script>
-  <script src="js/charts/forecastCharts.js"></script>
-  <script src="js/charts/decisionCharts.js"></script>
-  <script src="js/app.js?v=20261002_2"></script>
+  <script src="js/core/namespace.js?v=20261002_4"></script>
+  <script src="js/core/tokens.js?v=20261002_4"></script>
+  <script src="js/core/format.js?v=20261002_4"></script>
+  <script src="js/core/api.js?v=20261002_4"></script>
+  <script src="js/core/provenance.js?v=20261002_4"></script>
+  <script src="js/charts/theme.js?v=20261002_4"></script>
+  <script src="js/charts/manager.js?v=20261002_4"></script>
+  <script src="js/ui/states.js?v=20261002_4"></script>
+  <script src="js/ui/method.js?v=20261002_4"></script>
+  <script src="js/ui/router.js?v=20261002_4"></script>
+  <script src="js/state/store.js?v=20261002_4"></script>
+  <script src="js/charts/cockpit.js?v=20261002_4"></script>
+  <script src="js/charts/datasourceCharts.js?v=20261002_4"></script>
+  <script src="js/charts/indexCharts.js?v=20261002_4"></script>
+  <script src="js/charts/forecastCharts.js?v=20261002_4"></script>
+  <script src="js/charts/decisionCharts.js?v=20261002_4"></script>
+  <script src="js/app.js?v=20261002_4"></script>
 </body>
 </html>
