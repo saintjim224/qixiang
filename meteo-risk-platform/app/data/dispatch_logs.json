@@ -1,5 +1,19 @@
 [
   {
+    "dispatch_id": "DSP-20261002-SENI-949C",
+    "timestamp": "2026-10-02T20:18:44",
+    "region_id": "naqu-seni",
+    "region_name": "那曲市色尼区",
+    "hay_tons": 15.0,
+    "grain_tons": 3.0,
+    "feed_cost_wan": 2.3,
+    "action_type": "自动化回归测试调度",
+    "operator_role": "自治区防灾减灾应急指挥调度中心",
+    "credit_action": "已联动绿色信贷服务系统 (预计授信缓释额度 53.45 万元)",
+    "status": "已下发 (EXECUTING)",
+    "memo": "Pytest 自动化审计验证"
+  },
+  {
     "dispatch_id": "DSP-20261002-SENI-BDFA",
     "timestamp": "2026-10-02T19:24:05",
     "region_id": "naqu-seni",

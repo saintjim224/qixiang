@@ -520,39 +520,17 @@ def compute_gdi(region_id: str, target_year: int | None = None) -> dict[str, Any
     if region_id in model.results_by_region:
         return model.results_by_region[region_id]
 
-    # 若未找到该县 (如外部传入未知 ID)，执行防御性兜底
-    leg = legacy_gdi(region_id, target_year)
-    return {
-        "region_id": region_id,
-        "region_name": region_id,
-        "target_year": model.target_year,
-        "grassland_type": REGION_GRASSLAND_TYPE.get(region_id, "alpine_steppe"),
-        "grassland_type_cn": GRASSLAND_TYPE_CN.get(REGION_GRASSLAND_TYPE.get(region_id, "alpine_steppe"), "高寒草地"),
-        "fragility_coefficient": 1.0,
-        "gdi_value": 0.5000,
-        "degradation_level": "轻度退化 (Light)",
-        "degradation_level_cn": "轻度退化",
-        "degradation_level_en": "Light",
-        "legacy_gdi_value": float(leg.get("gdi_value", 0.5)),
-        "legacy_level": str(leg.get("risk_level", "未知")),
-        "pca_variance_ratio": round(model.explained_variance_ratio, 4),
-        "pca_weights": {
-            "npp": round(float(model.weights[0]), 4) if len(model.weights) == 4 else 0.25,
-            "ndvi": round(float(model.weights[1]), 4) if len(model.weights) == 4 else 0.25,
-            "veg_cover": round(float(model.weights[2]), 4) if len(model.weights) == 4 else 0.25,
-            "yield": round(float(model.weights[3]), 4) if len(model.weights) == 4 else 0.25,
-        },
-        "thresholds": model.thresholds,
-        "indicators": {
-            "npp": 0.35,
-            "ndvi": 0.25,
-            "veg_cover": 0.25,
-            "yield": 78.75,
-            "grass_yield_g_m2": 78.75,
-        },
-        "method": "Li et al. (2025) PCA + K-Means + Curvature",
-        "is_derived": True,
-    }
+    # 未知县域必须显式失败，绝不返回默认分值。
+    #
+    # 旧实现在此处返回 gdi_value=0.5000 / "轻度退化" / 一组 0.25 的伪权重 /
+    # indicators 里还带 0.35、0.25、78.75 等凭空的生态指标——对一个根本不存在的
+    # 县也能吐出看起来完全正常的退化评估。这正是规格书 §6 禁止的
+    # "以概念描述替代实际验证"，且因不抛异常，API 层的 try/except 根本拦不住。
+    # 改为抛错，由 app/api/index.py 的 _unavailable() 统一转成 503。
+    raise ValueError(
+        f"未知县域 '{region_id}'：GDI 空间模型仅覆盖 region_list.csv 中的 "
+        f"{len(model.results_by_region)} 个县域，拒绝为未知区域返回默认分值。"
+    )
 
 
 def run_all_gdi(target_year: int | None = None) -> list[dict[str, Any]]:

@@ -799,16 +799,33 @@ def predict_county_pu_risk(region_id: str, month: str | None = None) -> dict[str
         idx = matched_indices[-1]
         feat = X[idx]
         target_m = sample_meta[idx].get("month", "2024-12")
-    else:
-        county_indices = [i for i, m in enumerate(sample_meta) if m.get("region_id") == region_id]
-        if county_indices:
-            feat = np.mean(X[county_indices], axis=0)
-            target_m = month or "2024-12"
-        else:
-            feat = np.mean(X, axis=0)
-            target_m = month or "2024-12"
+        return model.explain_risk(feat, region_id=region_id, month=target_m, top_k=5)
 
-    return model.explain_risk(feat, region_id=region_id, month=target_m, top_k=5)
+    county_indices = [i for i, m in enumerate(sample_meta) if m.get("region_id") == region_id]
+    if county_indices:
+        # 该县有样本但缺目标月份 → 用该县自身的样本均值代表（同县内插，属保守可接受的降级）
+        feat = np.mean(X[county_indices], axis=0)
+        target_m = month or "2024-12"
+        return model.explain_risk(feat, region_id=region_id, month=target_m, top_k=5)
+
+    # 无任何样本时必须显式失败。
+    #
+    # 旧实现此处回落到 feat = np.mean(X, axis=0)，即**全域 26 县所有样本的特征均值**，
+    # 然后照常输出校准概率、风险分级与一整套 SHAP 归因——对一个根本不存在的县也能
+    # 生成一份看起来完全可信的灾害评估。这是规格书 §6 明令禁止的"伪造/以概念描述
+    # 替代实际验证"，且因不抛异常，API 层无法拦截。改为抛错，由 _unavailable() 转 503。
+    from app.core.dataio import load_region_list
+
+    known = {r.get("region_id") for r in load_region_list()}
+    if region_id not in known:
+        raise ValueError(
+            f"未知县域 '{region_id}'：仅支持 region_list.csv 中的 {len(known)} 个县域，"
+            f"拒绝用全域均值特征为该区域编造风险评估。"
+        )
+    raise ValueError(
+        f"县域 '{region_id}' 在 PU 训练样本中无任何记录，无法给出概率评估"
+        f"（不做全域均值替代）。"
+    )
 
 
 # ---------------------------------------------------------------------------

@@ -200,41 +200,61 @@ def get_county_risks_overview() -> dict[str, Any]:
         rid = r.get("region_id", "")
         rname = r.get("region_name") or r.get("name_cn") or rid
 
-        try:
-            s = calculate_spi(rid)
-            g = compute_gdi(rid)
-            d = predict_disasters(rid, days_ahead=16)
-            p = predict_county_pu_risk(rid)
-            # 退化等级必须显式传入: 该参数默认固定为"基本稳定", 不传等于 26 个县
-            # 共用同一个退化惩罚系数, 县域之间的载畜量差异会被整体抹平。
-            c = calculate_carrying_capacity(
-                rid, degradation_level=str(g.get("degradation_level", "轻度退化"))
-            )
-        except Exception as e:
-            print(f"[overview] 评估县域 {rid} 风险异常: {e}")
-            continue
+        # 每项指标独立容错：缺哪一项就如实记 None 并把名字记进 unavailable_indices。
+        #
+        # 旧实现是 5 项指标一起 try，任一失败就 `continue` 丢掉整个县；而用的
+        # 默认值又是 .get(key, 0.1)/.get(key, 30.0)/.get(key, 0.5) 这类**看起来
+        # 正常**的数字，于是缺数据的县要么凭空消失、要么带着编造的分数留在图上。
+        # 现在改为：县一定在，缺的那一项明确标 None。
+        unavailable: list[str] = []
 
-        spi_val = float(s.get("spi_value", 0.0))
-        drought_lvl = str(s.get("drought_level", "正常"))
-        if spi_val <= -1.0:
+        def _attempt(label: str, fn):
+            try:
+                return fn()
+            except Exception as e:  # 单项失败不牵连整县
+                print(f"[overview] 县域 {rid} 的 {label} 计算失败: {e}")
+                unavailable.append(label)
+                return None
+
+        s = _attempt("spi", lambda: calculate_spi(rid))
+        g = _attempt("gdi", lambda: compute_gdi(rid))
+        d = _attempt("disaster", lambda: predict_disasters(rid, days_ahead=16))
+        p = _attempt("pu", lambda: predict_county_pu_risk(rid))
+        # 退化等级必须显式传入: 该参数默认固定为"基本稳定", 不传等于 26 个县
+        # 共用同一个退化惩罚系数, 县域之间的载畜量差异会被整体抹平。
+        c = (
+            _attempt(
+                "carrying",
+                lambda: calculate_carrying_capacity(
+                    rid, degradation_level=str(g.get("degradation_level") or "轻度退化")
+                ),
+            )
+            if g is not None
+            else _attempt("carrying", lambda: calculate_carrying_capacity(rid))
+        )
+
+        spi_val = None if s is None else s.get("spi_value")
+        drought_lvl = None if s is None else str(s.get("drought_level") or "正常")
+        if isinstance(spi_val, (int, float)) and spi_val <= -1.0:
             drought_warning_count += 1
 
-        snow_dis = d.get("snow_disaster", {})
-        snow_depth = float(snow_dis.get("max_simulated_snow_depth_cm", 0.0))
-        snow_days = int(snow_dis.get("continuous_snow_days", 0))
-        snow_lvl = str(snow_dis.get("level_cn", "正常 (无灾害)"))
-        snow_code = int(snow_dis.get("level_code", 0))
-        is_realtime = bool(d.get("is_realtime", False))
-        if is_realtime:
-            realtime_counties += 1
-        else:
-            degraded_counties += 1
+        snow_dis = (d or {}).get("snow_disaster") or {}
+        snow_depth = snow_dis.get("max_simulated_snow_depth_cm")
+        snow_days = snow_dis.get("continuous_snow_days")
+        snow_lvl = snow_dis.get("level_cn")
+        snow_code = snow_dis.get("level_code")
+        is_realtime = bool((d or {}).get("is_realtime", False)) if d is not None else None
+        if d is not None:
+            if is_realtime:
+                realtime_counties += 1
+            else:
+                degraded_counties += 1
         # 只有实时驱动下的 III/IV 级才计为"预警中"
-        if is_realtime and snow_code >= 3:
+        if is_realtime and isinstance(snow_code, int) and snow_code >= 3:
             snow_warning_count += 1
 
-        cold_wave = d.get("cold_wave", {})
-        min_temp = float(cold_wave.get("min_forecast_temp_c", -10.0))
+        cold_wave = (d or {}).get("cold_wave") or {}
+        min_temp = cold_wave.get("min_forecast_temp_c")
 
         # 卡片标题写的是"日均气温", 原实现却是 (预报最低气温 + 3.0) 的经验偏移。
         # 既不是日均温, 也与右侧同一页的 16 天曲线互相矛盾 (色尼区卡片 -4.1℃,
@@ -242,27 +262,27 @@ def get_county_risks_overview() -> dict[str, Any]:
         # 并把 16 天窗口均值一并回传, 供卡片副标题如实标注。
         temps_16 = [
             float(t)
-            for t in (d.get("forecast_series", {}).get("temps_16") or [])
+            for t in ((d or {}).get("forecast_series", {}).get("temps_16") or [])
             if t is not None
         ]
         if temps_16:
             temp_d1 = round(temps_16[0], 1)
             temp_window_mean = round(sum(temps_16) / len(temps_16), 1)
         else:
-            temp_d1 = temp_window_mean = round(min_temp, 1)
+            temp_d1 = temp_window_mean = None
 
-        pu_prob = float(p.get("calibrated_risk_prob", 0.1))
-        pu_score = float(p.get("risk_score", 30.0))
+        pu_prob = None if p is None else p.get("calibrated_risk_prob")
+        pu_score = None if p is None else p.get("risk_score")
 
-        gdi_val = float(g.get("gdi_value", 0.5))
-        gdi_lvl = str(g.get("degradation_level", "轻度退化"))
+        gdi_val = None if g is None else g.get("gdi_value")
+        gdi_lvl = None if g is None else g.get("degradation_level")
 
         # 草畜平衡指数 = 实际存栏(羊单位) / 精算载畜量(羊单位)。
         # 原实现读取的 actual_livestock 与 refined_carrying_capacity 两个键在
         # calculate_carrying_capacity 的返回值里都不存在 (返回的是
         # refined_carrying_capacity_sheep_unit, 也没有任何实际存栏字段), 两个 .get
         # 双双落到默认值 10000.0, 于是 26 个县的指数恒等于 1.00。
-        capacity_su = float(c.get("refined_carrying_capacity_sheep_unit") or 0.0)
+        capacity_su = (c or {}).get("refined_carrying_capacity_sheep_unit") or 0.0
         actual_su = livestock_by_region.get(rid)
         carrying_ratio = (
             round(actual_su / capacity_su, 2) if (actual_su and capacity_su > 0) else None
@@ -272,43 +292,54 @@ def get_county_risks_overview() -> dict[str, Any]:
 
         # 综合气象灾害风险分 (0-100 科学综合打分)
         # 权重: PU 概率(40%) + 积雪/低温风险(30%) + 干旱反向指数(15%) + 草地脆弱退化(15%)
-        snow_score = min(100.0, (snow_depth / 25.0) * 80.0 + (snow_days / 10.0) * 20.0)
-        drought_score = max(0.0, min(100.0, (-spi_val + 1.0) * 35.0))
-        comp_risk = round(0.40 * pu_score + 0.30 * snow_score + 0.15 * drought_score + 0.15 * (gdi_val * 100.0), 1)
-        comp_risk = max(15.0, min(95.0, comp_risk))
-
-        if comp_risk >= 75.0:
-            risk_level_tag = "重特大预警"
-        elif comp_risk >= 60.0:
-            risk_level_tag = "高风险"
-        elif comp_risk >= 40.0:
-            risk_level_tag = "中度风险"
-        else:
-            risk_level_tag = "低风险"
+        #
+        # 四项输入缺任意一项即无法给出可比的综合分：此时返回 None（而不是拿默认值
+        # 凑一个数），前端按"数据不足"呈现。混用不同输入基础算出的分数会让县与县
+        # 之间失去可比性，比留空更有害。
+        comp_risk = None
+        risk_level_tag = "数据不足"
+        if None not in (pu_score, snow_depth, spi_val, gdi_val) and snow_days is not None:
+            snow_score = min(100.0, (snow_depth / 25.0) * 80.0 + (snow_days / 10.0) * 20.0)
+            drought_score = max(0.0, min(100.0, (-spi_val + 1.0) * 35.0))
+            comp_risk = round(
+                0.40 * pu_score + 0.30 * snow_score
+                + 0.15 * drought_score + 0.15 * (gdi_val * 100.0),
+                1,
+            )
+            comp_risk = max(15.0, min(95.0, comp_risk))
+            if comp_risk >= 75.0:
+                risk_level_tag = "重特大预警"
+            elif comp_risk >= 60.0:
+                risk_level_tag = "高风险"
+            elif comp_risk >= 40.0:
+                risk_level_tag = "中度风险"
+            else:
+                risk_level_tag = "低风险"
 
         counties_data.append({
             "region_id": rid,
             "name_cn": rname,
             "province": r.get("province", ""),
-            "elevation": float(r.get("altitude") or r.get("elevation", 4000)),
-            "pasture_type": r.get("pasture_type", "高寒草甸"),
+            "elevation": float(r.get("altitude") or r.get("elevation") or 0) or None,
+            "pasture_type": r.get("pasture_type") or None,
             "risk_score": comp_risk,
             "risk_level": risk_level_tag,
+            "unavailable_indices": unavailable,
             "temp": temp_d1,
             "temp_window_mean": temp_window_mean,
-            "temp_min": round(min_temp, 1),
+            "temp_min": min_temp,
             "snow_depth": snow_depth,
             "continuous_snow_days": snow_days,
             "snow_level": snow_lvl,
             "snow_level_code": snow_code,
             "is_realtime": is_realtime,
-            "data_source": d.get("data_source", ""),
-            "provenance_note": d.get("provenance_note", ""),
+            "data_source": (d or {}).get("data_source"),
+            "provenance_note": (d or {}).get("provenance_note"),
             "drought_level": drought_lvl,
-            "spi_value": round(spi_val, 2),
-            "gdi_value": round(gdi_val, 2),
+            "spi_value": None if spi_val is None else round(float(spi_val), 2),
+            "gdi_value": None if gdi_val is None else round(float(gdi_val), 2),
             "degradation_level": gdi_lvl,
-            "pu_prob": round(pu_prob, 3),
+            "pu_prob": None if pu_prob is None else round(float(pu_prob), 3),
             "carrying_ratio": carrying_ratio,
         })
 

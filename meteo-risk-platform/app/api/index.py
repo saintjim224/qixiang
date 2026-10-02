@@ -12,8 +12,29 @@ from __future__ import annotations
 import time
 from typing import Any
 from fastapi import APIRouter, HTTPException, Query
+from fastapi.responses import JSONResponse
 
 router = APIRouter(prefix="/api/index", tags=["气象风险指数"])
+
+
+def _unavailable(endpoint: str, region_id: str, exc: Exception) -> JSONResponse:
+    """
+    计算失败时的**唯一**返回方式：如实报告不可用，一律 503。
+
+    规格书 §6 红线禁止以编造数值冒充真实结果。旧实现在此处的 except 分支里返回
+    SPI 0.42 / GDI 0.58 / PU 0.28 等写死的"正常"数值，前端拿到后无从分辨真伪，
+    等于伪造了一份看起来健康的风险评估——已全部移除，改为显式失败。
+    """
+    return JSONResponse(
+        status_code=503,
+        content={
+            "status": "unavailable",
+            "endpoint": endpoint,
+            "region_id": region_id,
+            "reason": f"{type(exc).__name__}: {exc}",
+            "note": "本接口不做数值兜底：计算失败即如实返回 503，不提供任何估算值。",
+        },
+    )
 
 # 全域 26 县方法对照结果缓存 (SPI/GDI 逐县计算较慢，TTL 内复用)
 _METHOD_COMPARE_CACHE: dict[str, Any] | None = None
@@ -55,47 +76,26 @@ def get_spi_index(
     region_id: str,
     scale: int = Query(3, ge=1, le=12, description="时间尺度 (月)"),
     month: str | None = Query(None, description="目标月份 (YYYY-MM)"),
-) -> dict[str, Any]:
+) -> Any:
     """获取指定县域标准 Gamma 拟合 SPI 及与旧版 Z-score 的对比."""
     try:
         from app.algorithm.spi import calculate_spi
         return calculate_spi(region_id=region_id, scale=scale, target_month=month)
     except Exception as e:
-        # 兜底返回标准结构
-        return {
-            "region_id": region_id,
-            "scale": scale,
-            "target_month": month or "2024-12",
-            "spi_value": 0.42,
-            "legacy_spi_value": 0.35,
-            "drought_level": "正常偏湿",
-            "zero_precip_prob": 0.05,
-            "method": "gamma_fitted",
-            "note": f"动态计算提示: {e}",
-        }
+        return _unavailable("spi", region_id, e)
 
 
 @router.get("/gdi/{region_id}")
 def get_gdi_index(
     region_id: str,
     year: int = Query(2024, ge=2001, le=2025, description="目标年份"),
-) -> dict[str, Any]:
+) -> Any:
     """获取指定县域论文级 PCA+Kmeans GDI 草场退化指数及与旧版对比."""
     try:
         from app.algorithm.gdi import compute_gdi
         return compute_gdi(region_id=region_id, target_year=year)
     except Exception as e:
-        return {
-            "region_id": region_id,
-            "target_year": year,
-            "gdi_value": 0.58,
-            "degradation_level": "中度退化",
-            "legacy_gdi_value": 0.52,
-            "legacy_level": "中度退化",
-            "pca_variance_ratio": 0.84,
-            "is_derived": True,
-            "note": f"动态计算提示: {e}",
-        }
+        return _unavailable("gdi", region_id, e)
 
 
 @router.get("/method-compare")
@@ -190,78 +190,47 @@ def get_method_compare(
 def get_spatio_temporal_grid(
     region_id: str,
     age_group: str = Query("all", description="生理期: all, calf, yearling, adult, old"),
-) -> dict[str, Any]:
+) -> Any:
     """
-    获取 1,500 四维时空网格微切片矩阵 (3草场 × 4季节 × 5生理群):
-    打破全县一个平均分的粗暴做法，细粒度反映不同草场、季节与受体脆弱性.
+    获取该县「真实草场类型 × 真实季节 × 生理群」气象风险微网格。
+
+    每个分值由该县自己的 10 年逐月观测统计而来，县与县之间、季节与季节之间
+    均有真实差异；组合权重在 method 字段原文披露，可逐项复算。
     """
-    seasons = [
-        {"code": "spring", "name": "春季 (春旱/倒春寒)", "risk_weight": 1.20},
-        {"code": "summer", "name": "夏季 (水热充沛)", "risk_weight": 0.60},
-        {"code": "autumn", "name": "秋季 (早霜降雪)", "risk_weight": 0.90},
-        {"code": "winter", "name": "冬季 (极端暴雪/严寒)", "risk_weight": 1.60},
-    ]
-    grasslands = [
-        {"code": "alpine_meadow", "name": "高寒草甸", "fragility": 0.70},
-        {"code": "alpine_steppe", "name": "高寒草原", "fragility": 1.00},
-        {"code": "alpine_desert", "name": "高寒荒漠", "fragility": 1.40},
-    ]
-    age_multipliers = {
-        "all": 1.0,
-        "calf": 1.28,      # 犊牛 0-1岁 极度脆弱
-        "yearling": 1.10,  # 育成牛
-        "adult": 0.85,     # 成年牛 耐寒抗逆
-        "old": 1.15,       # 老龄牛
-    }
-    mult = age_multipliers.get(age_group, 1.0)
+    from app.algorithm.vulnerability_grid import compute_vulnerability_grid
+    from app.core.dataio import load_region_list
 
-    # 4 × 3 基础切片
-    matrix: list[dict[str, Any]] = []
-    base_scores = {
-        ("spring", "alpine_meadow"): 48,
-        ("spring", "alpine_steppe"): 56,
-        ("spring", "alpine_desert"): 68,
-        ("summer", "alpine_meadow"): 24,
-        ("summer", "alpine_steppe"): 29,
-        ("summer", "alpine_desert"): 38,
-        ("autumn", "alpine_meadow"): 42,
-        ("autumn", "alpine_steppe"): 51,
-        ("autumn", "alpine_desert"): 62,
-        ("winter", "alpine_meadow"): 68,
-        ("winter", "alpine_steppe"): 76,
-        ("winter", "alpine_desert"): 89,
-    }
+    # 该县真实 GDI 作为「草场退化 → 承灾脆弱性」的输入；取不到时按 None 传入，
+    # 由模块退化为仅用草场类型与生理群系数，并在结果中如实体现，绝不填假数。
+    gdi_value: float | None = None
+    try:
+        from app.algorithm.gdi import compute_gdi
+        gdi_value = (compute_gdi(region_id=region_id) or {}).get("gdi_value")
+    except Exception:
+        gdi_value = None
 
-    for s in seasons:
-        for g in grasslands:
-            base = base_scores.get((s["code"], g["code"]), 50)
-            final_risk = min(99, int(round(base * mult)))
-            risk_level = "极高风险" if final_risk >= 75 else ("高风险" if final_risk >= 60 else ("中度风险" if final_risk >= 40 else "低风险"))
-            matrix.append({
-                "season_code": s["code"],
-                "season_name": s["name"],
-                "grassland_code": g["code"],
-                "grassland_name": g["name"],
-                "age_group": age_group,
-                "risk_score": final_risk,
-                "risk_level": risk_level,
-            })
+    try:
+        payload = compute_vulnerability_grid(
+            region_id=region_id, age_group=age_group, gdi_value=gdi_value
+        )
+    except Exception as e:
+        return _unavailable("spatio-temporal-grid", region_id, e)
 
-    return {
-        "region_id": region_id,
-        "age_filter": age_group,
-        "total_grids_count": 1500,
-        "county_micro_grids_count": 60,
-        "matrix": matrix,
-        "is_derived": True,
-    }
+    if payload.get("status") != "ok":
+        return JSONResponse(status_code=503, content=payload)
+
+    # 全域网格数由真实县数 × 每县格数实时计算，不再写死
+    county_count = len(load_region_list())
+    payload["domain_county_count"] = county_count
+    payload["total_grids_count"] = payload["county_micro_grids_count"] * county_count
+    return payload
 
 
 @router.get("/pu/{region_id}")
 def get_pu_risk(
     region_id: str,
     month: str | None = Query(None, description="目标月份 (YYYY-MM)"),
-) -> dict[str, Any]:
+) -> Any:
     """
     获取指定县域基于 PU Learning (正例-未标注学习) 的灾害风险评估与 SHAP 特征边际归因:
     - 针对 127 条确证事件正例建模，彻底消除 1373 条未标注样本的负例偏置;
@@ -271,17 +240,7 @@ def get_pu_risk(
         from app.algorithm.pu_model import predict_county_pu_risk
         return predict_county_pu_risk(region_id=region_id, month=month)
     except Exception as e:
-        return {
-            "region_id": region_id,
-            "month": month or "2024-12",
-            "calibrated_risk_prob": 0.28,
-            "risk_score": 46,
-            "risk_level": "中度风险",
-            "top_shap_features": [],
-            "summary": f"动态评估计算提示: {e}",
-            "recommendations": ["加强雪情动态监测", "提前排查低洼处简易畜圈"],
-            "is_derived": True,
-        }
+        return _unavailable("pu", region_id, e)
 
 
 @router.get("/pu-benchmark")
