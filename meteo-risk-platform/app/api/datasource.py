@@ -25,6 +25,22 @@ router = APIRouter(prefix="/api/datasource", tags=["气象数据底座"])
 @router.get("/provenance")
 def get_data_provenance_and_tiers() -> dict[str, Any]:
     """获取全套数据溯源链与五级事实边界分类报告 (答辩必审)."""
+    # 事件层级的计数一律从数据实时统计，不写死数字——写死过一个 127，
+    # 一旦底层标注集变动，界面上的"事实边界"就会与真实数据脱节。
+    from app.core.dataio import get_pu_labeled_dataset
+
+    positives, unlabeled = get_pu_labeled_dataset()
+    verified_total = len(positives)
+    unlabeled_total = len(unlabeled)
+    verified_by_category: dict[str, int] = {}
+    verified_meteo = 0
+    for p in positives:
+        meta = DISASTER_TYPE_MAPPING.get(p.get("event_type", "other"), {})
+        cat = meta.get("category", "其他灾害")
+        verified_by_category[cat] = verified_by_category.get(cat, 0) + 1
+        if meta.get("is_meteorological", True):
+            verified_meteo += 1
+
     return {
         "discipline_statement": "本项目严格遵循数据真实性分级规范，严禁将样例、派生或未标注数据宣传为真实业务数据。",
         "tiers": [
@@ -43,13 +59,22 @@ def get_data_provenance_and_tiers() -> dict[str, Any]:
                 ]
             },
             {
-                "tier_name": "来源支持真实灾害事件 (Verified Events)",
-                "count": 127,
-                "note": "具有官方媒体/应急管理部公开通报 URL 凭证的雪灾、寒潮、暴雨灾害事件。"
+                "tier_name": "来源支持真实事件 (Verified Events)",
+                "count": verified_total,
+                "count_meteorological": verified_meteo,
+                "count_non_meteorological": verified_total - verified_meteo,
+                "category_distribution": verified_by_category,
+                "note": (
+                    f"具有官方媒体/应急管理部公开通报 URL 凭证的事件，共 {verified_total} 条，全部带 source_url。"
+                    f"其中气象灾种类 {verified_meteo} 条，非气象灾种类 {verified_total - verified_meteo} 条"
+                    "(政策农险赔付实证与次生地质灾害)。"
+                    "口径提醒: 保险理赔/疫病救助等是极端气象诱发后的**下游赔付凭证**，"
+                    "地震滑坡是地质过程，二者都不是气象灾种本身，不能计入气象灾害频次统计。"
+                ),
             },
             {
                 "tier_name": "未标注背景样本 (Unlabeled)",
-                "count": 1373,
+                "count": unlabeled_total,
                 "note": "无明确报道的月份，采用 PU Learning 进行正例-未标注半监督挖掘，严禁等同于真实负例。"
             },
             {
@@ -102,7 +127,10 @@ def get_county_time_series(region_id: str) -> dict[str, Any]:
             "count": len(rs_sorted),
         },
         "npp_annual": npp.get("npp_annual", {}) if npp else {},
-        "phenology_annual": pheno.get("phenology_annual", {}) if pheno else {},
+        # phenology_by_region.json 的真实结构是 {years, data:{growing_season:{...}}, statistics}，
+        # 根本不存在 phenology_annual 键，原写法恒返回空字典，前端"物候序列"永远是一片空白。
+        "phenology_annual": ((pheno or {}).get("data") or {}).get("growing_season") or {},
+        "phenology_years": (pheno or {}).get("years") or [],
     }
 
 
