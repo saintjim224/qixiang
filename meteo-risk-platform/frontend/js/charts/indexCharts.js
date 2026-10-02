@@ -11,11 +11,10 @@
   var store = MR.store;
   var viz = function () { return MR.tokens.viz; };
 
-  var SEASONS = ["春季 (春旱/倒春寒)", "夏季 (水热充沛)", "秋季 (早霜降雪)", "冬季 (极端暴雪/严寒)"];
-  var SHORT_SEASONS = ["春季", "夏季", "秋季", "冬季"];
-  var GRASSLANDS = ["高寒草甸", "高寒草原", "高寒荒漠"];
-  var SEASON_IDX = { spring: 0, summer: 1, autumn: 2, winter: 3 };
-  var GRASS_IDX = { alpine_meadow: 0, alpine_steppe: 1, alpine_desert: 2 };
+  // 季节顺序是口径的一部分（春→冬），可以写死；**草场类型不行**——
+  // 它随县而变，必须从接口的 grassland_types 读（见 renderHeatmap 里的说明）。
+  var SEASON_ORDER = ["spring", "summer", "autumn", "winter"];
+  var SEASON_SHORT = { spring: "春季", summer: "夏季", autumn: "秋季", winter: "冬季" };
 
   // --- 微网格热力图 ---------------------------------------------------------
   function renderHeatmap() {
@@ -29,13 +28,8 @@
 
     MR.api.get("/api/index/spatio-temporal-grid/" + rid + "?age_group=" + ag).then(function (res) {
       var matrix = res.ok && res.data && res.data.matrix ? res.data.matrix : [];
-      var heatmapData = matrix.map(function (item) {
-        return [SEASON_IDX[item.season_code] !== undefined ? SEASON_IDX[item.season_code] : 0,
-                GRASS_IDX[item.grassland_code] !== undefined ? GRASS_IDX[item.grassland_code] : 0,
-                item.risk_score];
-      });
 
-      if (!heatmapData.length) {
+      if (!matrix.length) {
         // 旧实现在这里用 12 项写死的 base_scores 兜底，能凭空画出一张好看的矩阵。
         // 现在没有真实矩阵就是没有：清空并给出状态，不做任何替代。
         chart.clear();
@@ -47,35 +41,86 @@
         return;
       }
 
+      // --- 两个类目轴都由接口实测取值推导 ------------------------------------
+      // 草场类型**必须**从接口读。它随县而变（本县返回的是 河谷草地 / 山地草甸 /
+      // 高寒草甸 / 山地灌丛草甸），而旧实现把 y 轴写死成
+      // ["高寒草甸","高寒草原","高寒荒漠"]、把 code→行号映射写死成
+      // {alpine_meadow:0, alpine_steppe:1, alpine_desert:2}。接口返回的 code 是中文名，
+      // 一个都命中不了，于是 16 个格子全部落回 y=0：两行永远空白，另外四列各有
+      // 4 个数字叠在同一格里互相糊住。更糟的是侧栏据此得出的"峰值单元"会把
+      // 河谷草地·冬季的 62 分安到高寒草甸头上——那已经不是画错，是编造归属。
+      var local = res.data.local_pasture_type || "";
+      var grassOrder = (res.data.grassland_types || []).slice();
+      matrix.forEach(function (it) {
+        var g = it.grassland_name;
+        if (g && grassOrder.indexOf(g) < 0) grassOrder.push(g);
+      });
+      if (!grassOrder.length) grassOrder = ["未标注草场类型"];
+      // ECharts 类目轴 index 0 在最下面一行，把本县主类型放这里——读者最该先看到它
+      if (local && grassOrder.indexOf(local) >= 0) {
+        grassOrder = [local].concat(grassOrder.filter(function (g) { return g !== local; }));
+      }
+
+      var seasonOrder = SEASON_ORDER.filter(function (s) {
+        return matrix.some(function (it) { return it.season_code === s; });
+      });
+      matrix.forEach(function (it) {
+        if (seasonOrder.indexOf(it.season_code) < 0) seasonOrder.push(it.season_code);
+      });
+      var seasonFull = {};   // code → 接口给的完整季节名（含括注）
+      var seasonShort = {};  // code → 短名，用于侧栏读数
+      matrix.forEach(function (it) {
+        if (!seasonFull[it.season_code]) {
+          seasonFull[it.season_code] = it.season_name || SEASON_SHORT[it.season_code] || it.season_code;
+          seasonShort[it.season_code] = SEASON_SHORT[it.season_code] || it.season_name || it.season_code;
+        }
+      });
+
+      var heatmapData = matrix.map(function (item) {
+        return {
+          value: [seasonOrder.indexOf(item.season_code), grassOrder.indexOf(item.grassland_name), item.risk_score],
+          seasonCode: item.season_code,
+          grassName: item.grassland_name,
+        };
+      });
+
       // 由矩阵真实推导侧栏读数
-      var cellLabel = function (cell) { return GRASSLANDS[cell[1]] + " · " + SHORT_SEASONS[cell[0]]; };
-      var ranked = heatmapData.slice().sort(function (a, b) { return a[2] - b[2]; });
+      var cellLabel = function (cell) {
+        return cell.grassName + " · " + (seasonShort[cell.seasonCode] || cell.seasonCode);
+      };
+      var ranked = heatmapData.slice().sort(function (a, b) { return a.value[2] - b.value[2]; });
       var lowest = ranked[0];
       var highest = ranked[ranked.length - 1];
-      var spreadBySeason = SHORT_SEASONS.map(function (_, s) {
-        var vals = heatmapData.filter(function (d) { return d[0] === s; }).map(function (d) { return d[2]; });
+      var spreadBySeason = seasonOrder.map(function (code) {
+        var vals = heatmapData
+          .filter(function (d) { return d.seasonCode === code; })
+          .map(function (d) { return d.value[2]; });
         return vals.length ? Math.max.apply(null, vals) - Math.min.apply(null, vals) : 0;
       });
-      var spreadByGrass = GRASSLANDS.map(function (_, g) {
-        var vals = heatmapData.filter(function (d) { return d[1] === g; }).map(function (d) { return d[2]; });
+      var spreadByGrass = grassOrder.map(function (g) {
+        var vals = heatmapData
+          .filter(function (d) { return d.grassName === g; })
+          .map(function (d) { return d.value[2]; });
         return vals.length ? Math.max.apply(null, vals) - Math.min.apply(null, vals) : 0;
       });
       var seasonSpread = Math.max.apply(null, spreadBySeason);
       var grassSpread = Math.max.apply(null, spreadByGrass);
+      var peak = highest.value[2];
+      var trough = lowest.value[2];
 
       store.matrixInsight.value = {
         maxLabel: cellLabel(highest),
-        maxValue: highest[2],
+        maxValue: peak,
         minLabel: cellLabel(lowest),
-        seasonSpread: seasonSpread + "（" + SHORT_SEASONS[spreadBySeason.indexOf(seasonSpread)] + "内）",
-        grassSpread: grassSpread + "（" + GRASSLANDS[spreadByGrass.indexOf(grassSpread)] + "内）",
+        seasonSpread: seasonSpread + "（" + (seasonShort[seasonOrder[spreadBySeason.indexOf(seasonSpread)]] || "—") + "内）",
+        grassSpread: grassSpread + "（" + grassOrder[spreadByGrass.indexOf(grassSpread)] + "内）",
         takeaway:
-          "峰值单元为 " + cellLabel(highest) + "（" + highest[2] + " 分），较最低的 " + cellLabel(lowest) +
-          "（" + lowest[2] + " 分）高出 " + (highest[2] - lowest[2]) + " 分；草场类型间极差 " + grassSpread +
+          "峰值单元为 " + cellLabel(highest) + "（" + peak + " 分），较最低的 " + cellLabel(lowest) +
+          "（" + trough + " 分）高出 " + (peak - trough) + " 分；草场类型间极差 " + grassSpread +
           " 分，" + (grassSpread >= seasonSpread ? "大于" : "小于") + "季节间极差 " + seasonSpread + " 分。",
       };
 
-      var values = heatmapData.map(function (d) { return d[2]; });
+      var values = heatmapData.map(function (d) { return d.value[2]; });
       var vMin = Math.min.apply(null, values);
       var vMax = Math.max.apply(null, values);
       var span = vMax - vMin || 1;
@@ -83,22 +128,46 @@
       // 按格子实际底色实测对比度来配墨，且不加描边——描边会把每个数字变成贴纸。
       var labeledData = heatmapData.map(function (d) {
         return {
-          value: d,
-          label: { color: MR.fmt.inkOn(MR.fmt.seqColorAt((d[2] - vMin) / span)) },
+          value: d.value,
+          label: { color: MR.fmt.inkOn(MR.fmt.seqColorAt((d.value[2] - vMin) / span)) },
         };
       });
+
+      // 类目名最长的可能是「山地灌丛草甸（主）」，边距按它实测，避免又被截断
+      var yLabels = grassOrder.map(function (g) { return g === local ? g + "（主）" : g; });
+      var widest = yLabels.reduce(function (a, b) {
+        return MR.fmt.cjkWidth(a, 12, 6) >= MR.fmt.cjkWidth(b, 12, 6) ? a : b;
+      }, "");
+      var leftPad = Math.min(160, Math.max(72, Math.ceil(MR.fmt.cjkWidth(widest, 12, 6)) + 16));
 
       chart.setOption(
         {
           tooltip: {
             position: "top",
             formatter: function (p) {
-              return GRASSLANDS[p.value[1]] + " · " + SEASONS[p.value[0]] + "<br/>网格风险值: <strong>" + p.value[2] + "</strong>";
+              // p.value 是 [季节序号, 草场序号, 分值]，名字在原始 data 项上
+              var d = p.data || {};
+              return (
+                (d.grassName || "—") + " · " + (seasonShort[d.seasonCode] || d.seasonCode || "—") +
+                "<br/>网格风险值: <strong>" + (d.value ? d.value[2] : "—") + "</strong>"
+              );
             },
           },
-          grid: MR.theme.grid({ top: 14, bottom: 62, left: 86, right: 26 }),
-          xAxis: { type: "category", data: SEASONS, axisLabel: { color: viz().textMuted, fontSize: 11 }, axisLine: { lineStyle: { color: viz().axis } }, splitArea: { show: false } },
-          yAxis: { type: "category", data: GRASSLANDS, axisLabel: { color: viz().textMuted, fontSize: 12 }, axisLine: { lineStyle: { color: viz().axis } }, splitArea: { show: false } },
+          grid: MR.theme.grid({ top: 14, bottom: 62, left: leftPad, right: 26 }),
+          xAxis: {
+            type: "category",
+            data: seasonOrder.map(function (c) { return seasonFull[c] || c; }),
+            axisLabel: { color: viz().textMuted, fontSize: 11 },
+            axisLine: { lineStyle: { color: viz().axis } },
+            splitArea: { show: false },
+          },
+          yAxis: {
+            type: "category",
+            data: yLabels,
+            axisLabel: { color: viz().textMuted, fontSize: 12 },
+            axisLine: { lineStyle: { color: viz().axis } },
+            splitArea: { show: false },
+          },
           visualMap: {
             type: "continuous",
             min: vMin,
@@ -164,8 +233,16 @@
           return String(c[cfg.classOldKey] === undefined ? "" : c[cfg.classOldKey]) !== String(c[cfg.classNewKey] === undefined ? "" : c[cfg.classNewKey]);
         };
 
-        // 按新值升序排列、y 轴 inverse —— 最上面一行即"新方法下最重"的县
-        var rows = usable.slice().sort(function (a, b) { return Number(a[cfg.newKey]) - Number(b[cfg.newKey]); });
+        // y 轴 inverse:true → 数据下标 0 落在最上面一行。因此"最上面一行是哪个极端"
+        // 完全由排序方向决定，而两个指数的"重"不是一个方向：
+        //   SPI 越负越旱，最重的县是**最小值** → 升序排在最上；
+        //   GDI 越大退化越重，最重的县是**最大值** → 降序排在最上。
+        // 旧实现两条线都用升序，于是 SPI 看起来是对的（最旱在最上），
+        // GDI 却把退化最轻的县顶到了最上面，与注释写的"最上面即最重的县"刚好相反。
+        var dir = cfg.worstIsHigh ? -1 : 1;
+        var rows = usable.slice().sort(function (a, b) {
+          return dir * (Number(a[cfg.newKey]) - Number(b[cfg.newKey]));
+        });
         var n = rows.length;
         var focusIdx = -1;
         rows.forEach(function (c, i) { if (c.region_id === focusId) focusIdx = i; });
@@ -351,6 +428,7 @@
         oldKey: "spi_old", newKey: "spi_new",
         classOldKey: "spi_class_old", classNewKey: "spi_class_new",
         oldLabel: "简化 Z-score", newLabel: "Gamma MLE", unit: "SPI", axisStep: 0.5,
+        worstIsHigh: false, // SPI 越负越旱
         normalBand: [-1, 1], normalBandLabel: "SPI 正常区间 (−1 ~ +1)",
         thresholds: [
           { value: spiT.moderate_drought !== undefined ? spiT.moderate_drought : -1.0, label: (spiT.moderate_drought !== undefined ? spiT.moderate_drought : -1.0) + " 中旱" },
@@ -362,6 +440,7 @@
         oldKey: "gdi_old", newKey: "gdi_new",
         classOldKey: "gdi_class_old", classNewKey: "gdi_class_new",
         oldLabel: "等权 Min-Max", newLabel: "PCA+K-Means", unit: "GDI", axisStep: 0.2, floorAt: 0,
+        worstIsHigh: true, // GDI 越大退化越重
         thresholds: [
           { value: gdiT.light_moderate !== undefined ? gdiT.light_moderate : 0.5032, label: (gdiT.light_moderate !== undefined ? gdiT.light_moderate : 0.5032) + " 轻→中" },
           { value: gdiT.moderate_severe !== undefined ? gdiT.moderate_severe : 0.7502, label: (gdiT.moderate_severe !== undefined ? gdiT.moderate_severe : 0.7502) + " 中→重" },

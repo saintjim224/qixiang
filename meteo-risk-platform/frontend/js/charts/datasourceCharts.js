@@ -22,20 +22,14 @@
   }
 
   /**
-   * 按类目名估算 y 轴左侧需要留多少像素（11px 字号下：全角 ≈11px、半角 ≈6px）。
+   * 按类目名估算 y 轴左侧需要留多少像素。
    * 此前写死 168，最长的「ECMWF ERA5 逐日格点再分析气候态」会被截掉半句。
    */
   function labelWidth(names) {
-    var w = 0;
-    names.forEach(function (n) {
-      var px = 0;
-      String(n).split("").forEach(function (ch) {
-        // 一-鿿 CJK 汉字；　-〿 中文标点；＀-￯ 全角符号
-        px += /[一-鿿　-〿＀-￯]/.test(ch) ? 11 : 6;
-      });
-      if (px > w) w = px;
-    });
-    return Math.min(280, Math.max(120, Math.ceil(w) + 18));
+    var widest = names.reduce(function (a, b) {
+      return MR.fmt.cjkWidth(a, 11, 6) >= MR.fmt.cjkWidth(b, 11, 6) ? a : b;
+    }, "");
+    return Math.min(280, Math.max(120, Math.ceil(MR.fmt.cjkWidth(widest, 11, 6)) + 18));
   }
 
   function renderSourceGantt() {

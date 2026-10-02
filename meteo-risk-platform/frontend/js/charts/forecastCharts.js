@@ -228,48 +228,104 @@
       return;
     }
 
-    var pick = function (proto) {
-      var ms = proto.models || {};
-      var out = {};
-      Object.keys(ms).forEach(function (k) {
-        var short = k.replace(/^Baseline (\d):.*$/, "基线$1").replace(/本系统方法:.*/, "本系统方法");
-        out[short] = ms[k].reduction_vs_b1_pct;
-      });
-      return out;
+    // 本图只回答一个问题：**本系统方法相对每一个基线，误差降了多少**。
+    //
+    // 旧实现把"基线2 / 基线3 / 本系统方法"三个模型各自相对基线1 的降幅画在同一张图上。
+    // 那个口径本身没错，但基线3(3年移动平均)相对基线1 是 -88%，一根柱子把纵轴拉到
+    // -90%~+20%，于是本系统方法真正要展示的 +17.4% / +19.8% 被压成两颗像素点。
+    // 基线之间的互比（含"某个基线还不如气候态均值"）在下方的完整表里一字不少地列着，
+    // 这里回归它该讲的那件事。
+    var oursOf = function (proto) {
+      var ms = (proto && proto.models) || {};
+      var k = Object.keys(ms).filter(function (n) { return n.indexOf("本系统方法") === 0; })[0];
+      return k ? ms[k] : null;
     };
+    var oursA = oursOf(b.loyo_protocol);
+    var oursB = oursOf(b.loro_protocol);
 
-    var loyo = pick(b.loyo_protocol);
-    var loro = pick(b.loro_protocol);
-    var names = Object.keys(loyo).filter(function (k) { return k !== "基线1"; });
+    if (!oursA || !oursB) {
+      chart.clear();
+      chart.setOption({ title: MR.theme.emptyTitle("基准接口未包含本系统方法结果") });
+      return;
+    }
+
+    // 基线名取自接口（序号 + 中文名），不另写一份常量表
+    var baseKeys = Object.keys(b.loyo_protocol.models)
+      .filter(function (k) { return /^Baseline \d/.test(k); })
+      .sort();
+    var shortName = function (k) {
+      return k.replace(/^Baseline (\d+):\s*/, "相对基线$1 · ").replace(/\s*\([^)]*\)\s*$/, "");
+    };
+    var names = baseKeys.map(shortName);
+    var seriesA = baseKeys.map(function (_, i) { return oursA["reduction_vs_b" + (i + 1) + "_pct"]; });
+    var seriesB = baseKeys.map(function (_, i) { return oursB["reduction_vs_b" + (i + 1) + "_pct"]; });
+
+    // 纵轴留 15% 顶部余量：容器只有 170px，柱子顶到框顶会把柱顶数值标签挤出画布
+    var peak = Math.max.apply(
+      null,
+      seriesA.concat(seriesB).filter(function (v) { return Number.isFinite(Number(v)); }).map(Number)
+    );
+    var yMax = Number.isFinite(peak) && peak > 0 ? Math.ceil((peak * 1.15) / 5) * 5 : null;
 
     chart.setOption(
       {
         tooltip: {
           trigger: "axis",
           axisPointer: { type: "shadow" },
-          valueFormatter: function (v) { return v === null || v === undefined ? "—" : v + "%"; },
+          formatter: function (ps) {
+            var i = ps.length ? ps[0].dataIndex : 0;
+            return (
+              MR.theme.tipTitle("本系统方法 vs " + (baseKeys[i] || "").replace(/^Baseline \d+:\s*/, "")) +
+              ps.map(function (p) {
+                return "<br/>" + p.marker + p.seriesName + "：<strong>" +
+                  (p.value === null || p.value === undefined ? "—" : p.value + "%") + "</strong>";
+              }).join("")
+            );
+          },
         },
         legend: { top: 0, right: 0, itemWidth: 12, itemHeight: 8, textStyle: { color: viz().textMuted, fontSize: 11 } },
-        grid: MR.theme.grid({ top: 30, bottom: 26, left: 52, right: 16 }),
+        grid: MR.theme.grid({ top: 30, bottom: 46, left: 52, right: 16 }),
         xAxis: {
           type: "category", data: names,
           axisLabel: { color: viz().textMuted, fontSize: 11, interval: 0 },
           axisLine: { lineStyle: { color: viz().axis } },
         },
-        yAxis: MR.theme.axisName("相对气候态基线 MAE 降低 (%)", {
-          type: "value", axisLine: { show: false },
+        yAxis: MR.theme.axisName("MAE 相对该基线降低 (%)", {
+          type: "value",
+          // 全部为正值就该从 0 起，否则"差一点点"会被画成"差很多"
+          min: 0,
+          max: yMax,
+          axisLine: { show: false },
           axisLabel: { color: viz().textMuted, fontSize: 10, formatter: "{value}%" },
         }),
-        series: [
+        graphic: [
           {
-            name: "协议 A · 留一年 (时间外推)", type: "bar", barWidth: 18,
+            type: "text", left: "center", bottom: 6, silent: true,
+            style: {
+              text: "两个协议下本系统方法均优于全部三个基线；基线之间的互比见下方完整表",
+              fill: viz().textMuted, font: "11px sans-serif",
+            },
+          },
+        ],
+        series: [
+          // 柱宽给足 + 留间距：柱顶数值两位小数，"17.41%" 与 "19.75%" 挨太近会糊成一串
+          {
+            name: "协议 A · 留一年 (时间外推)", type: "bar", barWidth: 34, barGap: "35%",
             itemStyle: { color: viz().seq[1], borderRadius: [3, 3, 0, 0] },
-            data: names.map(function (n) { return loyo[n]; }),
+            label: {
+              show: true, position: "top", color: viz().textMain, fontSize: 10,
+              formatter: function (p) { return Number(p.value).toFixed(1) + "%"; },
+            },
+            data: seriesA,
           },
           {
-            name: "协议 B · 留一县 (空间迁移)", type: "bar", barWidth: 18,
+            name: "协议 B · 留一县 (空间迁移)", type: "bar", barWidth: 34,
             itemStyle: { color: viz().seq[3], borderRadius: [3, 3, 0, 0] },
-            data: names.map(function (n) { return loro[n]; }),
+            label: {
+              show: true, position: "top", color: viz().textMain, fontSize: 10,
+              formatter: function (p) { return Number(p.value).toFixed(1) + "%"; },
+            },
+            data: seriesB,
           },
         ],
       },

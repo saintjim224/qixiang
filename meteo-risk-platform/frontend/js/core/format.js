@@ -80,6 +80,26 @@
     };
   }
 
+  /**
+   * 估算一段文字在 canvas 上占多少像素宽，用来给横向图表的类目轴留出合适边距。
+   * 写死边距的后果是长类目名被静默截断（例如"ECMWF ERA5 逐日格点再分析气候态"），
+   * 而截断后的标签看着像数据本身就叫这个名字。
+   *
+   * 按全角/半角两档估算即可，不需要精确到字体的字距微调。
+   */
+  function cjkWidth(text, fullPx, halfPx) {
+    var full = fullPx === undefined ? 11 : fullPx;
+    var half = halfPx === undefined ? 6 : halfPx;
+    var w = 0;
+    String(text === null || text === undefined ? "" : text)
+      .split("")
+      .forEach(function (ch) {
+        // 一-鿿 CJK 汉字；　-〿 中文标点；＀-￯ 全角符号
+        w += /[一-鿿　-〿＀-￯]/.test(ch) ? full : half;
+      });
+    return w;
+  }
+
   // --- 数值显示 -------------------------------------------------------------
 
   /**
@@ -112,6 +132,7 @@
     relativeLuminance: relativeLuminance,
     contrastRatio: contrastRatio,
     seqColorAt: seqColorAt,
+    cjkWidth: cjkWidth,
     inkOn: inkOn,
     inkStyleOn: inkStyleOn,
     signed: signed,
