@@ -19,6 +19,18 @@ shap>=0.42.0
 # Network & Utilities
 requests>=2.28.0
 
+# Third-party algorithm cross-validation (对照/校验用途，不参与主算法链)
+# pulearn: Elkan-Noto 两步法，作为 PU 消融实验的第 4 行对照基线
+# spei:    独立实现，用于离线交叉校验自研 Gamma-MLE SPI (tools/cross_validate_spi.py)
+# 两者均以 try/except ImportError 保护：未安装时相应对照行显示"未安装，跳过"，
+# 主功能不受影响。
+pulearn>=0.0.7
+spei>=0.3.5
+
 # Testing & Verification
 pytest>=7.0.0
 httpx>=0.25.0
+
+# 可选: 仅当需要从原始 CMFD NetCDF 重建 npp_features_2001_2025.json 时才需要。
+# 作品包已自带该缓存，正常交付运行时无需安装。
+# h5py>=3.8.0

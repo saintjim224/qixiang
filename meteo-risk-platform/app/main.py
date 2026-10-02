@@ -17,6 +17,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from contextlib import asynccontextmanager
+from app.core.branding import COMPETITION, PRODUCT_NAME
 from app.core.config import FRONTEND_DIR
 from app.api import overview, datasource, index, forecast, decision
 
@@ -34,8 +35,8 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="融天气象 - 高原多源时空融合气象灾害预警平台",
-    description="第八届全球校园人工智能算法精英大赛 (AIC) · 算法主题赛（智慧气象）",
+    title=PRODUCT_NAME,
+    description=COMPETITION,
     version="1.0.0",
     lifespan=lifespan,
 )
@@ -104,7 +105,8 @@ def serve_frontend_assets(path: str) -> FileResponse:
 
 def run(host: str = "127.0.0.1", port: int = 8001) -> None:
     print(f"==================================================================")
-    print(f"  融天气象平台已启动: http://{host}:{port}")
+    print(f"  {PRODUCT_NAME}")
+    print(f"  已启动: http://{host}:{port}")
     print(f"  API 文档地址: http://{host}:{port}/docs")
     print(f"==================================================================")
     uvicorn.run("app.main:app", host=host, port=port, reload=False)

@@ -1,0 +1,236 @@
+{
+  "naqu-bange": {
+    "min_lon": 89.0032,
+    "max_lon": 91.2774,
+    "min_lat": 29.939,
+    "max_lat": 32.2436,
+    "center_lon": 90.0253,
+    "center_lat": 31.0872,
+    "n_vertices": 798
+  },
+  "naqu-seni": {
+    "min_lon": 90.9926,
+    "max_lon": 93.0169,
+    "min_lat": 30.5173,
+    "max_lat": 31.8712,
+    "center_lon": 92.1265,
+    "center_lat": 31.3238,
+    "n_vertices": 668
+  },
+  "naqu-nierong": {
+    "min_lon": 91.8285,
+    "max_lon": 93.477,
+    "min_lat": 31.6763,
+    "max_lat": 32.766,
+    "center_lon": 92.7403,
+    "center_lat": 32.2876,
+    "n_vertices": 949
+  },
+  "naqu-anduo": {
+    "min_lon": 88.7146,
+    "max_lon": 92.5781,
+    "min_lat": 31.4386,
+    "max_lat": 36.2372,
+    "center_lon": 90.3141,
+    "center_lat": 33.8611,
+    "n_vertices": 1103
+  },
+  "naqu-shenzha": {
+    "min_lon": 87.7891,
+    "max_lon": 89.7897,
+    "min_lat": 30.0503,
+    "max_lat": 32.314,
+    "center_lon": 88.858,
+    "center_lat": 30.9933,
+    "n_vertices": 760
+  },
+  "changdu-karuo": {
+    "min_lon": 96.6952,
+    "max_lon": 97.9564,
+    "min_lat": 30.6982,
+    "max_lat": 32.3033,
+    "center_lon": 97.2312,
+    "center_lat": 31.5391,
+    "n_vertices": 1132
+  },
+  "changdu-luolong": {
+    "min_lon": 95.2486,
+    "max_lon": 96.5711,
+    "min_lat": 30.1968,
+    "max_lat": 31.1575,
+    "center_lon": 95.9282,
+    "center_lat": 30.7594,
+    "n_vertices": 599
+  },
+  "changdu-leiwuqi": {
+    "min_lon": 95.8131,
+    "max_lon": 96.9612,
+    "min_lat": 30.9479,
+    "max_lat": 31.9296,
+    "center_lon": 96.3913,
+    "center_lat": 31.457,
+    "n_vertices": 801
+  },
+  "changdu-jiangda": {
+    "min_lon": 97.3284,
+    "max_lon": 98.887,
+    "min_lat": 31.0101,
+    "max_lat": 32.5872,
+    "center_lon": 98.0643,
+    "center_lat": 31.8003,
+    "n_vertices": 1204
+  },
+  "rikaze-xietongmen": {
+    "min_lon": 87.0801,
+    "max_lon": 89.0358,
+    "min_lat": 29.3106,
+    "max_lat": 30.4309,
+    "center_lon": 87.9945,
+    "center_lat": 29.8682,
+    "n_vertices": 771
+  },
+  "rikaze-jiangzi": {
+    "min_lon": 89.1327,
+    "max_lon": 90.2258,
+    "min_lat": 28.4771,
+    "max_lat": 29.2331,
+    "center_lon": 89.6213,
+    "center_lat": 28.8236,
+    "n_vertices": 667
+  },
+  "rikaze-kangma": {
+    "min_lon": 89.0197,
+    "max_lon": 90.2348,
+    "min_lat": 28.0899,
+    "max_lat": 28.8491,
+    "center_lon": 89.6562,
+    "center_lat": 28.4173,
+    "n_vertices": 634
+  },
+  "rikaze-zhongba": {
+    "min_lon": 82.1435,
+    "max_lon": 84.775,
+    "min_lat": 29.1625,
+    "max_lat": 31.8068,
+    "center_lon": 83.583,
+    "center_lat": 30.6369,
+    "n_vertices": 1246
+  },
+  "shannan-cuona": {
+    "min_lon": 91.4012,
+    "max_lon": 94.3649,
+    "min_lat": 26.8548,
+    "max_lat": 28.4597,
+    "center_lon": 92.8267,
+    "center_lat": 27.9172,
+    "n_vertices": 849
+  },
+  "ali-gaize": {
+    "min_lon": 81.9817,
+    "max_lon": 86.3286,
+    "min_lat": 31.4788,
+    "max_lat": 35.8607,
+    "center_lon": 84.0211,
+    "center_lat": 33.6541,
+    "n_vertices": 1126
+  },
+  "yushu-chengduo": {
+    "min_lon": 96.1307,
+    "max_lon": 97.7588,
+    "min_lat": 32.9039,
+    "max_lat": 34.7913,
+    "center_lon": 97.0207,
+    "center_lat": 33.9546,
+    "n_vertices": 816
+  },
+  "yushu-zaduo": {
+    "min_lon": 92.5609,
+    "max_lon": 96.0489,
+    "min_lat": 32.1461,
+    "max_lat": 33.8201,
+    "center_lon": 94.4124,
+    "center_lat": 32.8985,
+    "n_vertices": 1221
+  },
+  "guoluo-maqin": {
+    "min_lon": 98.8088,
+    "max_lon": 100.9776,
+    "min_lat": 33.722,
+    "max_lat": 35.2994,
+    "center_lon": 99.7055,
+    "center_lat": 34.5356,
+    "n_vertices": 1279
+  },
+  "guoluo-jiuzhi": {
+    "min_lon": 100.3372,
+    "max_lon": 101.7785,
+    "min_lat": 33.026,
+    "max_lat": 34.0481,
+    "center_lon": 101.1107,
+    "center_lat": 33.4376,
+    "n_vertices": 996
+  },
+  "haibei-gangcha": {
+    "min_lon": 99.3576,
+    "max_lon": 100.6189,
+    "min_lat": 36.8673,
+    "max_lat": 38.0683,
+    "center_lon": 99.9213,
+    "center_lat": 37.5702,
+    "n_vertices": 465
+  },
+  "huangnan-zeku": {
+    "min_lon": 100.6877,
+    "max_lon": 102.1325,
+    "min_lat": 34.7416,
+    "max_lat": 35.5068,
+    "center_lon": 101.4837,
+    "center_lat": 35.1859,
+    "n_vertices": 1542
+  },
+  "ganzi-shiqu": {
+    "min_lon": 97.3481,
+    "max_lon": 99.2669,
+    "min_lat": 32.3237,
+    "max_lat": 34.2094,
+    "center_lon": 98.1743,
+    "center_lat": 33.2052,
+    "n_vertices": 940
+  },
+  "ganzi-seda": {
+    "min_lon": 99.3546,
+    "max_lon": 101.0117,
+    "min_lat": 31.6746,
+    "max_lat": 33.0488,
+    "center_lon": 100.1742,
+    "center_lat": 32.4248,
+    "n_vertices": 1251
+  },
+  "aba-hongyuan": {
+    "min_lon": 101.8527,
+    "max_lon": 103.3475,
+    "min_lat": 31.8514,
+    "max_lat": 33.3198,
+    "center_lon": 102.5562,
+    "center_lat": 32.6246,
+    "n_vertices": 1031
+  },
+  "gannan-luqu": {
+    "min_lon": 102.0112,
+    "max_lon": 102.9736,
+    "min_lat": 33.9672,
+    "max_lat": 34.8258,
+    "center_lon": 102.4406,
+    "center_lat": 34.3876,
+    "n_vertices": 726
+  },
+  "linzhi-bayi": {
+    "min_lon": 93.455,
+    "max_lon": 95.2876,
+    "min_lat": 29.3594,
+    "max_lat": 30.2478,
+    "center_lon": 94.4324,
+    "center_lat": 29.7994,
+    "n_vertices": 598
+  }
+}

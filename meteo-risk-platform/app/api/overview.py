@@ -15,7 +15,8 @@ from app.algorithm.gdi import compute_gdi
 from app.algorithm.disaster import predict_disasters
 from app.algorithm.pu_model import predict_county_pu_risk
 from app.algorithm.carrying import calculate_carrying_capacity
-from app.core.config import BOUNDARIES_DIR, DATA_DIR
+from app.core.config import BOUNDARIES_DIR, DATA_DIR, DATA_SOURCE_MODE
+from app.core.branding import COMPETITION_TRACK, PRODUCT_NAME
 from app.core.schemas import RegionMeta
 
 router = APIRouter(prefix="/api/overview", tags=["态势总览"])
@@ -47,8 +48,9 @@ def get_system_status() -> dict[str, Any]:
     """获取全域气象灾害监测系统运行状态与数据底座健康度."""
     regions = load_region_list()
     return {
-        "system_name": "融天气象 - 高原多源时空融合气象灾害预警平台",
-        "competition_track": "第八届 AIC 算法主题赛（智慧气象）· 方向二 气象赋能行业应用",
+        "system_name": PRODUCT_NAME,
+        "data_source_mode": DATA_SOURCE_MODE,
+        "competition_track": COMPETITION_TRACK,
         "monitored_regions_count": len(regions),
         "data_engines": {
             "era5_reanalysis": "已接入 26 县 6 年 (2020-2025) 5.7 万条逐日真实气象记录",

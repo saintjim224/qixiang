@@ -1,0 +1,6502 @@
+[
+  {
+    "region_id": "naqu-bange",
+    "region_name": "那曲市班戈县",
+    "longitude": 90.01,
+    "latitude": 31.36,
+    "pixel_row": 2254,
+    "pixel_col": 4013,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12200.4,
+          "doy": 148
+        },
+        "2004": {
+          "days_since_epoch": 12564.3,
+          "doy": 147
+        },
+        "2005": {
+          "days_since_epoch": 12931.8,
+          "doy": 148
+        },
+        "2006": {
+          "days_since_epoch": 13286.1,
+          "doy": 138
+        },
+        "2007": {
+          "days_since_epoch": 13663.2,
+          "doy": 150
+        },
+        "2008": {
+          "days_since_epoch": 14025.9,
+          "doy": 147
+        },
+        "2009": {
+          "days_since_epoch": 14395.5,
+          "doy": 151
+        },
+        "2010": {
+          "days_since_epoch": 14761.0,
+          "doy": 152
+        },
+        "2011": {
+          "days_since_epoch": 15121.8,
+          "doy": 147
+        },
+        "2012": {
+          "days_since_epoch": 15489.3,
+          "doy": 150
+        },
+        "2013": {
+          "days_since_epoch": 15851.9,
+          "doy": 146
+        },
+        "2014": {
+          "days_since_epoch": 16222.5,
+          "doy": 152
+        },
+        "2015": {
+          "days_since_epoch": 16575.6,
+          "doy": 140
+        },
+        "2016": {
+          "days_since_epoch": 16953.9,
+          "doy": 153
+        },
+        "2017": {
+          "days_since_epoch": 17310.4,
+          "doy": 144
+        },
+        "2018": {
+          "days_since_epoch": 17683.2,
+          "doy": 152
+        },
+        "2019": {
+          "days_since_epoch": 18047.5,
+          "doy": 151
+        },
+        "2020": {
+          "days_since_epoch": 18412.0,
+          "doy": 151
+        },
+        "2021": {
+          "days_since_epoch": 18773.1,
+          "doy": 146
+        },
+        "2022": {
+          "days_since_epoch": 19124.0,
+          "doy": 132
+        },
+        "2023": {
+          "days_since_epoch": 19511.2,
+          "doy": 154
+        },
+        "2024": {
+          "days_since_epoch": 19865.5,
+          "doy": 143
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12343.1,
+          "doy": 291
+        },
+        "2004": {
+          "days_since_epoch": 12702.6,
+          "doy": 285
+        },
+        "2005": {
+          "days_since_epoch": 13071.0,
+          "doy": 287
+        },
+        "2006": {
+          "days_since_epoch": 13430.7,
+          "doy": 282
+        },
+        "2007": {
+          "days_since_epoch": 13803.5,
+          "doy": 290
+        },
+        "2008": {
+          "days_since_epoch": 14162.4,
+          "doy": 284
+        },
+        "2009": {
+          "days_since_epoch": 14531.1,
+          "doy": 287
+        },
+        "2010": {
+          "days_since_epoch": 14902.9,
+          "doy": 293
+        },
+        "2011": {
+          "days_since_epoch": 15258.0,
+          "doy": 284
+        },
+        "2012": {
+          "days_since_epoch": 15627.6,
+          "doy": 288
+        },
+        "2013": {
+          "days_since_epoch": 15985.1,
+          "doy": 280
+        },
+        "2014": {
+          "days_since_epoch": 16356.3,
+          "doy": 286
+        },
+        "2015": {
+          "days_since_epoch": 16725.3,
+          "doy": 290
+        },
+        "2016": {
+          "days_since_epoch": 17087.8,
+          "doy": 287
+        },
+        "2017": {
+          "days_since_epoch": 17453.9,
+          "doy": 287
+        },
+        "2018": {
+          "days_since_epoch": 17822.7,
+          "doy": 291
+        },
+        "2019": {
+          "days_since_epoch": 18192.8,
+          "doy": 296
+        },
+        "2020": {
+          "days_since_epoch": 18555.6,
+          "doy": 294
+        },
+        "2021": {
+          "days_since_epoch": 18912.8,
+          "doy": 285
+        },
+        "2022": {
+          "days_since_epoch": 19279.0,
+          "doy": 286
+        },
+        "2023": {
+          "days_since_epoch": 19652.6,
+          "doy": 295
+        },
+        "2024": {
+          "days_since_epoch": 20008.5,
+          "doy": 286
+        }
+      },
+      "growing_season": {
+        "2003": 142.7,
+        "2004": 138.3,
+        "2005": 139.1,
+        "2006": 144.5,
+        "2007": 140.3,
+        "2008": 136.6,
+        "2009": 135.7,
+        "2010": 141.9,
+        "2011": 136.2,
+        "2012": 138.4,
+        "2013": 133.1,
+        "2014": 133.8,
+        "2015": 149.7,
+        "2016": 133.9,
+        "2017": 143.5,
+        "2018": 139.6,
+        "2019": 145.3,
+        "2020": 143.6,
+        "2021": 139.7,
+        "2022": 154.9,
+        "2023": 141.4,
+        "2024": 142.9
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 147.4,
+      "greenup_min_doy": 132,
+      "greenup_max_doy": 154,
+      "dormancy_mean_doy": 287.9,
+      "dormancy_min_doy": 280,
+      "dormancy_max_doy": 296,
+      "growing_season_mean_days": 140.7,
+      "growing_season_min_days": 133.1,
+      "growing_season_max_days": 154.9,
+      "growing_season_std_days": 5.1,
+      "greenup_trend_days_per_year": -0.061,
+      "dormancy_trend_days_per_year": 0.18,
+      "growing_season_trend_days_per_year": 0.264
+    },
+    "interpretation": {
+      "greenup": "基本稳定",
+      "dormancy": "略推迟",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "naqu-seni",
+    "region_name": "那曲市色尼区",
+    "longitude": 92.05,
+    "latitude": 31.48,
+    "pixel_row": 2225,
+    "pixel_col": 4503,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12194.4,
+          "doy": 142
+        },
+        "2004": {
+          "days_since_epoch": 12563.7,
+          "doy": 146
+        },
+        "2005": {
+          "days_since_epoch": 12926.5,
+          "doy": 143
+        },
+        "2006": {
+          "days_since_epoch": 13287.0,
+          "doy": 138
+        },
+        "2007": {
+          "days_since_epoch": 13667.9,
+          "doy": 154
+        },
+        "2008": {
+          "days_since_epoch": 14023.3,
+          "doy": 145
+        },
+        "2009": {
+          "days_since_epoch": 14385.0,
+          "doy": 141
+        },
+        "2010": {
+          "days_since_epoch": 14757.2,
+          "doy": 148
+        },
+        "2011": {
+          "days_since_epoch": 15118.3,
+          "doy": 144
+        },
+        "2012": {
+          "days_since_epoch": 15486.8,
+          "doy": 147
+        },
+        "2013": {
+          "days_since_epoch": 15846.8,
+          "doy": 141
+        },
+        "2014": {
+          "days_since_epoch": 16220.2,
+          "doy": 150
+        },
+        "2015": {
+          "days_since_epoch": 16571.9,
+          "doy": 136
+        },
+        "2016": {
+          "days_since_epoch": 16951.3,
+          "doy": 151
+        },
+        "2017": {
+          "days_since_epoch": 17308.8,
+          "doy": 142
+        },
+        "2018": {
+          "days_since_epoch": 17682.3,
+          "doy": 151
+        },
+        "2019": {
+          "days_since_epoch": 18043.7,
+          "doy": 147
+        },
+        "2020": {
+          "days_since_epoch": 18407.3,
+          "doy": 146
+        },
+        "2021": {
+          "days_since_epoch": 18768.6,
+          "doy": 141
+        },
+        "2022": {
+          "days_since_epoch": 19121.2,
+          "doy": 129
+        },
+        "2023": {
+          "days_since_epoch": 19506.9,
+          "doy": 149
+        },
+        "2024": {
+          "days_since_epoch": 19862.5,
+          "doy": 140
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12349.9,
+          "doy": 297
+        },
+        "2004": {
+          "days_since_epoch": 12712.7,
+          "doy": 295
+        },
+        "2005": {
+          "days_since_epoch": 13076.7,
+          "doy": 293
+        },
+        "2006": {
+          "days_since_epoch": 13436.4,
+          "doy": 288
+        },
+        "2007": {
+          "days_since_epoch": 13811.2,
+          "doy": 298
+        },
+        "2008": {
+          "days_since_epoch": 14169.1,
+          "doy": 291
+        },
+        "2009": {
+          "days_since_epoch": 14530.7,
+          "doy": 286
+        },
+        "2010": {
+          "days_since_epoch": 14902.6,
+          "doy": 293
+        },
+        "2011": {
+          "days_since_epoch": 15263.7,
+          "doy": 289
+        },
+        "2012": {
+          "days_since_epoch": 15631.7,
+          "doy": 292
+        },
+        "2013": {
+          "days_since_epoch": 15990.3,
+          "doy": 285
+        },
+        "2014": {
+          "days_since_epoch": 16363.7,
+          "doy": 293
+        },
+        "2015": {
+          "days_since_epoch": 16726.5,
+          "doy": 291
+        },
+        "2016": {
+          "days_since_epoch": 17091.4,
+          "doy": 291
+        },
+        "2017": {
+          "days_since_epoch": 17458.7,
+          "doy": 292
+        },
+        "2018": {
+          "days_since_epoch": 17827.2,
+          "doy": 296
+        },
+        "2019": {
+          "days_since_epoch": 18194.0,
+          "doy": 298
+        },
+        "2020": {
+          "days_since_epoch": 18559.2,
+          "doy": 298
+        },
+        "2021": {
+          "days_since_epoch": 18917.8,
+          "doy": 290
+        },
+        "2022": {
+          "days_since_epoch": 19279.3,
+          "doy": 287
+        },
+        "2023": {
+          "days_since_epoch": 19659.9,
+          "doy": 302
+        },
+        "2024": {
+          "days_since_epoch": 20013.4,
+          "doy": 291
+        }
+      },
+      "growing_season": {
+        "2003": 155.5,
+        "2004": 149.0,
+        "2005": 150.2,
+        "2006": 149.5,
+        "2007": 143.3,
+        "2008": 145.8,
+        "2009": 145.6,
+        "2010": 145.4,
+        "2011": 145.3,
+        "2012": 144.9,
+        "2013": 143.5,
+        "2014": 143.5,
+        "2015": 154.5,
+        "2016": 140.1,
+        "2017": 150.0,
+        "2018": 144.9,
+        "2019": 150.3,
+        "2020": 152.0,
+        "2021": 149.2,
+        "2022": 158.1,
+        "2023": 152.9,
+        "2024": 150.9
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 144.1,
+      "greenup_min_doy": 129,
+      "greenup_max_doy": 154,
+      "dormancy_mean_doy": 292.5,
+      "dormancy_min_doy": 285,
+      "dormancy_max_doy": 302,
+      "growing_season_mean_days": 148.4,
+      "growing_season_min_days": 140.1,
+      "growing_season_max_days": 158.1,
+      "growing_season_std_days": 4.4,
+      "greenup_trend_days_per_year": -0.113,
+      "dormancy_trend_days_per_year": 0.062,
+      "growing_season_trend_days_per_year": 0.169
+    },
+    "interpretation": {
+      "greenup": "略提前",
+      "dormancy": "基本稳定",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "naqu-nierong",
+    "region_name": "那曲市聂荣县",
+    "longitude": 92.3,
+    "latitude": 32.12,
+    "pixel_row": 2072,
+    "pixel_col": 4563,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12195.0,
+          "doy": 142
+        },
+        "2004": {
+          "days_since_epoch": 12562.9,
+          "doy": 145
+        },
+        "2005": {
+          "days_since_epoch": 12926.3,
+          "doy": 143
+        },
+        "2006": {
+          "days_since_epoch": 13286.7,
+          "doy": 138
+        },
+        "2007": {
+          "days_since_epoch": 13656.6,
+          "doy": 143
+        },
+        "2008": {
+          "days_since_epoch": 14023.3,
+          "doy": 145
+        },
+        "2009": {
+          "days_since_epoch": 14389.6,
+          "doy": 145
+        },
+        "2010": {
+          "days_since_epoch": 14754.2,
+          "doy": 145
+        },
+        "2011": {
+          "days_since_epoch": 15114.6,
+          "doy": 140
+        },
+        "2012": {
+          "days_since_epoch": 15481.9,
+          "doy": 142
+        },
+        "2013": {
+          "days_since_epoch": 15844.5,
+          "doy": 139
+        },
+        "2014": {
+          "days_since_epoch": 16220.1,
+          "doy": 150
+        },
+        "2015": {
+          "days_since_epoch": 16568.7,
+          "doy": 133
+        },
+        "2016": {
+          "days_since_epoch": 16950.0,
+          "doy": 150
+        },
+        "2017": {
+          "days_since_epoch": 17310.7,
+          "doy": 144
+        },
+        "2018": {
+          "days_since_epoch": 17678.1,
+          "doy": 147
+        },
+        "2019": {
+          "days_since_epoch": 18032.2,
+          "doy": 136
+        },
+        "2020": {
+          "days_since_epoch": 18408.2,
+          "doy": 147
+        },
+        "2021": {
+          "days_since_epoch": 18767.7,
+          "doy": 140
+        },
+        "2022": {
+          "days_since_epoch": 19124.7,
+          "doy": 132
+        },
+        "2023": {
+          "days_since_epoch": 19504.3,
+          "doy": 147
+        },
+        "2024": {
+          "days_since_epoch": 19863.8,
+          "doy": 141
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12347.8,
+          "doy": 295
+        },
+        "2004": {
+          "days_since_epoch": 12710.5,
+          "doy": 293
+        },
+        "2005": {
+          "days_since_epoch": 13074.8,
+          "doy": 291
+        },
+        "2006": {
+          "days_since_epoch": 13435.0,
+          "doy": 287
+        },
+        "2007": {
+          "days_since_epoch": 13805.3,
+          "doy": 292
+        },
+        "2008": {
+          "days_since_epoch": 14166.4,
+          "doy": 288
+        },
+        "2009": {
+          "days_since_epoch": 14533.5,
+          "doy": 289
+        },
+        "2010": {
+          "days_since_epoch": 14903.7,
+          "doy": 294
+        },
+        "2011": {
+          "days_since_epoch": 15263.9,
+          "doy": 289
+        },
+        "2012": {
+          "days_since_epoch": 15629.6,
+          "doy": 290
+        },
+        "2013": {
+          "days_since_epoch": 15988.9,
+          "doy": 283
+        },
+        "2014": {
+          "days_since_epoch": 16363.1,
+          "doy": 293
+        },
+        "2015": {
+          "days_since_epoch": 16725.4,
+          "doy": 290
+        },
+        "2016": {
+          "days_since_epoch": 17093.2,
+          "doy": 293
+        },
+        "2017": {
+          "days_since_epoch": 17457.5,
+          "doy": 291
+        },
+        "2018": {
+          "days_since_epoch": 17827.9,
+          "doy": 296
+        },
+        "2019": {
+          "days_since_epoch": 18188.8,
+          "doy": 292
+        },
+        "2020": {
+          "days_since_epoch": 18557.6,
+          "doy": 296
+        },
+        "2021": {
+          "days_since_epoch": 18917.3,
+          "doy": 290
+        },
+        "2022": {
+          "days_since_epoch": 19271.8,
+          "doy": 279
+        },
+        "2023": {
+          "days_since_epoch": 19652.2,
+          "doy": 295
+        },
+        "2024": {
+          "days_since_epoch": 20014.0,
+          "doy": 291
+        }
+      },
+      "growing_season": {
+        "2003": 152.8,
+        "2004": 147.5,
+        "2005": 148.5,
+        "2006": 148.3,
+        "2007": 148.6,
+        "2008": 143.2,
+        "2009": 143.9,
+        "2010": 149.5,
+        "2011": 149.3,
+        "2012": 147.7,
+        "2013": 144.3,
+        "2014": 143.0,
+        "2015": 156.7,
+        "2016": 143.1,
+        "2017": 146.7,
+        "2018": 149.8,
+        "2019": 156.6,
+        "2020": 149.4,
+        "2021": 149.6,
+        "2022": 147.1,
+        "2023": 147.9,
+        "2024": 150.2
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 142.5,
+      "greenup_min_doy": 132,
+      "greenup_max_doy": 150,
+      "dormancy_mean_doy": 290.8,
+      "dormancy_min_doy": 279,
+      "dormancy_max_doy": 296,
+      "growing_season_mean_days": 148.3,
+      "growing_season_min_days": 143.0,
+      "growing_season_max_days": 156.7,
+      "growing_season_std_days": 3.6,
+      "greenup_trend_days_per_year": -0.08,
+      "dormancy_trend_days_per_year": -0.021,
+      "growing_season_trend_days_per_year": 0.076
+    },
+    "interpretation": {
+      "greenup": "基本稳定",
+      "dormancy": "基本稳定",
+      "growing_season": "基本稳定"
+    }
+  },
+  {
+    "region_id": "naqu-anduo",
+    "region_name": "那曲市安多县",
+    "longitude": 91.68,
+    "latitude": 32.27,
+    "pixel_row": 2036,
+    "pixel_col": 4414,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12202.1,
+          "doy": 150
+        },
+        "2004": {
+          "days_since_epoch": 12569.3,
+          "doy": 152
+        },
+        "2005": {
+          "days_since_epoch": 12934.6,
+          "doy": 151
+        },
+        "2006": {
+          "days_since_epoch": 13288.8,
+          "doy": 140
+        },
+        "2007": {
+          "days_since_epoch": 13664.2,
+          "doy": 151
+        },
+        "2008": {
+          "days_since_epoch": 14026.7,
+          "doy": 148
+        },
+        "2009": {
+          "days_since_epoch": 14392.8,
+          "doy": 148
+        },
+        "2010": {
+          "days_since_epoch": 14759.9,
+          "doy": 150
+        },
+        "2011": {
+          "days_since_epoch": 15123.4,
+          "doy": 149
+        },
+        "2012": {
+          "days_since_epoch": 15491.3,
+          "doy": 152
+        },
+        "2013": {
+          "days_since_epoch": 15850.9,
+          "doy": 145
+        },
+        "2014": {
+          "days_since_epoch": 16225.2,
+          "doy": 155
+        },
+        "2015": {
+          "days_since_epoch": 16577.0,
+          "doy": 142
+        },
+        "2016": {
+          "days_since_epoch": 16953.7,
+          "doy": 153
+        },
+        "2017": {
+          "days_since_epoch": 17316.1,
+          "doy": 150
+        },
+        "2018": {
+          "days_since_epoch": 17687.4,
+          "doy": 156
+        },
+        "2019": {
+          "days_since_epoch": 18044.1,
+          "doy": 148
+        },
+        "2020": {
+          "days_since_epoch": 18409.7,
+          "doy": 148
+        },
+        "2021": {
+          "days_since_epoch": 18773.0,
+          "doy": 146
+        },
+        "2022": {
+          "days_since_epoch": 19131.4,
+          "doy": 139
+        },
+        "2023": {
+          "days_since_epoch": 19511.9,
+          "doy": 154
+        },
+        "2024": {
+          "days_since_epoch": 19867.7,
+          "doy": 145
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12344.6,
+          "doy": 292
+        },
+        "2004": {
+          "days_since_epoch": 12703.9,
+          "doy": 286
+        },
+        "2005": {
+          "days_since_epoch": 13071.5,
+          "doy": 288
+        },
+        "2006": {
+          "days_since_epoch": 13434.6,
+          "doy": 286
+        },
+        "2007": {
+          "days_since_epoch": 13805.5,
+          "doy": 292
+        },
+        "2008": {
+          "days_since_epoch": 14163.9,
+          "doy": 285
+        },
+        "2009": {
+          "days_since_epoch": 14531.9,
+          "doy": 287
+        },
+        "2010": {
+          "days_since_epoch": 14901.0,
+          "doy": 292
+        },
+        "2011": {
+          "days_since_epoch": 15264.5,
+          "doy": 290
+        },
+        "2012": {
+          "days_since_epoch": 15626.7,
+          "doy": 287
+        },
+        "2013": {
+          "days_since_epoch": 15986.9,
+          "doy": 281
+        },
+        "2014": {
+          "days_since_epoch": 16360.0,
+          "doy": 289
+        },
+        "2015": {
+          "days_since_epoch": 16723.9,
+          "doy": 288
+        },
+        "2016": {
+          "days_since_epoch": 17090.2,
+          "doy": 290
+        },
+        "2017": {
+          "days_since_epoch": 17454.1,
+          "doy": 288
+        },
+        "2018": {
+          "days_since_epoch": 17825.4,
+          "doy": 294
+        },
+        "2019": {
+          "days_since_epoch": 18189.4,
+          "doy": 293
+        },
+        "2020": {
+          "days_since_epoch": 18555.8,
+          "doy": 294
+        },
+        "2021": {
+          "days_since_epoch": 18914.8,
+          "doy": 287
+        },
+        "2022": {
+          "days_since_epoch": 19278.8,
+          "doy": 286
+        },
+        "2023": {
+          "days_since_epoch": 19651.8,
+          "doy": 294
+        },
+        "2024": {
+          "days_since_epoch": 20009.7,
+          "doy": 287
+        }
+      },
+      "growing_season": {
+        "2003": 142.4,
+        "2004": 134.6,
+        "2005": 136.9,
+        "2006": 145.8,
+        "2007": 141.4,
+        "2008": 137.3,
+        "2009": 139.1,
+        "2010": 141.1,
+        "2011": 141.1,
+        "2012": 135.4,
+        "2013": 136.0,
+        "2014": 134.8,
+        "2015": 146.8,
+        "2016": 136.4,
+        "2017": 138.0,
+        "2018": 137.9,
+        "2019": 145.3,
+        "2020": 146.1,
+        "2021": 141.8,
+        "2022": 147.4,
+        "2023": 139.9,
+        "2024": 142.0
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 148.7,
+      "greenup_min_doy": 139,
+      "greenup_max_doy": 156,
+      "dormancy_mean_doy": 288.9,
+      "dormancy_min_doy": 281,
+      "dormancy_max_doy": 294,
+      "growing_season_mean_days": 140.3,
+      "growing_season_min_days": 134.6,
+      "growing_season_max_days": 147.4,
+      "growing_season_std_days": 4.0,
+      "greenup_trend_days_per_year": -0.084,
+      "dormancy_trend_days_per_year": 0.106,
+      "growing_season_trend_days_per_year": 0.19
+    },
+    "interpretation": {
+      "greenup": "基本稳定",
+      "dormancy": "略推迟",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "naqu-shenzha",
+    "region_name": "那曲市申扎县",
+    "longitude": 88.71,
+    "latitude": 30.94,
+    "pixel_row": 2355,
+    "pixel_col": 3701,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12205.7,
+          "doy": 153
+        },
+        "2004": {
+          "days_since_epoch": 12564.1,
+          "doy": 147
+        },
+        "2005": {
+          "days_since_epoch": 12937.2,
+          "doy": 154
+        },
+        "2006": {
+          "days_since_epoch": 13293.3,
+          "doy": 145
+        },
+        "2007": {
+          "days_since_epoch": 13663.8,
+          "doy": 150
+        },
+        "2008": {
+          "days_since_epoch": 14026.6,
+          "doy": 148
+        },
+        "2009": {
+          "days_since_epoch": 14394.4,
+          "doy": 150
+        },
+        "2010": {
+          "days_since_epoch": 14756.6,
+          "doy": 147
+        },
+        "2011": {
+          "days_since_epoch": 15124.8,
+          "doy": 150
+        },
+        "2012": {
+          "days_since_epoch": 15493.3,
+          "doy": 154
+        },
+        "2013": {
+          "days_since_epoch": 15853.1,
+          "doy": 148
+        },
+        "2014": {
+          "days_since_epoch": 16225.1,
+          "doy": 155
+        },
+        "2015": {
+          "days_since_epoch": 16574.0,
+          "doy": 139
+        },
+        "2016": {
+          "days_since_epoch": 16955.3,
+          "doy": 155
+        },
+        "2017": {
+          "days_since_epoch": 17317.0,
+          "doy": 151
+        },
+        "2018": {
+          "days_since_epoch": 17683.0,
+          "doy": 152
+        },
+        "2019": {
+          "days_since_epoch": 18047.6,
+          "doy": 151
+        },
+        "2020": {
+          "days_since_epoch": 18414.9,
+          "doy": 153
+        },
+        "2021": {
+          "days_since_epoch": 18777.9,
+          "doy": 150
+        },
+        "2022": {
+          "days_since_epoch": 19124.9,
+          "doy": 132
+        },
+        "2023": {
+          "days_since_epoch": 19520.7,
+          "doy": 163
+        },
+        "2024": {
+          "days_since_epoch": 19873.5,
+          "doy": 151
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12345.8,
+          "doy": 293
+        },
+        "2004": {
+          "days_since_epoch": 12703.0,
+          "doy": 286
+        },
+        "2005": {
+          "days_since_epoch": 13073.3,
+          "doy": 290
+        },
+        "2006": {
+          "days_since_epoch": 13437.1,
+          "doy": 289
+        },
+        "2007": {
+          "days_since_epoch": 13809.7,
+          "doy": 296
+        },
+        "2008": {
+          "days_since_epoch": 14166.6,
+          "doy": 288
+        },
+        "2009": {
+          "days_since_epoch": 14535.2,
+          "doy": 291
+        },
+        "2010": {
+          "days_since_epoch": 14902.0,
+          "doy": 293
+        },
+        "2011": {
+          "days_since_epoch": 15266.6,
+          "doy": 292
+        },
+        "2012": {
+          "days_since_epoch": 15634.9,
+          "doy": 295
+        },
+        "2013": {
+          "days_since_epoch": 15991.7,
+          "doy": 286
+        },
+        "2014": {
+          "days_since_epoch": 16361.5,
+          "doy": 291
+        },
+        "2015": {
+          "days_since_epoch": 16732.2,
+          "doy": 297
+        },
+        "2016": {
+          "days_since_epoch": 17094.1,
+          "doy": 294
+        },
+        "2017": {
+          "days_since_epoch": 17456.8,
+          "doy": 290
+        },
+        "2018": {
+          "days_since_epoch": 17821.7,
+          "doy": 290
+        },
+        "2019": {
+          "days_since_epoch": 18195.5,
+          "doy": 299
+        },
+        "2020": {
+          "days_since_epoch": 18553.1,
+          "doy": 292
+        },
+        "2021": {
+          "days_since_epoch": 18916.6,
+          "doy": 289
+        },
+        "2022": {
+          "days_since_epoch": 19285.1,
+          "doy": 293
+        },
+        "2023": {
+          "days_since_epoch": 19656.9,
+          "doy": 299
+        },
+        "2024": {
+          "days_since_epoch": 20014.7,
+          "doy": 292
+        }
+      },
+      "growing_season": {
+        "2003": 140.1,
+        "2004": 138.9,
+        "2005": 136.1,
+        "2006": 143.8,
+        "2007": 145.9,
+        "2008": 139.9,
+        "2009": 140.8,
+        "2010": 145.4,
+        "2011": 141.7,
+        "2012": 141.6,
+        "2013": 138.6,
+        "2014": 136.4,
+        "2015": 158.2,
+        "2016": 138.7,
+        "2017": 139.8,
+        "2018": 138.6,
+        "2019": 147.9,
+        "2020": 138.2,
+        "2021": 138.7,
+        "2022": 160.2,
+        "2023": 136.2,
+        "2024": 141.2
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 149.9,
+      "greenup_min_doy": 132,
+      "greenup_max_doy": 163,
+      "dormancy_mean_doy": 292.0,
+      "dormancy_min_doy": 286,
+      "dormancy_max_doy": 299,
+      "growing_season_mean_days": 142.1,
+      "growing_season_min_days": 136.1,
+      "growing_season_max_days": 160.2,
+      "growing_season_std_days": 6.2,
+      "greenup_trend_days_per_year": 0.038,
+      "dormancy_trend_days_per_year": 0.19,
+      "growing_season_trend_days_per_year": 0.15
+    },
+    "interpretation": {
+      "greenup": "基本稳定",
+      "dormancy": "略推迟",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "changdu-karuo",
+    "region_name": "昌都市卡若区",
+    "longitude": 97.18,
+    "latitude": 31.14,
+    "pixel_row": 2307,
+    "pixel_col": 5734,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12179.5,
+          "doy": 127
+        },
+        "2004": {
+          "days_since_epoch": 12540.8,
+          "doy": 123
+        },
+        "2005": {
+          "days_since_epoch": 12902.1,
+          "doy": 119
+        },
+        "2006": {
+          "days_since_epoch": 13273.6,
+          "doy": 125
+        },
+        "2007": {
+          "days_since_epoch": 13634.9,
+          "doy": 121
+        },
+        "2008": {
+          "days_since_epoch": 13999.5,
+          "doy": 121
+        },
+        "2009": {
+          "days_since_epoch": 14372.2,
+          "doy": 128
+        },
+        "2010": {
+          "days_since_epoch": 14732.3,
+          "doy": 123
+        },
+        "2011": {
+          "days_since_epoch": 15095.6,
+          "doy": 121
+        },
+        "2012": {
+          "days_since_epoch": 15467.7,
+          "doy": 128
+        },
+        "2013": {
+          "days_since_epoch": 15827.3,
+          "doy": 122
+        },
+        "2014": {
+          "days_since_epoch": 16191.7,
+          "doy": 121
+        },
+        "2015": {
+          "days_since_epoch": 16554.2,
+          "doy": 119
+        },
+        "2016": {
+          "days_since_epoch": 16926.0,
+          "doy": 126
+        },
+        "2017": {
+          "days_since_epoch": 17283.6,
+          "doy": 117
+        },
+        "2018": {
+          "days_since_epoch": 17666.3,
+          "doy": 135
+        },
+        "2019": {
+          "days_since_epoch": 18012.5,
+          "doy": 116
+        },
+        "2020": {
+          "days_since_epoch": 18386.4,
+          "doy": 125
+        },
+        "2021": {
+          "days_since_epoch": 18754.5,
+          "doy": 127
+        },
+        "2022": {
+          "days_since_epoch": 19107.6,
+          "doy": 115
+        },
+        "2023": {
+          "days_since_epoch": 19483.6,
+          "doy": 126
+        },
+        "2024": {
+          "days_since_epoch": 19844.8,
+          "doy": 122
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12352.8,
+          "doy": 300
+        },
+        "2004": {
+          "days_since_epoch": 12714.7,
+          "doy": 297
+        },
+        "2005": {
+          "days_since_epoch": 13084.2,
+          "doy": 301
+        },
+        "2006": {
+          "days_since_epoch": 13445.8,
+          "doy": 297
+        },
+        "2007": {
+          "days_since_epoch": 13816.4,
+          "doy": 303
+        },
+        "2008": {
+          "days_since_epoch": 14177.5,
+          "doy": 299
+        },
+        "2009": {
+          "days_since_epoch": 14541.7,
+          "doy": 297
+        },
+        "2010": {
+          "days_since_epoch": 14911.1,
+          "doy": 302
+        },
+        "2011": {
+          "days_since_epoch": 15272.8,
+          "doy": 298
+        },
+        "2012": {
+          "days_since_epoch": 15640.4,
+          "doy": 301
+        },
+        "2013": {
+          "days_since_epoch": 16002.8,
+          "doy": 297
+        },
+        "2014": {
+          "days_since_epoch": 16370.5,
+          "doy": 300
+        },
+        "2015": {
+          "days_since_epoch": 16738.3,
+          "doy": 303
+        },
+        "2016": {
+          "days_since_epoch": 17100.2,
+          "doy": 300
+        },
+        "2017": {
+          "days_since_epoch": 17465.5,
+          "doy": 299
+        },
+        "2018": {
+          "days_since_epoch": 17839.0,
+          "doy": 308
+        },
+        "2019": {
+          "days_since_epoch": 18201.7,
+          "doy": 305
+        },
+        "2020": {
+          "days_since_epoch": 18565.9,
+          "doy": 304
+        },
+        "2021": {
+          "days_since_epoch": 18931.6,
+          "doy": 304
+        },
+        "2022": {
+          "days_since_epoch": 19293.2,
+          "doy": 301
+        },
+        "2023": {
+          "days_since_epoch": 19663.0,
+          "doy": 305
+        },
+        "2024": {
+          "days_since_epoch": 20026.0,
+          "doy": 303
+        }
+      },
+      "growing_season": {
+        "2003": 173.3,
+        "2004": 174.0,
+        "2005": 182.1,
+        "2006": 172.2,
+        "2007": 181.5,
+        "2008": 178.0,
+        "2009": 169.4,
+        "2010": 178.8,
+        "2011": 177.2,
+        "2012": 172.7,
+        "2013": 175.5,
+        "2014": 178.8,
+        "2015": 184.0,
+        "2016": 174.2,
+        "2017": 181.9,
+        "2018": 172.7,
+        "2019": 189.2,
+        "2020": 179.5,
+        "2021": 177.2,
+        "2022": 185.6,
+        "2023": 179.4,
+        "2024": 181.2
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 123.0,
+      "greenup_min_doy": 115,
+      "greenup_max_doy": 135,
+      "dormancy_mean_doy": 301.1,
+      "dormancy_min_doy": 297,
+      "dormancy_max_doy": 308,
+      "growing_season_mean_days": 178.1,
+      "growing_season_min_days": 169.4,
+      "growing_season_max_days": 189.2,
+      "growing_season_std_days": 4.8,
+      "greenup_trend_days_per_year": -0.04,
+      "dormancy_trend_days_per_year": 0.28,
+      "growing_season_trend_days_per_year": 0.324
+    },
+    "interpretation": {
+      "greenup": "基本稳定",
+      "dormancy": "略推迟",
+      "growing_season": "逐年延长 (趋势明显)"
+    }
+  },
+  {
+    "region_id": "changdu-luolong",
+    "region_name": "昌都市洛隆县",
+    "longitude": 95.82,
+    "latitude": 30.74,
+    "pixel_row": 2403,
+    "pixel_col": 5407,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12179.1,
+          "doy": 127
+        },
+        "2004": {
+          "days_since_epoch": 12539.3,
+          "doy": 122
+        },
+        "2005": {
+          "days_since_epoch": 12902.8,
+          "doy": 119
+        },
+        "2006": {
+          "days_since_epoch": 13272.9,
+          "doy": 124
+        },
+        "2007": {
+          "days_since_epoch": 13635.2,
+          "doy": 122
+        },
+        "2008": {
+          "days_since_epoch": 13997.5,
+          "doy": 119
+        },
+        "2009": {
+          "days_since_epoch": 14359.9,
+          "doy": 115
+        },
+        "2010": {
+          "days_since_epoch": 14730.0,
+          "doy": 120
+        },
+        "2011": {
+          "days_since_epoch": 15094.4,
+          "doy": 120
+        },
+        "2012": {
+          "days_since_epoch": 15457.9,
+          "doy": 118
+        },
+        "2013": {
+          "days_since_epoch": 15823.2,
+          "doy": 118
+        },
+        "2014": {
+          "days_since_epoch": 16193.8,
+          "doy": 123
+        },
+        "2015": {
+          "days_since_epoch": 16554.5,
+          "doy": 119
+        },
+        "2016": {
+          "days_since_epoch": 16929.5,
+          "doy": 129
+        },
+        "2017": {
+          "days_since_epoch": 17286.1,
+          "doy": 120
+        },
+        "2018": {
+          "days_since_epoch": 17659.5,
+          "doy": 128
+        },
+        "2019": {
+          "days_since_epoch": 18012.9,
+          "doy": 116
+        },
+        "2020": {
+          "days_since_epoch": 18387.9,
+          "doy": 126
+        },
+        "2021": {
+          "days_since_epoch": 18748.4,
+          "doy": 121
+        },
+        "2022": {
+          "days_since_epoch": 19108.8,
+          "doy": 116
+        },
+        "2023": {
+          "days_since_epoch": 19480.4,
+          "doy": 123
+        },
+        "2024": {
+          "days_since_epoch": 19840.7,
+          "doy": 118
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12349.7,
+          "doy": 297
+        },
+        "2004": {
+          "days_since_epoch": 12710.0,
+          "doy": 293
+        },
+        "2005": {
+          "days_since_epoch": 13079.7,
+          "doy": 296
+        },
+        "2006": {
+          "days_since_epoch": 13437.7,
+          "doy": 289
+        },
+        "2007": {
+          "days_since_epoch": 13808.3,
+          "doy": 295
+        },
+        "2008": {
+          "days_since_epoch": 14175.1,
+          "doy": 297
+        },
+        "2009": {
+          "days_since_epoch": 14539.4,
+          "doy": 295
+        },
+        "2010": {
+          "days_since_epoch": 14908.6,
+          "doy": 299
+        },
+        "2011": {
+          "days_since_epoch": 15268.7,
+          "doy": 294
+        },
+        "2012": {
+          "days_since_epoch": 15637.6,
+          "doy": 298
+        },
+        "2013": {
+          "days_since_epoch": 15996.5,
+          "doy": 291
+        },
+        "2014": {
+          "days_since_epoch": 16366.2,
+          "doy": 296
+        },
+        "2015": {
+          "days_since_epoch": 16727.1,
+          "doy": 292
+        },
+        "2016": {
+          "days_since_epoch": 17096.0,
+          "doy": 296
+        },
+        "2017": {
+          "days_since_epoch": 17461.9,
+          "doy": 295
+        },
+        "2018": {
+          "days_since_epoch": 17836.7,
+          "doy": 305
+        },
+        "2019": {
+          "days_since_epoch": 18195.5,
+          "doy": 299
+        },
+        "2020": {
+          "days_since_epoch": 18559.7,
+          "doy": 298
+        },
+        "2021": {
+          "days_since_epoch": 18925.6,
+          "doy": 298
+        },
+        "2022": {
+          "days_since_epoch": 19287.4,
+          "doy": 295
+        },
+        "2023": {
+          "days_since_epoch": 19655.8,
+          "doy": 298
+        },
+        "2024": {
+          "days_since_epoch": 20015.5,
+          "doy": 293
+        }
+      },
+      "growing_season": {
+        "2003": 170.6,
+        "2004": 170.8,
+        "2005": 177.0,
+        "2006": 164.8,
+        "2007": 173.1,
+        "2008": 177.6,
+        "2009": 179.5,
+        "2010": 178.6,
+        "2011": 174.3,
+        "2012": 179.7,
+        "2013": 173.3,
+        "2014": 172.4,
+        "2015": 172.6,
+        "2016": 166.5,
+        "2017": 175.8,
+        "2018": 177.2,
+        "2019": 182.5,
+        "2020": 171.8,
+        "2021": 177.2,
+        "2022": 178.6,
+        "2023": 175.4,
+        "2024": 174.8
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 121.0,
+      "greenup_min_doy": 115,
+      "greenup_max_doy": 129,
+      "dormancy_mean_doy": 295.9,
+      "dormancy_min_doy": 289,
+      "dormancy_max_doy": 305,
+      "growing_season_mean_days": 174.7,
+      "growing_season_min_days": 164.8,
+      "growing_season_max_days": 182.5,
+      "growing_season_std_days": 4.2,
+      "greenup_trend_days_per_year": -0.043,
+      "dormancy_trend_days_per_year": 0.141,
+      "growing_season_trend_days_per_year": 0.183
+    },
+    "interpretation": {
+      "greenup": "基本稳定",
+      "dormancy": "略推迟",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "changdu-leiwuqi",
+    "region_name": "昌都市类乌齐县",
+    "longitude": 96.6,
+    "latitude": 31.21,
+    "pixel_row": 2290,
+    "pixel_col": 5595,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12177.7,
+          "doy": 125
+        },
+        "2004": {
+          "days_since_epoch": 12540.3,
+          "doy": 123
+        },
+        "2005": {
+          "days_since_epoch": 12905.4,
+          "doy": 122
+        },
+        "2006": {
+          "days_since_epoch": 13273.8,
+          "doy": 125
+        },
+        "2007": {
+          "days_since_epoch": 13636.5,
+          "doy": 123
+        },
+        "2008": {
+          "days_since_epoch": 14000.7,
+          "doy": 122
+        },
+        "2009": {
+          "days_since_epoch": 14367.6,
+          "doy": 123
+        },
+        "2010": {
+          "days_since_epoch": 14734.1,
+          "doy": 125
+        },
+        "2011": {
+          "days_since_epoch": 15100.1,
+          "doy": 126
+        },
+        "2012": {
+          "days_since_epoch": 15467.8,
+          "doy": 128
+        },
+        "2013": {
+          "days_since_epoch": 15825.5,
+          "doy": 120
+        },
+        "2014": {
+          "days_since_epoch": 16193.1,
+          "doy": 123
+        },
+        "2015": {
+          "days_since_epoch": 16556.2,
+          "doy": 121
+        },
+        "2016": {
+          "days_since_epoch": 16923.4,
+          "doy": 123
+        },
+        "2017": {
+          "days_since_epoch": 17288.3,
+          "doy": 122
+        },
+        "2018": {
+          "days_since_epoch": 17656.8,
+          "doy": 125
+        },
+        "2019": {
+          "days_since_epoch": 18015.5,
+          "doy": 119
+        },
+        "2020": {
+          "days_since_epoch": 18387.9,
+          "doy": 126
+        },
+        "2021": {
+          "days_since_epoch": 18746.4,
+          "doy": 119
+        },
+        "2022": {
+          "days_since_epoch": 19110.9,
+          "doy": 118
+        },
+        "2023": {
+          "days_since_epoch": 19484.8,
+          "doy": 127
+        },
+        "2024": {
+          "days_since_epoch": 19843.3,
+          "doy": 121
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12348.5,
+          "doy": 296
+        },
+        "2004": {
+          "days_since_epoch": 12713.1,
+          "doy": 296
+        },
+        "2005": {
+          "days_since_epoch": 13078.4,
+          "doy": 295
+        },
+        "2006": {
+          "days_since_epoch": 13438.9,
+          "doy": 290
+        },
+        "2007": {
+          "days_since_epoch": 13808.1,
+          "doy": 295
+        },
+        "2008": {
+          "days_since_epoch": 14173.8,
+          "doy": 295
+        },
+        "2009": {
+          "days_since_epoch": 14538.8,
+          "doy": 294
+        },
+        "2010": {
+          "days_since_epoch": 14903.6,
+          "doy": 294
+        },
+        "2011": {
+          "days_since_epoch": 15266.6,
+          "doy": 292
+        },
+        "2012": {
+          "days_since_epoch": 15634.4,
+          "doy": 295
+        },
+        "2013": {
+          "days_since_epoch": 15996.3,
+          "doy": 291
+        },
+        "2014": {
+          "days_since_epoch": 16367.1,
+          "doy": 297
+        },
+        "2015": {
+          "days_since_epoch": 16730.1,
+          "doy": 295
+        },
+        "2016": {
+          "days_since_epoch": 17092.8,
+          "doy": 292
+        },
+        "2017": {
+          "days_since_epoch": 17463.4,
+          "doy": 297
+        },
+        "2018": {
+          "days_since_epoch": 17828.8,
+          "doy": 297
+        },
+        "2019": {
+          "days_since_epoch": 18192.9,
+          "doy": 296
+        },
+        "2020": {
+          "days_since_epoch": 18561.7,
+          "doy": 300
+        },
+        "2021": {
+          "days_since_epoch": 18920.1,
+          "doy": 293
+        },
+        "2022": {
+          "days_since_epoch": 19287.3,
+          "doy": 295
+        },
+        "2023": {
+          "days_since_epoch": 19658.0,
+          "doy": 301
+        },
+        "2024": {
+          "days_since_epoch": 20012.7,
+          "doy": 290
+        }
+      },
+      "growing_season": {
+        "2003": 170.9,
+        "2004": 172.8,
+        "2005": 173.0,
+        "2006": 165.1,
+        "2007": 171.7,
+        "2008": 173.1,
+        "2009": 171.2,
+        "2010": 169.5,
+        "2011": 166.5,
+        "2012": 166.6,
+        "2013": 170.8,
+        "2014": 174.0,
+        "2015": 173.9,
+        "2016": 169.4,
+        "2017": 175.1,
+        "2018": 172.1,
+        "2019": 177.4,
+        "2020": 173.8,
+        "2021": 173.8,
+        "2022": 176.4,
+        "2023": 173.3,
+        "2024": 169.4
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 123.0,
+      "greenup_min_doy": 118,
+      "greenup_max_doy": 128,
+      "dormancy_mean_doy": 294.8,
+      "dormancy_min_doy": 290,
+      "dormancy_max_doy": 301,
+      "growing_season_mean_days": 171.8,
+      "growing_season_min_days": 165.1,
+      "growing_season_max_days": 177.4,
+      "growing_season_std_days": 3.1,
+      "greenup_trend_days_per_year": -0.111,
+      "dormancy_trend_days_per_year": 0.081,
+      "growing_season_trend_days_per_year": 0.185
+    },
+    "interpretation": {
+      "greenup": "略提前",
+      "dormancy": "基本稳定",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "changdu-jiangda",
+    "region_name": "昌都市江达县",
+    "longitude": 98.22,
+    "latitude": 31.5,
+    "pixel_row": 2220,
+    "pixel_col": 5983,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12184.4,
+          "doy": 132
+        },
+        "2004": {
+          "days_since_epoch": 12543.8,
+          "doy": 126
+        },
+        "2005": {
+          "days_since_epoch": 12913.4,
+          "doy": 130
+        },
+        "2006": {
+          "days_since_epoch": 13276.8,
+          "doy": 128
+        },
+        "2007": {
+          "days_since_epoch": 13643.9,
+          "doy": 130
+        },
+        "2008": {
+          "days_since_epoch": 14006.3,
+          "doy": 128
+        },
+        "2009": {
+          "days_since_epoch": 14372.3,
+          "doy": 128
+        },
+        "2010": {
+          "days_since_epoch": 14739.2,
+          "doy": 130
+        },
+        "2011": {
+          "days_since_epoch": 15104.0,
+          "doy": 129
+        },
+        "2012": {
+          "days_since_epoch": 15470.2,
+          "doy": 131
+        },
+        "2013": {
+          "days_since_epoch": 15832.4,
+          "doy": 127
+        },
+        "2014": {
+          "days_since_epoch": 16199.5,
+          "doy": 129
+        },
+        "2015": {
+          "days_since_epoch": 16561.4,
+          "doy": 126
+        },
+        "2016": {
+          "days_since_epoch": 16929.2,
+          "doy": 129
+        },
+        "2017": {
+          "days_since_epoch": 17293.6,
+          "doy": 127
+        },
+        "2018": {
+          "days_since_epoch": 17662.9,
+          "doy": 131
+        },
+        "2019": {
+          "days_since_epoch": 18019.5,
+          "doy": 123
+        },
+        "2020": {
+          "days_since_epoch": 18392.6,
+          "doy": 131
+        },
+        "2021": {
+          "days_since_epoch": 18755.8,
+          "doy": 128
+        },
+        "2022": {
+          "days_since_epoch": 19121.1,
+          "doy": 129
+        },
+        "2023": {
+          "days_since_epoch": 19489.7,
+          "doy": 132
+        },
+        "2024": {
+          "days_since_epoch": 19851.6,
+          "doy": 129
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12350.1,
+          "doy": 298
+        },
+        "2004": {
+          "days_since_epoch": 12712.5,
+          "doy": 295
+        },
+        "2005": {
+          "days_since_epoch": 13078.3,
+          "doy": 295
+        },
+        "2006": {
+          "days_since_epoch": 13440.3,
+          "doy": 292
+        },
+        "2007": {
+          "days_since_epoch": 13810.8,
+          "doy": 297
+        },
+        "2008": {
+          "days_since_epoch": 14175.3,
+          "doy": 297
+        },
+        "2009": {
+          "days_since_epoch": 14539.1,
+          "doy": 295
+        },
+        "2010": {
+          "days_since_epoch": 14905.7,
+          "doy": 296
+        },
+        "2011": {
+          "days_since_epoch": 15266.9,
+          "doy": 292
+        },
+        "2012": {
+          "days_since_epoch": 15634.9,
+          "doy": 295
+        },
+        "2013": {
+          "days_since_epoch": 15995.8,
+          "doy": 290
+        },
+        "2014": {
+          "days_since_epoch": 16366.0,
+          "doy": 295
+        },
+        "2015": {
+          "days_since_epoch": 16732.1,
+          "doy": 297
+        },
+        "2016": {
+          "days_since_epoch": 17094.3,
+          "doy": 294
+        },
+        "2017": {
+          "days_since_epoch": 17466.3,
+          "doy": 300
+        },
+        "2018": {
+          "days_since_epoch": 17825.6,
+          "doy": 294
+        },
+        "2019": {
+          "days_since_epoch": 18191.9,
+          "doy": 295
+        },
+        "2020": {
+          "days_since_epoch": 18563.7,
+          "doy": 302
+        },
+        "2021": {
+          "days_since_epoch": 18922.4,
+          "doy": 295
+        },
+        "2022": {
+          "days_since_epoch": 19290.8,
+          "doy": 298
+        },
+        "2023": {
+          "days_since_epoch": 19660.4,
+          "doy": 303
+        },
+        "2024": {
+          "days_since_epoch": 20020.6,
+          "doy": 298
+        }
+      },
+      "growing_season": {
+        "2003": 165.8,
+        "2004": 168.7,
+        "2005": 165.0,
+        "2006": 163.6,
+        "2007": 167.0,
+        "2008": 168.9,
+        "2009": 166.8,
+        "2010": 166.5,
+        "2011": 162.9,
+        "2012": 164.7,
+        "2013": 163.5,
+        "2014": 166.5,
+        "2015": 170.7,
+        "2016": 165.1,
+        "2017": 172.7,
+        "2018": 162.6,
+        "2019": 172.4,
+        "2020": 171.1,
+        "2021": 166.6,
+        "2022": 169.7,
+        "2023": 170.7,
+        "2024": 169.0
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 128.8,
+      "greenup_min_doy": 123,
+      "greenup_max_doy": 132,
+      "dormancy_mean_doy": 296.0,
+      "dormancy_min_doy": 290,
+      "dormancy_max_doy": 303,
+      "growing_season_mean_days": 167.3,
+      "growing_season_min_days": 162.6,
+      "growing_season_max_days": 172.7,
+      "growing_season_std_days": 3.0,
+      "greenup_trend_days_per_year": -0.008,
+      "dormancy_trend_days_per_year": 0.187,
+      "growing_season_trend_days_per_year": 0.203
+    },
+    "interpretation": {
+      "greenup": "基本稳定",
+      "dormancy": "略推迟",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "rikaze-xietongmen",
+    "region_name": "日喀则市谢通门县",
+    "longitude": 88.26,
+    "latitude": 29.43,
+    "pixel_row": 2717,
+    "pixel_col": 3593,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12210.7,
+          "doy": 158
+        },
+        "2004": {
+          "days_since_epoch": 12568.2,
+          "doy": 151
+        },
+        "2005": {
+          "days_since_epoch": 12951.2,
+          "doy": 168
+        },
+        "2006": {
+          "days_since_epoch": 13299.0,
+          "doy": 150
+        },
+        "2007": {
+          "days_since_epoch": 13682.8,
+          "doy": 169
+        },
+        "2008": {
+          "days_since_epoch": 14027.6,
+          "doy": 149
+        },
+        "2009": {
+          "days_since_epoch": 14411.3,
+          "doy": 167
+        },
+        "2010": {
+          "days_since_epoch": 14781.0,
+          "doy": 171
+        },
+        "2011": {
+          "days_since_epoch": 15129.5,
+          "doy": 155
+        },
+        "2012": {
+          "days_since_epoch": 15506.9,
+          "doy": 167
+        },
+        "2013": {
+          "days_since_epoch": 15864.2,
+          "doy": 159
+        },
+        "2014": {
+          "days_since_epoch": 16232.3,
+          "doy": 162
+        },
+        "2015": {
+          "days_since_epoch": 16589.5,
+          "doy": 154
+        },
+        "2016": {
+          "days_since_epoch": 16959.7,
+          "doy": 159
+        },
+        "2017": {
+          "days_since_epoch": 17324.6,
+          "doy": 158
+        },
+        "2018": {
+          "days_since_epoch": 17693.3,
+          "doy": 162
+        },
+        "2019": {
+          "days_since_epoch": 18065.5,
+          "doy": 169
+        },
+        "2020": {
+          "days_since_epoch": 18419.9,
+          "doy": 158
+        },
+        "2021": {
+          "days_since_epoch": 18779.7,
+          "doy": 152
+        },
+        "2022": {
+          "days_since_epoch": 19138.9,
+          "doy": 146
+        },
+        "2023": {
+          "days_since_epoch": 19527.1,
+          "doy": 170
+        },
+        "2024": {
+          "days_since_epoch": 19882.0,
+          "doy": 160
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12338.4,
+          "doy": 286
+        },
+        "2004": {
+          "days_since_epoch": 12699.2,
+          "doy": 282
+        },
+        "2005": {
+          "days_since_epoch": 13074.9,
+          "doy": 291
+        },
+        "2006": {
+          "days_since_epoch": 13430.6,
+          "doy": 282
+        },
+        "2007": {
+          "days_since_epoch": 13807.0,
+          "doy": 293
+        },
+        "2008": {
+          "days_since_epoch": 14159.9,
+          "doy": 281
+        },
+        "2009": {
+          "days_since_epoch": 14536.0,
+          "doy": 292
+        },
+        "2010": {
+          "days_since_epoch": 14905.0,
+          "doy": 295
+        },
+        "2011": {
+          "days_since_epoch": 15259.3,
+          "doy": 285
+        },
+        "2012": {
+          "days_since_epoch": 15628.7,
+          "doy": 289
+        },
+        "2013": {
+          "days_since_epoch": 15991.5,
+          "doy": 286
+        },
+        "2014": {
+          "days_since_epoch": 16361.2,
+          "doy": 291
+        },
+        "2015": {
+          "days_since_epoch": 16727.3,
+          "doy": 292
+        },
+        "2016": {
+          "days_since_epoch": 17090.8,
+          "doy": 290
+        },
+        "2017": {
+          "days_since_epoch": 17454.8,
+          "doy": 288
+        },
+        "2018": {
+          "days_since_epoch": 17819.7,
+          "doy": 288
+        },
+        "2019": {
+          "days_since_epoch": 18192.1,
+          "doy": 296
+        },
+        "2020": {
+          "days_since_epoch": 18552.3,
+          "doy": 291
+        },
+        "2021": {
+          "days_since_epoch": 18917.0,
+          "doy": 289
+        },
+        "2022": {
+          "days_since_epoch": 19284.5,
+          "doy": 292
+        },
+        "2023": {
+          "days_since_epoch": 19649.5,
+          "doy": 292
+        },
+        "2024": {
+          "days_since_epoch": 20012.7,
+          "doy": 290
+        }
+      },
+      "growing_season": {
+        "2003": 127.7,
+        "2004": 131.0,
+        "2005": 123.7,
+        "2006": 131.6,
+        "2007": 124.2,
+        "2008": 132.3,
+        "2009": 124.8,
+        "2010": 124.0,
+        "2011": 129.8,
+        "2012": 121.8,
+        "2013": 127.4,
+        "2014": 128.9,
+        "2015": 137.8,
+        "2016": 131.1,
+        "2017": 130.2,
+        "2018": 126.4,
+        "2019": 126.6,
+        "2020": 132.4,
+        "2021": 137.3,
+        "2022": 145.6,
+        "2023": 122.4,
+        "2024": 130.7
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 159.7,
+      "greenup_min_doy": 146,
+      "greenup_max_doy": 171,
+      "dormancy_mean_doy": 289.1,
+      "dormancy_min_doy": 281,
+      "dormancy_max_doy": 296,
+      "growing_season_mean_days": 129.4,
+      "growing_season_min_days": 121.8,
+      "growing_season_max_days": 145.6,
+      "growing_season_std_days": 5.5,
+      "greenup_trend_days_per_year": -0.009,
+      "dormancy_trend_days_per_year": 0.276,
+      "growing_season_trend_days_per_year": 0.291
+    },
+    "interpretation": {
+      "greenup": "基本稳定",
+      "dormancy": "略推迟",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "rikaze-jiangzi",
+    "region_name": "日喀则市江孜县",
+    "longitude": 89.6,
+    "latitude": 28.92,
+    "pixel_row": 2840,
+    "pixel_col": 3915,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12213.1,
+          "doy": 161
+        },
+        "2004": {
+          "days_since_epoch": 12573.5,
+          "doy": 156
+        },
+        "2005": {
+          "days_since_epoch": 12950.0,
+          "doy": 166
+        },
+        "2006": {
+          "days_since_epoch": 13302.8,
+          "doy": 154
+        },
+        "2007": {
+          "days_since_epoch": 13675.5,
+          "doy": 162
+        },
+        "2008": {
+          "days_since_epoch": 14034.1,
+          "doy": 156
+        },
+        "2009": {
+          "days_since_epoch": 14408.5,
+          "doy": 164
+        },
+        "2010": {
+          "days_since_epoch": 14770.4,
+          "doy": 161
+        },
+        "2011": {
+          "days_since_epoch": 15133.0,
+          "doy": 159
+        },
+        "2012": {
+          "days_since_epoch": 15505.1,
+          "doy": 166
+        },
+        "2013": {
+          "days_since_epoch": 15864.5,
+          "doy": 159
+        },
+        "2014": {
+          "days_since_epoch": 16238.6,
+          "doy": 168
+        },
+        "2015": {
+          "days_since_epoch": 16592.0,
+          "doy": 157
+        },
+        "2016": {
+          "days_since_epoch": 16960.5,
+          "doy": 160
+        },
+        "2017": {
+          "days_since_epoch": 17326.2,
+          "doy": 160
+        },
+        "2018": {
+          "days_since_epoch": 17691.4,
+          "doy": 160
+        },
+        "2019": {
+          "days_since_epoch": 18063.9,
+          "doy": 167
+        },
+        "2020": {
+          "days_since_epoch": 18419.5,
+          "doy": 158
+        },
+        "2021": {
+          "days_since_epoch": 18795.3,
+          "doy": 168
+        },
+        "2022": {
+          "days_since_epoch": 19143.6,
+          "doy": 151
+        },
+        "2023": {
+          "days_since_epoch": 19527.6,
+          "doy": 170
+        },
+        "2024": {
+          "days_since_epoch": 19887.3,
+          "doy": 165
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12331.8,
+          "doy": 279
+        },
+        "2004": {
+          "days_since_epoch": 12696.2,
+          "doy": 279
+        },
+        "2005": {
+          "days_since_epoch": 13063.7,
+          "doy": 280
+        },
+        "2006": {
+          "days_since_epoch": 13419.5,
+          "doy": 271
+        },
+        "2007": {
+          "days_since_epoch": 13794.6,
+          "doy": 281
+        },
+        "2008": {
+          "days_since_epoch": 14159.5,
+          "doy": 281
+        },
+        "2009": {
+          "days_since_epoch": 14523.5,
+          "doy": 279
+        },
+        "2010": {
+          "days_since_epoch": 14889.8,
+          "doy": 280
+        },
+        "2011": {
+          "days_since_epoch": 15257.2,
+          "doy": 283
+        },
+        "2012": {
+          "days_since_epoch": 15621.0,
+          "doy": 282
+        },
+        "2013": {
+          "days_since_epoch": 15984.8,
+          "doy": 279
+        },
+        "2014": {
+          "days_since_epoch": 16355.2,
+          "doy": 285
+        },
+        "2015": {
+          "days_since_epoch": 16717.2,
+          "doy": 282
+        },
+        "2016": {
+          "days_since_epoch": 17083.7,
+          "doy": 283
+        },
+        "2017": {
+          "days_since_epoch": 17451.3,
+          "doy": 285
+        },
+        "2018": {
+          "days_since_epoch": 17815.2,
+          "doy": 284
+        },
+        "2019": {
+          "days_since_epoch": 18184.8,
+          "doy": 288
+        },
+        "2020": {
+          "days_since_epoch": 18548.2,
+          "doy": 287
+        },
+        "2021": {
+          "days_since_epoch": 18916.9,
+          "doy": 289
+        },
+        "2022": {
+          "days_since_epoch": 19270.7,
+          "doy": 278
+        },
+        "2023": {
+          "days_since_epoch": 19645.2,
+          "doy": 288
+        },
+        "2024": {
+          "days_since_epoch": 20007.1,
+          "doy": 285
+        }
+      },
+      "growing_season": {
+        "2003": 118.7,
+        "2004": 122.7,
+        "2005": 113.7,
+        "2006": 116.7,
+        "2007": 119.2,
+        "2008": 125.5,
+        "2009": 115.0,
+        "2010": 119.4,
+        "2011": 124.2,
+        "2012": 115.9,
+        "2013": 120.3,
+        "2014": 116.6,
+        "2015": 125.1,
+        "2016": 123.2,
+        "2017": 125.0,
+        "2018": 123.8,
+        "2019": 120.9,
+        "2020": 128.7,
+        "2021": 121.5,
+        "2022": 127.0,
+        "2023": 117.6,
+        "2024": 119.8
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 161.3,
+      "greenup_min_doy": 151,
+      "greenup_max_doy": 170,
+      "dormancy_mean_doy": 282.2,
+      "dormancy_min_doy": 271,
+      "dormancy_max_doy": 289,
+      "growing_season_mean_days": 120.9,
+      "growing_season_min_days": 113.7,
+      "growing_season_max_days": 128.7,
+      "growing_season_std_days": 4.0,
+      "greenup_trend_days_per_year": 0.18,
+      "dormancy_trend_days_per_year": 0.437,
+      "growing_season_trend_days_per_year": 0.245
+    },
+    "interpretation": {
+      "greenup": "略推迟",
+      "dormancy": "逐年推迟 (趋势明显)",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "rikaze-kangma",
+    "region_name": "日喀则市康马县",
+    "longitude": 89.68,
+    "latitude": 28.56,
+    "pixel_row": 2926,
+    "pixel_col": 3934,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12213.1,
+          "doy": 161
+        },
+        "2004": {
+          "days_since_epoch": 12572.0,
+          "doy": 154
+        },
+        "2005": {
+          "days_since_epoch": 12951.0,
+          "doy": 167
+        },
+        "2006": {
+          "days_since_epoch": 13304.8,
+          "doy": 156
+        },
+        "2007": {
+          "days_since_epoch": 13679.7,
+          "doy": 166
+        },
+        "2008": {
+          "days_since_epoch": 14035.1,
+          "doy": 157
+        },
+        "2009": {
+          "days_since_epoch": 14404.8,
+          "doy": 160
+        },
+        "2010": {
+          "days_since_epoch": 14780.3,
+          "doy": 171
+        },
+        "2011": {
+          "days_since_epoch": 15134.0,
+          "doy": 159
+        },
+        "2012": {
+          "days_since_epoch": 15507.0,
+          "doy": 168
+        },
+        "2013": {
+          "days_since_epoch": 15860.4,
+          "doy": 155
+        },
+        "2014": {
+          "days_since_epoch": 16234.9,
+          "doy": 164
+        },
+        "2015": {
+          "days_since_epoch": 16593.7,
+          "doy": 158
+        },
+        "2016": {
+          "days_since_epoch": 16966.4,
+          "doy": 166
+        },
+        "2017": {
+          "days_since_epoch": 17325.4,
+          "doy": 159
+        },
+        "2018": {
+          "days_since_epoch": 17689.0,
+          "doy": 157
+        },
+        "2019": {
+          "days_since_epoch": 18061.1,
+          "doy": 165
+        },
+        "2020": {
+          "days_since_epoch": 18417.8,
+          "doy": 156
+        },
+        "2021": {
+          "days_since_epoch": 18787.2,
+          "doy": 160
+        },
+        "2022": {
+          "days_since_epoch": 19151.1,
+          "doy": 159
+        },
+        "2023": {
+          "days_since_epoch": 19528.4,
+          "doy": 171
+        },
+        "2024": {
+          "days_since_epoch": 19883.5,
+          "doy": 161
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12333.1,
+          "doy": 281
+        },
+        "2004": {
+          "days_since_epoch": 12694.2,
+          "doy": 277
+        },
+        "2005": {
+          "days_since_epoch": 13065.6,
+          "doy": 282
+        },
+        "2006": {
+          "days_since_epoch": 13424.0,
+          "doy": 275
+        },
+        "2007": {
+          "days_since_epoch": 13795.8,
+          "doy": 282
+        },
+        "2008": {
+          "days_since_epoch": 14157.6,
+          "doy": 279
+        },
+        "2009": {
+          "days_since_epoch": 14518.2,
+          "doy": 274
+        },
+        "2010": {
+          "days_since_epoch": 14894.8,
+          "doy": 285
+        },
+        "2011": {
+          "days_since_epoch": 15254.4,
+          "doy": 280
+        },
+        "2012": {
+          "days_since_epoch": 15620.7,
+          "doy": 281
+        },
+        "2013": {
+          "days_since_epoch": 15981.7,
+          "doy": 276
+        },
+        "2014": {
+          "days_since_epoch": 16351.9,
+          "doy": 281
+        },
+        "2015": {
+          "days_since_epoch": 16714.8,
+          "doy": 279
+        },
+        "2016": {
+          "days_since_epoch": 17084.8,
+          "doy": 284
+        },
+        "2017": {
+          "days_since_epoch": 17446.0,
+          "doy": 280
+        },
+        "2018": {
+          "days_since_epoch": 17811.6,
+          "doy": 280
+        },
+        "2019": {
+          "days_since_epoch": 18181.0,
+          "doy": 285
+        },
+        "2020": {
+          "days_since_epoch": 18543.5,
+          "doy": 282
+        },
+        "2021": {
+          "days_since_epoch": 18909.5,
+          "doy": 282
+        },
+        "2022": {
+          "days_since_epoch": 19274.6,
+          "doy": 282
+        },
+        "2023": {
+          "days_since_epoch": 19644.3,
+          "doy": 287
+        },
+        "2024": {
+          "days_since_epoch": 20005.1,
+          "doy": 283
+        }
+      },
+      "growing_season": {
+        "2003": 119.9,
+        "2004": 122.3,
+        "2005": 114.6,
+        "2006": 119.2,
+        "2007": 116.1,
+        "2008": 122.5,
+        "2009": 113.4,
+        "2010": 114.5,
+        "2011": 120.4,
+        "2012": 113.7,
+        "2013": 121.3,
+        "2014": 117.1,
+        "2015": 121.2,
+        "2016": 118.3,
+        "2017": 120.6,
+        "2018": 122.6,
+        "2019": 119.9,
+        "2020": 125.7,
+        "2021": 122.3,
+        "2022": 123.5,
+        "2023": 116.0,
+        "2024": 121.6
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 161.4,
+      "greenup_min_doy": 154,
+      "greenup_max_doy": 171,
+      "dormancy_mean_doy": 280.8,
+      "dormancy_min_doy": 274,
+      "dormancy_max_doy": 287,
+      "growing_season_mean_days": 119.4,
+      "growing_season_min_days": 113.4,
+      "growing_season_max_days": 125.7,
+      "growing_season_std_days": 3.4,
+      "greenup_trend_days_per_year": 0.061,
+      "dormancy_trend_days_per_year": 0.249,
+      "growing_season_trend_days_per_year": 0.194
+    },
+    "interpretation": {
+      "greenup": "基本稳定",
+      "dormancy": "略推迟",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "rikaze-zhongba",
+    "region_name": "日喀则市仲巴县",
+    "longitude": 84.19,
+    "latitude": 29.66,
+    "pixel_row": 2662,
+    "pixel_col": 2616,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12209.1,
+          "doy": 157
+        },
+        "2004": {
+          "days_since_epoch": 12555.4,
+          "doy": 138
+        },
+        "2005": {
+          "days_since_epoch": 12947.3,
+          "doy": 164
+        },
+        "2006": {
+          "days_since_epoch": 13289.0,
+          "doy": 140
+        },
+        "2007": {
+          "days_since_epoch": 13667.9,
+          "doy": 154
+        },
+        "2008": {
+          "days_since_epoch": 14028.8,
+          "doy": 150
+        },
+        "2009": {
+          "days_since_epoch": 14392.7,
+          "doy": 148
+        },
+        "2010": {
+          "days_since_epoch": 14761.7,
+          "doy": 152
+        },
+        "2011": {
+          "days_since_epoch": 15134.1,
+          "doy": 160
+        },
+        "2012": {
+          "days_since_epoch": 15495.2,
+          "doy": 156
+        },
+        "2013": {
+          "days_since_epoch": 15854.4,
+          "doy": 149
+        },
+        "2014": {
+          "days_since_epoch": 16228.8,
+          "doy": 158
+        },
+        "2015": {
+          "days_since_epoch": 16589.1,
+          "doy": 154
+        },
+        "2016": {
+          "days_since_epoch": 16947.0,
+          "doy": 147
+        },
+        "2017": {
+          "days_since_epoch": 17311.7,
+          "doy": 145
+        },
+        "2018": {
+          "days_since_epoch": 17674.1,
+          "doy": 143
+        },
+        "2019": {
+          "days_since_epoch": 18047.3,
+          "doy": 151
+        },
+        "2020": {
+          "days_since_epoch": 18412.1,
+          "doy": 151
+        },
+        "2021": {
+          "days_since_epoch": 18782.0,
+          "doy": 154
+        },
+        "2022": {
+          "days_since_epoch": 19127.2,
+          "doy": 135
+        },
+        "2023": {
+          "days_since_epoch": 19521.4,
+          "doy": 164
+        },
+        "2024": {
+          "days_since_epoch": 19869.2,
+          "doy": 147
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12349.7,
+          "doy": 297
+        },
+        "2004": {
+          "days_since_epoch": 12717.6,
+          "doy": 300
+        },
+        "2005": {
+          "days_since_epoch": 13083.2,
+          "doy": 300
+        },
+        "2006": {
+          "days_since_epoch": 13443.7,
+          "doy": 295
+        },
+        "2007": {
+          "days_since_epoch": 13808.7,
+          "doy": 295
+        },
+        "2008": {
+          "days_since_epoch": 14166.1,
+          "doy": 288
+        },
+        "2009": {
+          "days_since_epoch": 14540.9,
+          "doy": 296
+        },
+        "2010": {
+          "days_since_epoch": 14911.6,
+          "doy": 302
+        },
+        "2011": {
+          "days_since_epoch": 15271.3,
+          "doy": 297
+        },
+        "2012": {
+          "days_since_epoch": 15639.1,
+          "doy": 300
+        },
+        "2013": {
+          "days_since_epoch": 15998.2,
+          "doy": 293
+        },
+        "2014": {
+          "days_since_epoch": 16368.4,
+          "doy": 298
+        },
+        "2015": {
+          "days_since_epoch": 16733.0,
+          "doy": 298
+        },
+        "2016": {
+          "days_since_epoch": 17104.0,
+          "doy": 304
+        },
+        "2017": {
+          "days_since_epoch": 17465.1,
+          "doy": 299
+        },
+        "2018": {
+          "days_since_epoch": 17822.8,
+          "doy": 291
+        },
+        "2019": {
+          "days_since_epoch": 18196.8,
+          "doy": 300
+        },
+        "2020": {
+          "days_since_epoch": 18560.4,
+          "doy": 299
+        },
+        "2021": {
+          "days_since_epoch": 18926.2,
+          "doy": 299
+        },
+        "2022": {
+          "days_since_epoch": 19288.8,
+          "doy": 296
+        },
+        "2023": {
+          "days_since_epoch": 19660.3,
+          "doy": 303
+        },
+        "2024": {
+          "days_since_epoch": 20025.4,
+          "doy": 303
+        }
+      },
+      "growing_season": {
+        "2003": 140.6,
+        "2004": 162.2,
+        "2005": 135.9,
+        "2006": 154.7,
+        "2007": 140.8,
+        "2008": 137.4,
+        "2009": 148.1,
+        "2010": 149.9,
+        "2011": 137.2,
+        "2012": 143.9,
+        "2013": 143.7,
+        "2014": 139.6,
+        "2015": 143.9,
+        "2016": 157.0,
+        "2017": 153.3,
+        "2018": 148.7,
+        "2019": 149.5,
+        "2020": 148.3,
+        "2021": 144.2,
+        "2022": 161.6,
+        "2023": 138.9,
+        "2024": 156.2
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 150.8,
+      "greenup_min_doy": 135,
+      "greenup_max_doy": 164,
+      "dormancy_mean_doy": 297.9,
+      "dormancy_min_doy": 288,
+      "dormancy_max_doy": 304,
+      "growing_season_mean_days": 147.1,
+      "growing_season_min_days": 135.9,
+      "growing_season_max_days": 162.2,
+      "growing_season_std_days": 7.7,
+      "greenup_trend_days_per_year": -0.103,
+      "dormancy_trend_days_per_year": 0.185,
+      "growing_season_trend_days_per_year": 0.293
+    },
+    "interpretation": {
+      "greenup": "略提前",
+      "dormancy": "略推迟",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "shannan-cuona",
+    "region_name": "山南市措那县",
+    "longitude": 91.96,
+    "latitude": 27.99,
+    "pixel_row": 3063,
+    "pixel_col": 4481,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12195.0,
+          "doy": 142
+        },
+        "2004": {
+          "days_since_epoch": 12543.9,
+          "doy": 126
+        },
+        "2005": {
+          "days_since_epoch": 12922.5,
+          "doy": 139
+        },
+        "2006": {
+          "days_since_epoch": 13289.7,
+          "doy": 141
+        },
+        "2007": {
+          "days_since_epoch": 13644.2,
+          "doy": 131
+        },
+        "2008": {
+          "days_since_epoch": 14018.0,
+          "doy": 139
+        },
+        "2009": {
+          "days_since_epoch": 14377.3,
+          "doy": 133
+        },
+        "2010": {
+          "days_since_epoch": 14735.7,
+          "doy": 126
+        },
+        "2011": {
+          "days_since_epoch": 15113.2,
+          "doy": 139
+        },
+        "2012": {
+          "days_since_epoch": 15480.1,
+          "doy": 141
+        },
+        "2013": {
+          "days_since_epoch": 15844.2,
+          "doy": 139
+        },
+        "2014": {
+          "days_since_epoch": 16205.6,
+          "doy": 135
+        },
+        "2015": {
+          "days_since_epoch": 16571.5,
+          "doy": 136
+        },
+        "2016": {
+          "days_since_epoch": 16937.2,
+          "doy": 137
+        },
+        "2017": {
+          "days_since_epoch": 17300.0,
+          "doy": 134
+        },
+        "2018": {
+          "days_since_epoch": 17663.0,
+          "doy": 132
+        },
+        "2019": {
+          "days_since_epoch": 18036.5,
+          "doy": 140
+        },
+        "2020": {
+          "days_since_epoch": 18410.9,
+          "doy": 149
+        },
+        "2021": {
+          "days_since_epoch": 18765.2,
+          "doy": 138
+        },
+        "2022": {
+          "days_since_epoch": 19115.9,
+          "doy": 123
+        },
+        "2023": {
+          "days_since_epoch": 19499.9,
+          "doy": 142
+        },
+        "2024": {
+          "days_since_epoch": 19863.0,
+          "doy": 141
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12350.7,
+          "doy": 298
+        },
+        "2004": {
+          "days_since_epoch": 12708.7,
+          "doy": 291
+        },
+        "2005": {
+          "days_since_epoch": 13076.0,
+          "doy": 292
+        },
+        "2006": {
+          "days_since_epoch": 13444.5,
+          "doy": 296
+        },
+        "2007": {
+          "days_since_epoch": 13817.3,
+          "doy": 304
+        },
+        "2008": {
+          "days_since_epoch": 14173.6,
+          "doy": 295
+        },
+        "2009": {
+          "days_since_epoch": 14544.6,
+          "doy": 300
+        },
+        "2010": {
+          "days_since_epoch": 14914.9,
+          "doy": 305
+        },
+        "2011": {
+          "days_since_epoch": 15275.0,
+          "doy": 300
+        },
+        "2012": {
+          "days_since_epoch": 15640.2,
+          "doy": 301
+        },
+        "2013": {
+          "days_since_epoch": 16001.7,
+          "doy": 296
+        },
+        "2014": {
+          "days_since_epoch": 16370.5,
+          "doy": 300
+        },
+        "2015": {
+          "days_since_epoch": 16731.6,
+          "doy": 296
+        },
+        "2016": {
+          "days_since_epoch": 17099.6,
+          "doy": 299
+        },
+        "2017": {
+          "days_since_epoch": 17469.1,
+          "doy": 303
+        },
+        "2018": {
+          "days_since_epoch": 17836.1,
+          "doy": 305
+        },
+        "2019": {
+          "days_since_epoch": 18195.0,
+          "doy": 298
+        },
+        "2020": {
+          "days_since_epoch": 18563.9,
+          "doy": 302
+        },
+        "2021": {
+          "days_since_epoch": 18929.6,
+          "doy": 302
+        },
+        "2022": {
+          "days_since_epoch": 19285.3,
+          "doy": 293
+        },
+        "2023": {
+          "days_since_epoch": 19665.8,
+          "doy": 308
+        },
+        "2024": {
+          "days_since_epoch": 20025.5,
+          "doy": 303
+        }
+      },
+      "growing_season": {
+        "2003": 155.7,
+        "2004": 164.8,
+        "2005": 153.5,
+        "2006": 154.7,
+        "2007": 173.1,
+        "2008": 155.6,
+        "2009": 167.3,
+        "2010": 179.3,
+        "2011": 161.8,
+        "2012": 160.1,
+        "2013": 157.5,
+        "2014": 164.9,
+        "2015": 160.1,
+        "2016": 162.3,
+        "2017": 169.1,
+        "2018": 173.1,
+        "2019": 158.5,
+        "2020": 153.0,
+        "2021": 164.3,
+        "2022": 169.4,
+        "2023": 165.9,
+        "2024": 162.5
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 136.5,
+      "greenup_min_doy": 123,
+      "greenup_max_doy": 149,
+      "dormancy_mean_doy": 299.4,
+      "dormancy_min_doy": 291,
+      "dormancy_max_doy": 308,
+      "growing_season_mean_days": 163.0,
+      "growing_season_min_days": 153.0,
+      "growing_season_max_days": 179.3,
+      "growing_season_std_days": 6.8,
+      "greenup_trend_days_per_year": 0.129,
+      "dormancy_trend_days_per_year": 0.315,
+      "growing_season_trend_days_per_year": 0.192
+    },
+    "interpretation": {
+      "greenup": "略推迟",
+      "dormancy": "逐年推迟 (趋势明显)",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "ali-gaize",
+    "region_name": "阿里地区改则县",
+    "longitude": 84.06,
+    "latitude": 32.3,
+    "pixel_row": 2028,
+    "pixel_col": 2585,
+    "window_size": 60,
+    "years": [
+      2020,
+      2023
+    ],
+    "data": {
+      "greenup": {
+        "2020": {
+          "days_since_epoch": 18407.0,
+          "doy": 146
+        },
+        "2023": {
+          "days_since_epoch": 19520.0,
+          "doy": 163
+        }
+      },
+      "dormancy": {
+        "2020": {
+          "days_since_epoch": 18559.0,
+          "doy": 298
+        },
+        "2023": {
+          "days_since_epoch": 19658.0,
+          "doy": 301
+        }
+      },
+      "growing_season": {
+        "2020": 152.0,
+        "2023": 138.0
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 154.5,
+      "greenup_min_doy": 146,
+      "greenup_max_doy": 163,
+      "dormancy_mean_doy": 299.5,
+      "dormancy_min_doy": 298,
+      "dormancy_max_doy": 301,
+      "growing_season_mean_days": 145.0,
+      "growing_season_min_days": 138.0,
+      "growing_season_max_days": 152.0,
+      "growing_season_std_days": 7.0,
+      "greenup_trend_days_per_year": null,
+      "dormancy_trend_days_per_year": null,
+      "growing_season_trend_days_per_year": null
+    },
+    "interpretation": {
+      "greenup": "数据不足",
+      "dormancy": "数据不足",
+      "growing_season": "数据不足"
+    }
+  },
+  {
+    "region_id": "yushu-chengduo",
+    "region_name": "玉树州称多县",
+    "longitude": 97.11,
+    "latitude": 33.37,
+    "pixel_row": 1772,
+    "pixel_col": 5717,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12198.8,
+          "doy": 146
+        },
+        "2004": {
+          "days_since_epoch": 12557.0,
+          "doy": 140
+        },
+        "2005": {
+          "days_since_epoch": 12923.4,
+          "doy": 140
+        },
+        "2006": {
+          "days_since_epoch": 13286.6,
+          "doy": 138
+        },
+        "2007": {
+          "days_since_epoch": 13656.9,
+          "doy": 143
+        },
+        "2008": {
+          "days_since_epoch": 14022.2,
+          "doy": 144
+        },
+        "2009": {
+          "days_since_epoch": 14387.5,
+          "doy": 143
+        },
+        "2010": {
+          "days_since_epoch": 14749.5,
+          "doy": 140
+        },
+        "2011": {
+          "days_since_epoch": 15116.1,
+          "doy": 142
+        },
+        "2012": {
+          "days_since_epoch": 15478.5,
+          "doy": 139
+        },
+        "2013": {
+          "days_since_epoch": 15843.5,
+          "doy": 138
+        },
+        "2014": {
+          "days_since_epoch": 16211.6,
+          "doy": 141
+        },
+        "2015": {
+          "days_since_epoch": 16570.3,
+          "doy": 135
+        },
+        "2016": {
+          "days_since_epoch": 16942.7,
+          "doy": 142
+        },
+        "2017": {
+          "days_since_epoch": 17311.7,
+          "doy": 145
+        },
+        "2018": {
+          "days_since_epoch": 17669.8,
+          "doy": 138
+        },
+        "2019": {
+          "days_since_epoch": 18030.9,
+          "doy": 134
+        },
+        "2020": {
+          "days_since_epoch": 18400.7,
+          "doy": 139
+        },
+        "2021": {
+          "days_since_epoch": 18766.1,
+          "doy": 139
+        },
+        "2022": {
+          "days_since_epoch": 19127.7,
+          "doy": 135
+        },
+        "2023": {
+          "days_since_epoch": 19500.6,
+          "doy": 143
+        },
+        "2024": {
+          "days_since_epoch": 19855.4,
+          "doy": 133
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12345.8,
+          "doy": 293
+        },
+        "2004": {
+          "days_since_epoch": 12707.6,
+          "doy": 290
+        },
+        "2005": {
+          "days_since_epoch": 13080.3,
+          "doy": 297
+        },
+        "2006": {
+          "days_since_epoch": 13436.3,
+          "doy": 288
+        },
+        "2007": {
+          "days_since_epoch": 13804.1,
+          "doy": 291
+        },
+        "2008": {
+          "days_since_epoch": 14167.6,
+          "doy": 289
+        },
+        "2009": {
+          "days_since_epoch": 14534.2,
+          "doy": 290
+        },
+        "2010": {
+          "days_since_epoch": 14898.0,
+          "doy": 288
+        },
+        "2011": {
+          "days_since_epoch": 15263.4,
+          "doy": 289
+        },
+        "2012": {
+          "days_since_epoch": 15630.3,
+          "doy": 291
+        },
+        "2013": {
+          "days_since_epoch": 15990.5,
+          "doy": 285
+        },
+        "2014": {
+          "days_since_epoch": 16361.9,
+          "doy": 291
+        },
+        "2015": {
+          "days_since_epoch": 16722.3,
+          "doy": 287
+        },
+        "2016": {
+          "days_since_epoch": 17088.1,
+          "doy": 288
+        },
+        "2017": {
+          "days_since_epoch": 17464.6,
+          "doy": 298
+        },
+        "2018": {
+          "days_since_epoch": 17819.9,
+          "doy": 288
+        },
+        "2019": {
+          "days_since_epoch": 18189.4,
+          "doy": 293
+        },
+        "2020": {
+          "days_since_epoch": 18558.7,
+          "doy": 297
+        },
+        "2021": {
+          "days_since_epoch": 18917.9,
+          "doy": 290
+        },
+        "2022": {
+          "days_since_epoch": 19282.0,
+          "doy": 289
+        },
+        "2023": {
+          "days_since_epoch": 19651.4,
+          "doy": 294
+        },
+        "2024": {
+          "days_since_epoch": 20017.3,
+          "doy": 295
+        }
+      },
+      "growing_season": {
+        "2003": 147.0,
+        "2004": 150.6,
+        "2005": 156.9,
+        "2006": 149.7,
+        "2007": 147.2,
+        "2008": 145.4,
+        "2009": 146.7,
+        "2010": 148.5,
+        "2011": 147.2,
+        "2012": 151.8,
+        "2013": 147.1,
+        "2014": 150.2,
+        "2015": 152.0,
+        "2016": 145.4,
+        "2017": 152.9,
+        "2018": 150.1,
+        "2019": 158.5,
+        "2020": 157.9,
+        "2021": 151.8,
+        "2022": 154.2,
+        "2023": 150.8,
+        "2024": 161.9
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 139.9,
+      "greenup_min_doy": 133,
+      "greenup_max_doy": 146,
+      "dormancy_mean_doy": 291.0,
+      "dormancy_min_doy": 285,
+      "dormancy_max_doy": 298,
+      "growing_season_mean_days": 151.1,
+      "growing_season_min_days": 145.4,
+      "growing_season_max_days": 161.9,
+      "growing_season_std_days": 4.4,
+      "greenup_trend_days_per_year": -0.264,
+      "dormancy_trend_days_per_year": 0.099,
+      "growing_season_trend_days_per_year": 0.362
+    },
+    "interpretation": {
+      "greenup": "略提前",
+      "dormancy": "基本稳定",
+      "growing_season": "逐年延长 (趋势明显)"
+    }
+  },
+  {
+    "region_id": "yushu-zaduo",
+    "region_name": "玉树州杂多县",
+    "longitude": 95.3,
+    "latitude": 32.9,
+    "pixel_row": 1884,
+    "pixel_col": 5283,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12195.7,
+          "doy": 143
+        },
+        "2004": {
+          "days_since_epoch": 12558.3,
+          "doy": 141
+        },
+        "2005": {
+          "days_since_epoch": 12926.1,
+          "doy": 143
+        },
+        "2006": {
+          "days_since_epoch": 13287.2,
+          "doy": 139
+        },
+        "2007": {
+          "days_since_epoch": 13652.3,
+          "doy": 139
+        },
+        "2008": {
+          "days_since_epoch": 14015.8,
+          "doy": 137
+        },
+        "2009": {
+          "days_since_epoch": 14385.6,
+          "doy": 141
+        },
+        "2010": {
+          "days_since_epoch": 14754.6,
+          "doy": 145
+        },
+        "2011": {
+          "days_since_epoch": 15115.3,
+          "doy": 141
+        },
+        "2012": {
+          "days_since_epoch": 15479.5,
+          "doy": 140
+        },
+        "2013": {
+          "days_since_epoch": 15842.9,
+          "doy": 137
+        },
+        "2014": {
+          "days_since_epoch": 16213.5,
+          "doy": 143
+        },
+        "2015": {
+          "days_since_epoch": 16570.2,
+          "doy": 135
+        },
+        "2016": {
+          "days_since_epoch": 16944.9,
+          "doy": 144
+        },
+        "2017": {
+          "days_since_epoch": 17307.8,
+          "doy": 141
+        },
+        "2018": {
+          "days_since_epoch": 17672.2,
+          "doy": 141
+        },
+        "2019": {
+          "days_since_epoch": 18034.2,
+          "doy": 138
+        },
+        "2020": {
+          "days_since_epoch": 18402.2,
+          "doy": 141
+        },
+        "2021": {
+          "days_since_epoch": 18763.6,
+          "doy": 136
+        },
+        "2022": {
+          "days_since_epoch": 19125.2,
+          "doy": 133
+        },
+        "2023": {
+          "days_since_epoch": 19501.3,
+          "doy": 144
+        },
+        "2024": {
+          "days_since_epoch": 19858.5,
+          "doy": 136
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12349.5,
+          "doy": 297
+        },
+        "2004": {
+          "days_since_epoch": 12711.0,
+          "doy": 293
+        },
+        "2005": {
+          "days_since_epoch": 13079.2,
+          "doy": 296
+        },
+        "2006": {
+          "days_since_epoch": 13436.8,
+          "doy": 288
+        },
+        "2007": {
+          "days_since_epoch": 13807.8,
+          "doy": 294
+        },
+        "2008": {
+          "days_since_epoch": 14166.1,
+          "doy": 288
+        },
+        "2009": {
+          "days_since_epoch": 14532.7,
+          "doy": 288
+        },
+        "2010": {
+          "days_since_epoch": 14901.2,
+          "doy": 292
+        },
+        "2011": {
+          "days_since_epoch": 15266.5,
+          "doy": 292
+        },
+        "2012": {
+          "days_since_epoch": 15630.5,
+          "doy": 291
+        },
+        "2013": {
+          "days_since_epoch": 15992.5,
+          "doy": 287
+        },
+        "2014": {
+          "days_since_epoch": 16362.7,
+          "doy": 292
+        },
+        "2015": {
+          "days_since_epoch": 16725.5,
+          "doy": 290
+        },
+        "2016": {
+          "days_since_epoch": 17086.4,
+          "doy": 286
+        },
+        "2017": {
+          "days_since_epoch": 17462.4,
+          "doy": 296
+        },
+        "2018": {
+          "days_since_epoch": 17824.2,
+          "doy": 293
+        },
+        "2019": {
+          "days_since_epoch": 18191.7,
+          "doy": 295
+        },
+        "2020": {
+          "days_since_epoch": 18557.1,
+          "doy": 296
+        },
+        "2021": {
+          "days_since_epoch": 18917.6,
+          "doy": 290
+        },
+        "2022": {
+          "days_since_epoch": 19281.2,
+          "doy": 289
+        },
+        "2023": {
+          "days_since_epoch": 19657.3,
+          "doy": 300
+        },
+        "2024": {
+          "days_since_epoch": 20016.5,
+          "doy": 294
+        }
+      },
+      "growing_season": {
+        "2003": 153.8,
+        "2004": 152.7,
+        "2005": 153.1,
+        "2006": 149.5,
+        "2007": 155.6,
+        "2008": 150.3,
+        "2009": 147.1,
+        "2010": 146.6,
+        "2011": 151.3,
+        "2012": 151.1,
+        "2013": 149.5,
+        "2014": 149.2,
+        "2015": 155.2,
+        "2016": 141.5,
+        "2017": 154.6,
+        "2018": 152.0,
+        "2019": 157.5,
+        "2020": 154.9,
+        "2021": 154.0,
+        "2022": 155.9,
+        "2023": 156.0,
+        "2024": 157.9
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 139.9,
+      "greenup_min_doy": 133,
+      "greenup_max_doy": 145,
+      "dormancy_mean_doy": 292.1,
+      "dormancy_min_doy": 286,
+      "dormancy_max_doy": 300,
+      "growing_season_mean_days": 152.2,
+      "growing_season_min_days": 141.5,
+      "growing_season_max_days": 157.9,
+      "growing_season_std_days": 3.9,
+      "greenup_trend_days_per_year": -0.164,
+      "dormancy_trend_days_per_year": 0.073,
+      "growing_season_trend_days_per_year": 0.224
+    },
+    "interpretation": {
+      "greenup": "略提前",
+      "dormancy": "基本稳定",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "guoluo-maqin",
+    "region_name": "果洛州玛沁县",
+    "longitude": 100.24,
+    "latitude": 34.48,
+    "pixel_row": 1505,
+    "pixel_col": 6468,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12188.7,
+          "doy": 136
+        },
+        "2004": {
+          "days_since_epoch": 12554.1,
+          "doy": 137
+        },
+        "2005": {
+          "days_since_epoch": 12915.7,
+          "doy": 132
+        },
+        "2006": {
+          "days_since_epoch": 13285.6,
+          "doy": 137
+        },
+        "2007": {
+          "days_since_epoch": 13651.8,
+          "doy": 138
+        },
+        "2008": {
+          "days_since_epoch": 14013.8,
+          "doy": 135
+        },
+        "2009": {
+          "days_since_epoch": 14374.5,
+          "doy": 130
+        },
+        "2010": {
+          "days_since_epoch": 14745.7,
+          "doy": 136
+        },
+        "2011": {
+          "days_since_epoch": 15113.7,
+          "doy": 139
+        },
+        "2012": {
+          "days_since_epoch": 15474.3,
+          "doy": 135
+        },
+        "2013": {
+          "days_since_epoch": 15843.0,
+          "doy": 137
+        },
+        "2014": {
+          "days_since_epoch": 16208.0,
+          "doy": 138
+        },
+        "2015": {
+          "days_since_epoch": 16571.0,
+          "doy": 135
+        },
+        "2016": {
+          "days_since_epoch": 16935.6,
+          "doy": 135
+        },
+        "2017": {
+          "days_since_epoch": 17301.4,
+          "doy": 135
+        },
+        "2018": {
+          "days_since_epoch": 17664.6,
+          "doy": 133
+        },
+        "2019": {
+          "days_since_epoch": 18025.6,
+          "doy": 129
+        },
+        "2020": {
+          "days_since_epoch": 18397.2,
+          "doy": 136
+        },
+        "2021": {
+          "days_since_epoch": 18760.5,
+          "doy": 133
+        },
+        "2022": {
+          "days_since_epoch": 19128.3,
+          "doy": 136
+        },
+        "2023": {
+          "days_since_epoch": 19493.7,
+          "doy": 136
+        },
+        "2024": {
+          "days_since_epoch": 19855.5,
+          "doy": 133
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12347.5,
+          "doy": 295
+        },
+        "2004": {
+          "days_since_epoch": 12711.3,
+          "doy": 294
+        },
+        "2005": {
+          "days_since_epoch": 13077.3,
+          "doy": 294
+        },
+        "2006": {
+          "days_since_epoch": 13442.1,
+          "doy": 294
+        },
+        "2007": {
+          "days_since_epoch": 13812.9,
+          "doy": 299
+        },
+        "2008": {
+          "days_since_epoch": 14175.2,
+          "doy": 297
+        },
+        "2009": {
+          "days_since_epoch": 14539.4,
+          "doy": 295
+        },
+        "2010": {
+          "days_since_epoch": 14901.8,
+          "doy": 292
+        },
+        "2011": {
+          "days_since_epoch": 15267.4,
+          "doy": 293
+        },
+        "2012": {
+          "days_since_epoch": 15632.7,
+          "doy": 293
+        },
+        "2013": {
+          "days_since_epoch": 15995.5,
+          "doy": 290
+        },
+        "2014": {
+          "days_since_epoch": 16364.3,
+          "doy": 294
+        },
+        "2015": {
+          "days_since_epoch": 16727.8,
+          "doy": 292
+        },
+        "2016": {
+          "days_since_epoch": 17095.1,
+          "doy": 295
+        },
+        "2017": {
+          "days_since_epoch": 17462.6,
+          "doy": 296
+        },
+        "2018": {
+          "days_since_epoch": 17825.0,
+          "doy": 293
+        },
+        "2019": {
+          "days_since_epoch": 18189.8,
+          "doy": 293
+        },
+        "2020": {
+          "days_since_epoch": 18561.1,
+          "doy": 300
+        },
+        "2021": {
+          "days_since_epoch": 18918.7,
+          "doy": 291
+        },
+        "2022": {
+          "days_since_epoch": 19288.4,
+          "doy": 296
+        },
+        "2023": {
+          "days_since_epoch": 19653.2,
+          "doy": 296
+        },
+        "2024": {
+          "days_since_epoch": 20024.6,
+          "doy": 302
+        }
+      },
+      "growing_season": {
+        "2003": 158.8,
+        "2004": 157.2,
+        "2005": 161.6,
+        "2006": 156.6,
+        "2007": 161.0,
+        "2008": 161.5,
+        "2009": 164.9,
+        "2010": 156.1,
+        "2011": 153.7,
+        "2012": 158.4,
+        "2013": 152.5,
+        "2014": 156.3,
+        "2015": 156.8,
+        "2016": 159.5,
+        "2017": 161.2,
+        "2018": 160.3,
+        "2019": 164.2,
+        "2020": 163.9,
+        "2021": 158.2,
+        "2022": 160.0,
+        "2023": 159.4,
+        "2024": 169.1
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 135.0,
+      "greenup_min_doy": 129,
+      "greenup_max_doy": 139,
+      "dormancy_mean_doy": 294.7,
+      "dormancy_min_doy": 290,
+      "dormancy_max_doy": 302,
+      "growing_season_mean_days": 159.6,
+      "growing_season_min_days": 152.5,
+      "growing_season_max_days": 169.1,
+      "growing_season_std_days": 3.7,
+      "greenup_trend_days_per_year": -0.093,
+      "dormancy_trend_days_per_year": 0.093,
+      "growing_season_trend_days_per_year": 0.195
+    },
+    "interpretation": {
+      "greenup": "基本稳定",
+      "dormancy": "基本稳定",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "guoluo-jiuzhi",
+    "region_name": "果洛州久治县",
+    "longitude": 101.48,
+    "latitude": 33.43,
+    "pixel_row": 1757,
+    "pixel_col": 6766,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12181.3,
+          "doy": 129
+        },
+        "2004": {
+          "days_since_epoch": 12547.4,
+          "doy": 130
+        },
+        "2005": {
+          "days_since_epoch": 12908.2,
+          "doy": 125
+        },
+        "2006": {
+          "days_since_epoch": 13276.9,
+          "doy": 128
+        },
+        "2007": {
+          "days_since_epoch": 13639.7,
+          "doy": 126
+        },
+        "2008": {
+          "days_since_epoch": 14005.4,
+          "doy": 127
+        },
+        "2009": {
+          "days_since_epoch": 14366.2,
+          "doy": 122
+        },
+        "2010": {
+          "days_since_epoch": 14737.1,
+          "doy": 128
+        },
+        "2011": {
+          "days_since_epoch": 15102.6,
+          "doy": 128
+        },
+        "2012": {
+          "days_since_epoch": 15466.2,
+          "doy": 127
+        },
+        "2013": {
+          "days_since_epoch": 15830.3,
+          "doy": 125
+        },
+        "2014": {
+          "days_since_epoch": 16193.8,
+          "doy": 123
+        },
+        "2015": {
+          "days_since_epoch": 16562.9,
+          "doy": 127
+        },
+        "2016": {
+          "days_since_epoch": 16927.1,
+          "doy": 127
+        },
+        "2017": {
+          "days_since_epoch": 17294.1,
+          "doy": 128
+        },
+        "2018": {
+          "days_since_epoch": 17654.3,
+          "doy": 123
+        },
+        "2019": {
+          "days_since_epoch": 18016.6,
+          "doy": 120
+        },
+        "2020": {
+          "days_since_epoch": 18388.7,
+          "doy": 127
+        },
+        "2021": {
+          "days_since_epoch": 18749.4,
+          "doy": 122
+        },
+        "2022": {
+          "days_since_epoch": 19117.3,
+          "doy": 125
+        },
+        "2023": {
+          "days_since_epoch": 19484.9,
+          "doy": 127
+        },
+        "2024": {
+          "days_since_epoch": 19845.8,
+          "doy": 123
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12355.7,
+          "doy": 303
+        },
+        "2004": {
+          "days_since_epoch": 12718.9,
+          "doy": 301
+        },
+        "2005": {
+          "days_since_epoch": 13087.9,
+          "doy": 304
+        },
+        "2006": {
+          "days_since_epoch": 13452.0,
+          "doy": 304
+        },
+        "2007": {
+          "days_since_epoch": 13821.3,
+          "doy": 308
+        },
+        "2008": {
+          "days_since_epoch": 14184.1,
+          "doy": 306
+        },
+        "2009": {
+          "days_since_epoch": 14548.0,
+          "doy": 303
+        },
+        "2010": {
+          "days_since_epoch": 14911.1,
+          "doy": 302
+        },
+        "2011": {
+          "days_since_epoch": 15277.3,
+          "doy": 303
+        },
+        "2012": {
+          "days_since_epoch": 15639.5,
+          "doy": 300
+        },
+        "2013": {
+          "days_since_epoch": 16004.2,
+          "doy": 299
+        },
+        "2014": {
+          "days_since_epoch": 16372.9,
+          "doy": 302
+        },
+        "2015": {
+          "days_since_epoch": 16740.9,
+          "doy": 305
+        },
+        "2016": {
+          "days_since_epoch": 17100.2,
+          "doy": 300
+        },
+        "2017": {
+          "days_since_epoch": 17472.5,
+          "doy": 306
+        },
+        "2018": {
+          "days_since_epoch": 17830.8,
+          "doy": 299
+        },
+        "2019": {
+          "days_since_epoch": 18199.2,
+          "doy": 303
+        },
+        "2020": {
+          "days_since_epoch": 18567.1,
+          "doy": 306
+        },
+        "2021": {
+          "days_since_epoch": 18930.7,
+          "doy": 303
+        },
+        "2022": {
+          "days_since_epoch": 19294.3,
+          "doy": 302
+        },
+        "2023": {
+          "days_since_epoch": 19662.0,
+          "doy": 304
+        },
+        "2024": {
+          "days_since_epoch": 20031.0,
+          "doy": 308
+        }
+      },
+      "growing_season": {
+        "2003": 174.4,
+        "2004": 171.5,
+        "2005": 179.8,
+        "2006": 175.2,
+        "2007": 181.6,
+        "2008": 178.7,
+        "2009": 181.7,
+        "2010": 174.0,
+        "2011": 174.7,
+        "2012": 173.2,
+        "2013": 173.9,
+        "2014": 179.0,
+        "2015": 178.0,
+        "2016": 173.1,
+        "2017": 178.4,
+        "2018": 176.5,
+        "2019": 182.6,
+        "2020": 178.4,
+        "2021": 181.3,
+        "2022": 177.0,
+        "2023": 177.0,
+        "2024": 185.1
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 125.8,
+      "greenup_min_doy": 120,
+      "greenup_max_doy": 130,
+      "dormancy_mean_doy": 303.2,
+      "dormancy_min_doy": 299,
+      "dormancy_max_doy": 308,
+      "growing_season_mean_days": 177.5,
+      "growing_season_min_days": 171.5,
+      "growing_season_max_days": 185.1,
+      "growing_season_std_days": 3.5,
+      "greenup_trend_days_per_year": -0.189,
+      "dormancy_trend_days_per_year": 0.028,
+      "growing_season_trend_days_per_year": 0.209
+    },
+    "interpretation": {
+      "greenup": "略提前",
+      "dormancy": "基本稳定",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "haibei-gangcha",
+    "region_name": "海北州刚察县",
+    "longitude": 100.15,
+    "latitude": 37.33,
+    "pixel_row": 821,
+    "pixel_col": 6447,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12197.9,
+          "doy": 145
+        },
+        "2004": {
+          "days_since_epoch": 12563.1,
+          "doy": 146
+        },
+        "2005": {
+          "days_since_epoch": 12919.0,
+          "doy": 136
+        },
+        "2006": {
+          "days_since_epoch": 13291.8,
+          "doy": 143
+        },
+        "2007": {
+          "days_since_epoch": 13652.6,
+          "doy": 139
+        },
+        "2008": {
+          "days_since_epoch": 14011.4,
+          "doy": 133
+        },
+        "2009": {
+          "days_since_epoch": 14382.0,
+          "doy": 137
+        },
+        "2010": {
+          "days_since_epoch": 14750.6,
+          "doy": 141
+        },
+        "2011": {
+          "days_since_epoch": 15110.9,
+          "doy": 136
+        },
+        "2012": {
+          "days_since_epoch": 15478.4,
+          "doy": 139
+        },
+        "2013": {
+          "days_since_epoch": 15848.0,
+          "doy": 143
+        },
+        "2014": {
+          "days_since_epoch": 16214.4,
+          "doy": 144
+        },
+        "2015": {
+          "days_since_epoch": 16564.1,
+          "doy": 129
+        },
+        "2016": {
+          "days_since_epoch": 16939.4,
+          "doy": 139
+        },
+        "2017": {
+          "days_since_epoch": 17298.1,
+          "doy": 132
+        },
+        "2018": {
+          "days_since_epoch": 17658.5,
+          "doy": 127
+        },
+        "2019": {
+          "days_since_epoch": 18023.8,
+          "doy": 127
+        },
+        "2020": {
+          "days_since_epoch": 18396.2,
+          "doy": 135
+        },
+        "2021": {
+          "days_since_epoch": 18764.3,
+          "doy": 137
+        },
+        "2022": {
+          "days_since_epoch": 19126.4,
+          "doy": 134
+        },
+        "2023": {
+          "days_since_epoch": 19496.7,
+          "doy": 139
+        },
+        "2024": {
+          "days_since_epoch": 19849.7,
+          "doy": 127
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12351.4,
+          "doy": 299
+        },
+        "2004": {
+          "days_since_epoch": 12715.4,
+          "doy": 298
+        },
+        "2005": {
+          "days_since_epoch": 13082.1,
+          "doy": 299
+        },
+        "2006": {
+          "days_since_epoch": 13450.0,
+          "doy": 302
+        },
+        "2007": {
+          "days_since_epoch": 13808.4,
+          "doy": 295
+        },
+        "2008": {
+          "days_since_epoch": 14176.3,
+          "doy": 298
+        },
+        "2009": {
+          "days_since_epoch": 14544.1,
+          "doy": 300
+        },
+        "2010": {
+          "days_since_epoch": 14903.9,
+          "doy": 294
+        },
+        "2011": {
+          "days_since_epoch": 15269.8,
+          "doy": 295
+        },
+        "2012": {
+          "days_since_epoch": 15634.3,
+          "doy": 295
+        },
+        "2013": {
+          "days_since_epoch": 16003.5,
+          "doy": 298
+        },
+        "2014": {
+          "days_since_epoch": 16369.1,
+          "doy": 299
+        },
+        "2015": {
+          "days_since_epoch": 16728.4,
+          "doy": 293
+        },
+        "2016": {
+          "days_since_epoch": 17102.2,
+          "doy": 302
+        },
+        "2017": {
+          "days_since_epoch": 17464.3,
+          "doy": 298
+        },
+        "2018": {
+          "days_since_epoch": 17828.5,
+          "doy": 297
+        },
+        "2019": {
+          "days_since_epoch": 18195.7,
+          "doy": 299
+        },
+        "2020": {
+          "days_since_epoch": 18562.0,
+          "doy": 301
+        },
+        "2021": {
+          "days_since_epoch": 18928.4,
+          "doy": 301
+        },
+        "2022": {
+          "days_since_epoch": 19296.1,
+          "doy": 304
+        },
+        "2023": {
+          "days_since_epoch": 19657.7,
+          "doy": 300
+        },
+        "2024": {
+          "days_since_epoch": 20026.9,
+          "doy": 304
+        }
+      },
+      "growing_season": {
+        "2003": 153.5,
+        "2004": 152.3,
+        "2005": 163.1,
+        "2006": 158.2,
+        "2007": 155.8,
+        "2008": 164.9,
+        "2009": 162.1,
+        "2010": 153.4,
+        "2011": 158.9,
+        "2012": 155.8,
+        "2013": 155.4,
+        "2014": 154.7,
+        "2015": 164.3,
+        "2016": 162.8,
+        "2017": 166.3,
+        "2018": 170.0,
+        "2019": 172.0,
+        "2020": 165.9,
+        "2021": 164.0,
+        "2022": 169.7,
+        "2023": 161.0,
+        "2024": 177.2
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 136.7,
+      "greenup_min_doy": 127,
+      "greenup_max_doy": 146,
+      "dormancy_mean_doy": 298.7,
+      "dormancy_min_doy": 293,
+      "dormancy_max_doy": 304,
+      "growing_season_mean_days": 161.9,
+      "growing_season_min_days": 152.3,
+      "growing_season_max_days": 177.2,
+      "growing_season_std_days": 6.6,
+      "greenup_trend_days_per_year": -0.519,
+      "dormancy_trend_days_per_year": 0.188,
+      "growing_season_trend_days_per_year": 0.721
+    },
+    "interpretation": {
+      "greenup": "逐年提前 (趋势明显)",
+      "dormancy": "略推迟",
+      "growing_season": "逐年延长 (趋势明显)"
+    }
+  },
+  {
+    "region_id": "huangnan-zeku",
+    "region_name": "黄南州泽库县",
+    "longitude": 101.47,
+    "latitude": 35.04,
+    "pixel_row": 1371,
+    "pixel_col": 6763,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12189.6,
+          "doy": 137
+        },
+        "2004": {
+          "days_since_epoch": 12551.0,
+          "doy": 133
+        },
+        "2005": {
+          "days_since_epoch": 12910.3,
+          "doy": 127
+        },
+        "2006": {
+          "days_since_epoch": 13279.0,
+          "doy": 131
+        },
+        "2007": {
+          "days_since_epoch": 13647.4,
+          "doy": 134
+        },
+        "2008": {
+          "days_since_epoch": 14004.5,
+          "doy": 126
+        },
+        "2009": {
+          "days_since_epoch": 14369.3,
+          "doy": 125
+        },
+        "2010": {
+          "days_since_epoch": 14743.9,
+          "doy": 134
+        },
+        "2011": {
+          "days_since_epoch": 15105.9,
+          "doy": 131
+        },
+        "2012": {
+          "days_since_epoch": 15466.6,
+          "doy": 127
+        },
+        "2013": {
+          "days_since_epoch": 15836.2,
+          "doy": 131
+        },
+        "2014": {
+          "days_since_epoch": 16199.3,
+          "doy": 129
+        },
+        "2015": {
+          "days_since_epoch": 16563.2,
+          "doy": 128
+        },
+        "2016": {
+          "days_since_epoch": 16931.1,
+          "doy": 131
+        },
+        "2017": {
+          "days_since_epoch": 17295.3,
+          "doy": 129
+        },
+        "2018": {
+          "days_since_epoch": 17657.0,
+          "doy": 126
+        },
+        "2019": {
+          "days_since_epoch": 18019.3,
+          "doy": 123
+        },
+        "2020": {
+          "days_since_epoch": 18386.6,
+          "doy": 125
+        },
+        "2021": {
+          "days_since_epoch": 18753.9,
+          "doy": 126
+        },
+        "2022": {
+          "days_since_epoch": 19118.1,
+          "doy": 126
+        },
+        "2023": {
+          "days_since_epoch": 19485.1,
+          "doy": 128
+        },
+        "2024": {
+          "days_since_epoch": 19843.6,
+          "doy": 121
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12352.6,
+          "doy": 300
+        },
+        "2004": {
+          "days_since_epoch": 12715.1,
+          "doy": 298
+        },
+        "2005": {
+          "days_since_epoch": 13081.1,
+          "doy": 298
+        },
+        "2006": {
+          "days_since_epoch": 13443.0,
+          "doy": 294
+        },
+        "2007": {
+          "days_since_epoch": 13815.7,
+          "doy": 302
+        },
+        "2008": {
+          "days_since_epoch": 14177.8,
+          "doy": 299
+        },
+        "2009": {
+          "days_since_epoch": 14540.8,
+          "doy": 296
+        },
+        "2010": {
+          "days_since_epoch": 14906.5,
+          "doy": 297
+        },
+        "2011": {
+          "days_since_epoch": 15271.0,
+          "doy": 296
+        },
+        "2012": {
+          "days_since_epoch": 15635.0,
+          "doy": 295
+        },
+        "2013": {
+          "days_since_epoch": 15998.3,
+          "doy": 293
+        },
+        "2014": {
+          "days_since_epoch": 16366.5,
+          "doy": 296
+        },
+        "2015": {
+          "days_since_epoch": 16730.3,
+          "doy": 295
+        },
+        "2016": {
+          "days_since_epoch": 17100.5,
+          "doy": 300
+        },
+        "2017": {
+          "days_since_epoch": 17469.3,
+          "doy": 303
+        },
+        "2018": {
+          "days_since_epoch": 17829.1,
+          "doy": 298
+        },
+        "2019": {
+          "days_since_epoch": 18196.7,
+          "doy": 300
+        },
+        "2020": {
+          "days_since_epoch": 18564.0,
+          "doy": 302
+        },
+        "2021": {
+          "days_since_epoch": 18923.0,
+          "doy": 295
+        },
+        "2022": {
+          "days_since_epoch": 19293.7,
+          "doy": 301
+        },
+        "2023": {
+          "days_since_epoch": 19658.9,
+          "doy": 301
+        },
+        "2024": {
+          "days_since_epoch": 20030.3,
+          "doy": 308
+        }
+      },
+      "growing_season": {
+        "2003": 163.0,
+        "2004": 164.1,
+        "2005": 170.8,
+        "2006": 164.0,
+        "2007": 168.3,
+        "2008": 173.3,
+        "2009": 171.6,
+        "2010": 162.6,
+        "2011": 165.1,
+        "2012": 168.4,
+        "2013": 162.1,
+        "2014": 167.2,
+        "2015": 167.2,
+        "2016": 169.4,
+        "2017": 174.0,
+        "2018": 172.1,
+        "2019": 177.4,
+        "2020": 177.4,
+        "2021": 169.0,
+        "2022": 175.5,
+        "2023": 173.8,
+        "2024": 186.6
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 128.5,
+      "greenup_min_doy": 121,
+      "greenup_max_doy": 137,
+      "dormancy_mean_doy": 298.5,
+      "dormancy_min_doy": 293,
+      "dormancy_max_doy": 308,
+      "growing_season_mean_days": 170.1,
+      "growing_season_min_days": 162.1,
+      "growing_season_max_days": 186.6,
+      "growing_season_std_days": 5.8,
+      "greenup_trend_days_per_year": -0.394,
+      "dormancy_trend_days_per_year": 0.217,
+      "growing_season_trend_days_per_year": 0.624
+    },
+    "interpretation": {
+      "greenup": "逐年提前 (趋势明显)",
+      "dormancy": "略推迟",
+      "growing_season": "逐年延长 (趋势明显)"
+    }
+  },
+  {
+    "region_id": "ganzi-shiqu",
+    "region_name": "甘孜州石渠县",
+    "longitude": 98.1,
+    "latitude": 32.98,
+    "pixel_row": 1865,
+    "pixel_col": 5955,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12191.7,
+          "doy": 139
+        },
+        "2004": {
+          "days_since_epoch": 12551.5,
+          "doy": 134
+        },
+        "2005": {
+          "days_since_epoch": 12916.4,
+          "doy": 133
+        },
+        "2006": {
+          "days_since_epoch": 13282.3,
+          "doy": 134
+        },
+        "2007": {
+          "days_since_epoch": 13648.8,
+          "doy": 135
+        },
+        "2008": {
+          "days_since_epoch": 14015.5,
+          "doy": 137
+        },
+        "2009": {
+          "days_since_epoch": 14374.9,
+          "doy": 130
+        },
+        "2010": {
+          "days_since_epoch": 14746.6,
+          "doy": 137
+        },
+        "2011": {
+          "days_since_epoch": 15115.5,
+          "doy": 141
+        },
+        "2012": {
+          "days_since_epoch": 15475.2,
+          "doy": 136
+        },
+        "2013": {
+          "days_since_epoch": 15836.0,
+          "doy": 130
+        },
+        "2014": {
+          "days_since_epoch": 16205.5,
+          "doy": 135
+        },
+        "2015": {
+          "days_since_epoch": 16565.8,
+          "doy": 130
+        },
+        "2016": {
+          "days_since_epoch": 16940.3,
+          "doy": 140
+        },
+        "2017": {
+          "days_since_epoch": 17304.9,
+          "doy": 138
+        },
+        "2018": {
+          "days_since_epoch": 17666.1,
+          "doy": 135
+        },
+        "2019": {
+          "days_since_epoch": 18025.7,
+          "doy": 129
+        },
+        "2020": {
+          "days_since_epoch": 18393.7,
+          "doy": 132
+        },
+        "2021": {
+          "days_since_epoch": 18766.4,
+          "doy": 139
+        },
+        "2022": {
+          "days_since_epoch": 19123.9,
+          "doy": 131
+        },
+        "2023": {
+          "days_since_epoch": 19499.2,
+          "doy": 142
+        },
+        "2024": {
+          "days_since_epoch": 19850.8,
+          "doy": 128
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12351.9,
+          "doy": 299
+        },
+        "2004": {
+          "days_since_epoch": 12715.0,
+          "doy": 298
+        },
+        "2005": {
+          "days_since_epoch": 13081.1,
+          "doy": 298
+        },
+        "2006": {
+          "days_since_epoch": 13441.6,
+          "doy": 293
+        },
+        "2007": {
+          "days_since_epoch": 13808.8,
+          "doy": 295
+        },
+        "2008": {
+          "days_since_epoch": 14169.7,
+          "doy": 291
+        },
+        "2009": {
+          "days_since_epoch": 14535.8,
+          "doy": 291
+        },
+        "2010": {
+          "days_since_epoch": 14900.6,
+          "doy": 291
+        },
+        "2011": {
+          "days_since_epoch": 15264.6,
+          "doy": 290
+        },
+        "2012": {
+          "days_since_epoch": 15631.5,
+          "doy": 292
+        },
+        "2013": {
+          "days_since_epoch": 15993.4,
+          "doy": 288
+        },
+        "2014": {
+          "days_since_epoch": 16365.8,
+          "doy": 295
+        },
+        "2015": {
+          "days_since_epoch": 16727.8,
+          "doy": 292
+        },
+        "2016": {
+          "days_since_epoch": 17090.8,
+          "doy": 290
+        },
+        "2017": {
+          "days_since_epoch": 17463.5,
+          "doy": 297
+        },
+        "2018": {
+          "days_since_epoch": 17822.5,
+          "doy": 291
+        },
+        "2019": {
+          "days_since_epoch": 18195.6,
+          "doy": 299
+        },
+        "2020": {
+          "days_since_epoch": 18562.7,
+          "doy": 301
+        },
+        "2021": {
+          "days_since_epoch": 18923.5,
+          "doy": 296
+        },
+        "2022": {
+          "days_since_epoch": 19282.6,
+          "doy": 290
+        },
+        "2023": {
+          "days_since_epoch": 19659.5,
+          "doy": 302
+        },
+        "2024": {
+          "days_since_epoch": 20019.5,
+          "doy": 297
+        }
+      },
+      "growing_season": {
+        "2003": 160.2,
+        "2004": 163.5,
+        "2005": 164.7,
+        "2006": 159.3,
+        "2007": 160.1,
+        "2008": 154.1,
+        "2009": 160.9,
+        "2010": 153.9,
+        "2011": 149.1,
+        "2012": 156.3,
+        "2013": 157.4,
+        "2014": 160.3,
+        "2015": 162.0,
+        "2016": 150.5,
+        "2017": 158.6,
+        "2018": 156.4,
+        "2019": 169.9,
+        "2020": 169.1,
+        "2021": 157.0,
+        "2022": 158.7,
+        "2023": 160.3,
+        "2024": 168.7
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 134.8,
+      "greenup_min_doy": 128,
+      "greenup_max_doy": 142,
+      "dormancy_mean_doy": 294.4,
+      "dormancy_min_doy": 288,
+      "dormancy_max_doy": 302,
+      "growing_season_mean_days": 159.6,
+      "growing_season_min_days": 149.1,
+      "growing_season_max_days": 169.9,
+      "growing_season_std_days": 5.3,
+      "greenup_trend_days_per_year": -0.074,
+      "dormancy_trend_days_per_year": 0.089,
+      "growing_season_trend_days_per_year": 0.165
+    },
+    "interpretation": {
+      "greenup": "基本稳定",
+      "dormancy": "基本稳定",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "ganzi-seda",
+    "region_name": "甘孜州色达县",
+    "longitude": 100.33,
+    "latitude": 32.27,
+    "pixel_row": 2036,
+    "pixel_col": 6490,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12185.0,
+          "doy": 132
+        },
+        "2004": {
+          "days_since_epoch": 12545.6,
+          "doy": 128
+        },
+        "2005": {
+          "days_since_epoch": 12911.4,
+          "doy": 128
+        },
+        "2006": {
+          "days_since_epoch": 13281.4,
+          "doy": 133
+        },
+        "2007": {
+          "days_since_epoch": 13644.7,
+          "doy": 131
+        },
+        "2008": {
+          "days_since_epoch": 14014.0,
+          "doy": 136
+        },
+        "2009": {
+          "days_since_epoch": 14367.0,
+          "doy": 122
+        },
+        "2010": {
+          "days_since_epoch": 14738.4,
+          "doy": 129
+        },
+        "2011": {
+          "days_since_epoch": 15105.3,
+          "doy": 131
+        },
+        "2012": {
+          "days_since_epoch": 15469.9,
+          "doy": 130
+        },
+        "2013": {
+          "days_since_epoch": 15833.6,
+          "doy": 128
+        },
+        "2014": {
+          "days_since_epoch": 16200.0,
+          "doy": 130
+        },
+        "2015": {
+          "days_since_epoch": 16566.0,
+          "doy": 130
+        },
+        "2016": {
+          "days_since_epoch": 16931.8,
+          "doy": 131
+        },
+        "2017": {
+          "days_since_epoch": 17298.3,
+          "doy": 132
+        },
+        "2018": {
+          "days_since_epoch": 17660.5,
+          "doy": 129
+        },
+        "2019": {
+          "days_since_epoch": 18020.3,
+          "doy": 124
+        },
+        "2020": {
+          "days_since_epoch": 18393.8,
+          "doy": 132
+        },
+        "2021": {
+          "days_since_epoch": 18758.3,
+          "doy": 131
+        },
+        "2022": {
+          "days_since_epoch": 19119.4,
+          "doy": 127
+        },
+        "2023": {
+          "days_since_epoch": 19493.1,
+          "doy": 136
+        },
+        "2024": {
+          "days_since_epoch": 19848.4,
+          "doy": 126
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12359.6,
+          "doy": 307
+        },
+        "2004": {
+          "days_since_epoch": 12722.2,
+          "doy": 305
+        },
+        "2005": {
+          "days_since_epoch": 13090.4,
+          "doy": 307
+        },
+        "2006": {
+          "days_since_epoch": 13449.9,
+          "doy": 301
+        },
+        "2007": {
+          "days_since_epoch": 13813.1,
+          "doy": 300
+        },
+        "2008": {
+          "days_since_epoch": 14186.5,
+          "doy": 308
+        },
+        "2009": {
+          "days_since_epoch": 14548.3,
+          "doy": 304
+        },
+        "2010": {
+          "days_since_epoch": 14909.9,
+          "doy": 300
+        },
+        "2011": {
+          "days_since_epoch": 15277.1,
+          "doy": 303
+        },
+        "2012": {
+          "days_since_epoch": 15640.7,
+          "doy": 301
+        },
+        "2013": {
+          "days_since_epoch": 16003.9,
+          "doy": 298
+        },
+        "2014": {
+          "days_since_epoch": 16372.0,
+          "doy": 302
+        },
+        "2015": {
+          "days_since_epoch": 16737.0,
+          "doy": 301
+        },
+        "2016": {
+          "days_since_epoch": 17101.8,
+          "doy": 301
+        },
+        "2017": {
+          "days_since_epoch": 17474.5,
+          "doy": 308
+        },
+        "2018": {
+          "days_since_epoch": 17832.3,
+          "doy": 301
+        },
+        "2019": {
+          "days_since_epoch": 18199.6,
+          "doy": 303
+        },
+        "2020": {
+          "days_since_epoch": 18569.3,
+          "doy": 308
+        },
+        "2021": {
+          "days_since_epoch": 18932.4,
+          "doy": 305
+        },
+        "2022": {
+          "days_since_epoch": 19292.8,
+          "doy": 300
+        },
+        "2023": {
+          "days_since_epoch": 19667.8,
+          "doy": 310
+        },
+        "2024": {
+          "days_since_epoch": 20022.0,
+          "doy": 299
+        }
+      },
+      "growing_season": {
+        "2003": 174.6,
+        "2004": 176.6,
+        "2005": 179.0,
+        "2006": 168.5,
+        "2007": 168.5,
+        "2008": 172.5,
+        "2009": 181.3,
+        "2010": 171.5,
+        "2011": 171.8,
+        "2012": 170.8,
+        "2013": 170.3,
+        "2014": 172.0,
+        "2015": 171.0,
+        "2016": 169.9,
+        "2017": 176.2,
+        "2018": 171.8,
+        "2019": 179.3,
+        "2020": 175.6,
+        "2021": 174.1,
+        "2022": 173.4,
+        "2023": 174.7,
+        "2024": 173.5
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 129.8,
+      "greenup_min_doy": 122,
+      "greenup_max_doy": 136,
+      "dormancy_mean_doy": 303.3,
+      "dormancy_min_doy": 298,
+      "dormancy_max_doy": 310,
+      "growing_season_mean_days": 173.5,
+      "growing_season_min_days": 168.5,
+      "growing_season_max_days": 181.3,
+      "growing_season_std_days": 3.4,
+      "greenup_trend_days_per_year": -0.03,
+      "dormancy_trend_days_per_year": -0.034,
+      "growing_season_trend_days_per_year": 0.021
+    },
+    "interpretation": {
+      "greenup": "基本稳定",
+      "dormancy": "基本稳定",
+      "growing_season": "基本稳定"
+    }
+  },
+  {
+    "region_id": "aba-hongyuan",
+    "region_name": "阿坝州红原县",
+    "longitude": 102.55,
+    "latitude": 32.79,
+    "pixel_row": 1911,
+    "pixel_col": 7023,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12172.1,
+          "doy": 120
+        },
+        "2004": {
+          "days_since_epoch": 12535.2,
+          "doy": 118
+        },
+        "2005": {
+          "days_since_epoch": 12896.8,
+          "doy": 113
+        },
+        "2006": {
+          "days_since_epoch": 13266.4,
+          "doy": 118
+        },
+        "2007": {
+          "days_since_epoch": 13632.2,
+          "doy": 119
+        },
+        "2008": {
+          "days_since_epoch": 13993.4,
+          "doy": 115
+        },
+        "2009": {
+          "days_since_epoch": 14355.9,
+          "doy": 111
+        },
+        "2010": {
+          "days_since_epoch": 14725.2,
+          "doy": 116
+        },
+        "2011": {
+          "days_since_epoch": 15095.3,
+          "doy": 121
+        },
+        "2012": {
+          "days_since_epoch": 15456.2,
+          "doy": 117
+        },
+        "2013": {
+          "days_since_epoch": 15819.4,
+          "doy": 114
+        },
+        "2014": {
+          "days_since_epoch": 16183.7,
+          "doy": 113
+        },
+        "2015": {
+          "days_since_epoch": 16552.7,
+          "doy": 117
+        },
+        "2016": {
+          "days_since_epoch": 16915.1,
+          "doy": 115
+        },
+        "2017": {
+          "days_since_epoch": 17283.3,
+          "doy": 117
+        },
+        "2018": {
+          "days_since_epoch": 17645.7,
+          "doy": 114
+        },
+        "2019": {
+          "days_since_epoch": 18007.2,
+          "doy": 111
+        },
+        "2020": {
+          "days_since_epoch": 18378.9,
+          "doy": 117
+        },
+        "2021": {
+          "days_since_epoch": 18739.0,
+          "doy": 112
+        },
+        "2022": {
+          "days_since_epoch": 19111.5,
+          "doy": 119
+        },
+        "2023": {
+          "days_since_epoch": 19472.1,
+          "doy": 115
+        },
+        "2024": {
+          "days_since_epoch": 19834.0,
+          "doy": 111
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12358.2,
+          "doy": 306
+        },
+        "2004": {
+          "days_since_epoch": 12722.4,
+          "doy": 305
+        },
+        "2005": {
+          "days_since_epoch": 13088.2,
+          "doy": 305
+        },
+        "2006": {
+          "days_since_epoch": 13453.3,
+          "doy": 305
+        },
+        "2007": {
+          "days_since_epoch": 13819.2,
+          "doy": 306
+        },
+        "2008": {
+          "days_since_epoch": 14184.1,
+          "doy": 306
+        },
+        "2009": {
+          "days_since_epoch": 14551.5,
+          "doy": 307
+        },
+        "2010": {
+          "days_since_epoch": 14912.1,
+          "doy": 303
+        },
+        "2011": {
+          "days_since_epoch": 15277.9,
+          "doy": 303
+        },
+        "2012": {
+          "days_since_epoch": 15642.5,
+          "doy": 303
+        },
+        "2013": {
+          "days_since_epoch": 16005.6,
+          "doy": 300
+        },
+        "2014": {
+          "days_since_epoch": 16374.4,
+          "doy": 304
+        },
+        "2015": {
+          "days_since_epoch": 16742.5,
+          "doy": 307
+        },
+        "2016": {
+          "days_since_epoch": 17102.3,
+          "doy": 302
+        },
+        "2017": {
+          "days_since_epoch": 17475.7,
+          "doy": 309
+        },
+        "2018": {
+          "days_since_epoch": 17835.5,
+          "doy": 304
+        },
+        "2019": {
+          "days_since_epoch": 18197.9,
+          "doy": 301
+        },
+        "2020": {
+          "days_since_epoch": 18567.7,
+          "doy": 306
+        },
+        "2021": {
+          "days_since_epoch": 18929.1,
+          "doy": 302
+        },
+        "2022": {
+          "days_since_epoch": 19293.3,
+          "doy": 301
+        },
+        "2023": {
+          "days_since_epoch": 19665.0,
+          "doy": 308
+        },
+        "2024": {
+          "days_since_epoch": 20030.3,
+          "doy": 308
+        }
+      },
+      "growing_season": {
+        "2003": 186.1,
+        "2004": 187.2,
+        "2005": 191.4,
+        "2006": 186.9,
+        "2007": 186.9,
+        "2008": 190.7,
+        "2009": 195.6,
+        "2010": 186.9,
+        "2011": 182.5,
+        "2012": 186.4,
+        "2013": 186.2,
+        "2014": 190.7,
+        "2015": 189.9,
+        "2016": 187.2,
+        "2017": 192.4,
+        "2018": 189.8,
+        "2019": 190.7,
+        "2020": 188.8,
+        "2021": 190.1,
+        "2022": 181.8,
+        "2023": 192.9,
+        "2024": 196.4
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 115.6,
+      "greenup_min_doy": 111,
+      "greenup_max_doy": 121,
+      "dormancy_mean_doy": 304.6,
+      "dormancy_min_doy": 300,
+      "dormancy_max_doy": 309,
+      "growing_season_mean_days": 189.0,
+      "growing_season_min_days": 181.8,
+      "growing_season_max_days": 196.4,
+      "growing_season_std_days": 3.6,
+      "greenup_trend_days_per_year": -0.17,
+      "dormancy_trend_days_per_year": -0.024,
+      "growing_season_trend_days_per_year": 0.146
+    },
+    "interpretation": {
+      "greenup": "略提前",
+      "dormancy": "基本稳定",
+      "growing_season": "略延长"
+    }
+  },
+  {
+    "region_id": "gannan-luqu",
+    "region_name": "甘南州碌曲县",
+    "longitude": 102.49,
+    "latitude": 34.59,
+    "pixel_row": 1479,
+    "pixel_col": 7008,
+    "window_size": 60,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2023,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "days_since_epoch": 12177.8,
+          "doy": 125
+        },
+        "2004": {
+          "days_since_epoch": 12543.5,
+          "doy": 126
+        },
+        "2005": {
+          "days_since_epoch": 12907.9,
+          "doy": 124
+        },
+        "2006": {
+          "days_since_epoch": 13274.2,
+          "doy": 126
+        },
+        "2007": {
+          "days_since_epoch": 13638.3,
+          "doy": 125
+        },
+        "2008": {
+          "days_since_epoch": 14002.5,
+          "doy": 124
+        },
+        "2009": {
+          "days_since_epoch": 14365.0,
+          "doy": 121
+        },
+        "2010": {
+          "days_since_epoch": 14736.7,
+          "doy": 127
+        },
+        "2011": {
+          "days_since_epoch": 15101.8,
+          "doy": 127
+        },
+        "2012": {
+          "days_since_epoch": 15461.6,
+          "doy": 122
+        },
+        "2013": {
+          "days_since_epoch": 15828.2,
+          "doy": 123
+        },
+        "2014": {
+          "days_since_epoch": 16190.8,
+          "doy": 120
+        },
+        "2015": {
+          "days_since_epoch": 16557.5,
+          "doy": 122
+        },
+        "2016": {
+          "days_since_epoch": 16924.8,
+          "doy": 124
+        },
+        "2017": {
+          "days_since_epoch": 17289.2,
+          "doy": 123
+        },
+        "2018": {
+          "days_since_epoch": 17654.3,
+          "doy": 123
+        },
+        "2019": {
+          "days_since_epoch": 18013.9,
+          "doy": 117
+        },
+        "2020": {
+          "days_since_epoch": 18384.5,
+          "doy": 123
+        },
+        "2021": {
+          "days_since_epoch": 18748.5,
+          "doy": 121
+        },
+        "2022": {
+          "days_since_epoch": 19114.4,
+          "doy": 122
+        },
+        "2023": {
+          "days_since_epoch": 19482.7,
+          "doy": 125
+        },
+        "2024": {
+          "days_since_epoch": 19839.6,
+          "doy": 117
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "days_since_epoch": 12354.2,
+          "doy": 302
+        },
+        "2004": {
+          "days_since_epoch": 12716.8,
+          "doy": 299
+        },
+        "2005": {
+          "days_since_epoch": 13083.9,
+          "doy": 300
+        },
+        "2006": {
+          "days_since_epoch": 13447.7,
+          "doy": 299
+        },
+        "2007": {
+          "days_since_epoch": 13815.1,
+          "doy": 302
+        },
+        "2008": {
+          "days_since_epoch": 14181.9,
+          "doy": 303
+        },
+        "2009": {
+          "days_since_epoch": 14544.7,
+          "doy": 300
+        },
+        "2010": {
+          "days_since_epoch": 14910.6,
+          "doy": 301
+        },
+        "2011": {
+          "days_since_epoch": 15275.2,
+          "doy": 301
+        },
+        "2012": {
+          "days_since_epoch": 15640.0,
+          "doy": 301
+        },
+        "2013": {
+          "days_since_epoch": 16003.2,
+          "doy": 298
+        },
+        "2014": {
+          "days_since_epoch": 16368.9,
+          "doy": 298
+        },
+        "2015": {
+          "days_since_epoch": 16734.7,
+          "doy": 299
+        },
+        "2016": {
+          "days_since_epoch": 17101.8,
+          "doy": 301
+        },
+        "2017": {
+          "days_since_epoch": 17471.4,
+          "doy": 305
+        },
+        "2018": {
+          "days_since_epoch": 17830.6,
+          "doy": 299
+        },
+        "2019": {
+          "days_since_epoch": 18196.2,
+          "doy": 300
+        },
+        "2020": {
+          "days_since_epoch": 18565.4,
+          "doy": 304
+        },
+        "2021": {
+          "days_since_epoch": 18928.2,
+          "doy": 301
+        },
+        "2022": {
+          "days_since_epoch": 19293.3,
+          "doy": 301
+        },
+        "2023": {
+          "days_since_epoch": 19661.7,
+          "doy": 304
+        },
+        "2024": {
+          "days_since_epoch": 20029.4,
+          "doy": 307
+        }
+      },
+      "growing_season": {
+        "2003": 176.4,
+        "2004": 173.3,
+        "2005": 176.1,
+        "2006": 173.6,
+        "2007": 176.8,
+        "2008": 179.3,
+        "2009": 179.7,
+        "2010": 173.9,
+        "2011": 173.5,
+        "2012": 178.4,
+        "2013": 175.0,
+        "2014": 178.2,
+        "2015": 177.2,
+        "2016": 176.9,
+        "2017": 182.2,
+        "2018": 176.3,
+        "2019": 182.3,
+        "2020": 180.9,
+        "2021": 179.8,
+        "2022": 178.9,
+        "2023": 179.0,
+        "2024": 189.8
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 123.0,
+      "greenup_min_doy": 117,
+      "greenup_max_doy": 127,
+      "dormancy_mean_doy": 301.1,
+      "dormancy_min_doy": 298,
+      "dormancy_max_doy": 307,
+      "growing_season_mean_days": 178.1,
+      "growing_season_min_days": 173.3,
+      "growing_season_max_days": 189.8,
+      "growing_season_std_days": 3.7,
+      "greenup_trend_days_per_year": -0.241,
+      "dormancy_trend_days_per_year": 0.143,
+      "growing_season_trend_days_per_year": 0.373
+    },
+    "interpretation": {
+      "greenup": "略提前",
+      "dormancy": "略推迟",
+      "growing_season": "逐年延长 (趋势明显)"
+    }
+  },
+  {
+    "region_id": "linzhi-bayi",
+    "region_name": "林芝市巴宜区",
+    "longitude": 94.36,
+    "latitude": 29.64,
+    "pixel_row": null,
+    "pixel_col": null,
+    "window_size": null,
+    "years": [
+      2003,
+      2004,
+      2005,
+      2007,
+      2009,
+      2010,
+      2012,
+      2013,
+      2014,
+      2015,
+      2016,
+      2017,
+      2018,
+      2019,
+      2020,
+      2021,
+      2022,
+      2024
+    ],
+    "data": {
+      "greenup": {
+        "2003": {
+          "doy": 94,
+          "days_since_epoch": null
+        },
+        "2004": {
+          "doy": 81,
+          "days_since_epoch": null
+        },
+        "2005": {
+          "doy": 97,
+          "days_since_epoch": null
+        },
+        "2007": {
+          "doy": 92,
+          "days_since_epoch": null
+        },
+        "2009": {
+          "doy": 106,
+          "days_since_epoch": null
+        },
+        "2010": {
+          "doy": 82,
+          "days_since_epoch": null
+        },
+        "2012": {
+          "doy": 102,
+          "days_since_epoch": null
+        },
+        "2013": {
+          "doy": 100,
+          "days_since_epoch": null
+        },
+        "2014": {
+          "doy": 96,
+          "days_since_epoch": null
+        },
+        "2015": {
+          "doy": 89,
+          "days_since_epoch": null
+        },
+        "2016": {
+          "doy": 94,
+          "days_since_epoch": null
+        },
+        "2017": {
+          "doy": 91,
+          "days_since_epoch": null
+        },
+        "2018": {
+          "doy": 99,
+          "days_since_epoch": null
+        },
+        "2019": {
+          "doy": 100,
+          "days_since_epoch": null
+        },
+        "2020": {
+          "doy": 107,
+          "days_since_epoch": null
+        },
+        "2021": {
+          "doy": 80,
+          "days_since_epoch": null
+        },
+        "2022": {
+          "doy": 78,
+          "days_since_epoch": null
+        },
+        "2024": {
+          "doy": 109,
+          "days_since_epoch": null
+        }
+      },
+      "dormancy": {
+        "2003": {
+          "doy": 323,
+          "days_since_epoch": null
+        },
+        "2004": {
+          "doy": 318,
+          "days_since_epoch": null
+        },
+        "2005": {
+          "doy": 328,
+          "days_since_epoch": null
+        },
+        "2007": {
+          "doy": 326,
+          "days_since_epoch": null
+        },
+        "2009": {
+          "doy": 324,
+          "days_since_epoch": null
+        },
+        "2010": {
+          "doy": 325,
+          "days_since_epoch": null
+        },
+        "2012": {
+          "doy": 303,
+          "days_since_epoch": null
+        },
+        "2013": {
+          "doy": 314,
+          "days_since_epoch": null
+        },
+        "2014": {
+          "doy": 328,
+          "days_since_epoch": null
+        },
+        "2015": {
+          "doy": 312,
+          "days_since_epoch": null
+        },
+        "2016": {
+          "doy": 338,
+          "days_since_epoch": null
+        },
+        "2017": {
+          "doy": 306,
+          "days_since_epoch": null
+        },
+        "2018": {
+          "doy": 328,
+          "days_since_epoch": null
+        },
+        "2019": {
+          "doy": 337,
+          "days_since_epoch": null
+        },
+        "2020": {
+          "doy": 312,
+          "days_since_epoch": null
+        },
+        "2021": {
+          "doy": 353,
+          "days_since_epoch": null
+        },
+        "2022": {
+          "doy": 361,
+          "days_since_epoch": null
+        },
+        "2024": {
+          "doy": 349,
+          "days_since_epoch": null
+        }
+      },
+      "growing_season": {
+        "2003": 229,
+        "2004": 237,
+        "2005": 231,
+        "2007": 234,
+        "2009": 218,
+        "2010": 243,
+        "2012": 201,
+        "2013": 214,
+        "2014": 232,
+        "2015": 223,
+        "2016": 244,
+        "2017": 215,
+        "2018": 229,
+        "2019": 237,
+        "2020": 205,
+        "2021": 273,
+        "2022": 283,
+        "2024": 240
+      }
+    },
+    "statistics": {
+      "greenup_mean_doy": 94.3,
+      "greenup_min_doy": 78,
+      "greenup_max_doy": 109,
+      "dormancy_mean_doy": 326.9,
+      "dormancy_min_doy": 303,
+      "dormancy_max_doy": 361,
+      "growing_season_mean_days": 232.7,
+      "growing_season_min_days": 201,
+      "growing_season_max_days": 283,
+      "growing_season_std_days": null,
+      "greenup_trend_days_per_year": null,
+      "dormancy_trend_days_per_year": null,
+      "growing_season_trend_days_per_year": null
+    },
+    "interpretation": {
+      "greenup": "温度阈值法推导(>=5°C连续5天)",
+      "dormancy": "温度阈值法推导(<0°C连续5天)",
+      "growing_season": "基于温度推导，18年有效"
+    },
+    "note": "⚠️ 此处数据为预测/推导：基于 Open-Meteo ERA5 日均温用温度阈值法(>=5°C连续5天为greenup, <0°C连续5天为dormancy)推导，非 MODIS MCD12Q2 真实物候观测。请勿用于物候精度分析。",
+    "is_derived": true,
+    "derivation_method": "temperature_threshold_from_openmeteo_era5",
+    "derivation_note": "⚠️ 此处数据为预测/推导：基于 Open-Meteo ERA5 日均温用温度阈值法(>=5°C连续5天为greenup, <0°C连续5天为dormancy)推导，非 MODIS MCD12Q2 真实物候观测。请勿用于物候精度分析。",
+    "derivation_warning": "此处数据为预测/推导，非真实物候观测",
+    "⚠️ WARNING": "此处数据为预测/推导，非真实物候观测"
+  }
+]

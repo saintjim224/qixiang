@@ -1,0 +1,1974 @@
+[
+  {
+    "subject_name": "班戈县绿色牧业合作社",
+    "credit_line": 271,
+    "used_credit": 166,
+    "interest_rate": "4.20%",
+    "term_months": 12,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "80%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "班戈县家庭牧场",
+    "credit_line": 255,
+    "used_credit": 152,
+    "interest_rate": "4.25%",
+    "term_months": 18,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "74%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "班戈县饲草供应中心",
+    "credit_line": 233,
+    "used_credit": 136,
+    "interest_rate": "4.30%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "68%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "色尼区绿色牧业合作社",
+    "credit_line": 260,
+    "used_credit": 167,
+    "interest_rate": "4.28%",
+    "term_months": 18,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "76%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "色尼区家庭牧场",
+    "credit_line": 242,
+    "used_credit": 152,
+    "interest_rate": "4.33%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "70%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "色尼区饲草供应中心",
+    "credit_line": 220,
+    "used_credit": 134,
+    "interest_rate": "4.38%",
+    "term_months": 36,
+    "repayment_status": "逾期关注",
+    "overdue_times": 1,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "64%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "聂荣县绿色牧业合作社",
+    "credit_line": 248,
+    "used_credit": 168,
+    "interest_rate": "4.36%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "72%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "聂荣县家庭牧场",
+    "credit_line": 229,
+    "used_credit": 151,
+    "interest_rate": "4.41%",
+    "term_months": 36,
+    "repayment_status": "逾期关注",
+    "overdue_times": 1,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "66%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "聂荣县饲草供应中心",
+    "credit_line": 206,
+    "used_credit": 132,
+    "interest_rate": "4.46%",
+    "term_months": 12,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "60%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "安多县绿色牧业合作社",
+    "credit_line": 236,
+    "used_credit": 168,
+    "interest_rate": "4.44%",
+    "term_months": 36,
+    "repayment_status": "逾期关注",
+    "overdue_times": 1,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "68%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "安多县家庭牧场",
+    "credit_line": 217,
+    "used_credit": 150,
+    "interest_rate": "4.49%",
+    "term_months": 12,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "62%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "安多县饲草供应中心",
+    "credit_line": 193,
+    "used_credit": 130,
+    "interest_rate": "4.54%",
+    "term_months": 18,
+    "repayment_status": "关注",
+    "overdue_times": 1,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "56%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "申扎县绿色牧业合作社",
+    "credit_line": 224,
+    "used_credit": 167,
+    "interest_rate": "4.52%",
+    "term_months": 12,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "64%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "申扎县家庭牧场",
+    "credit_line": 204,
+    "used_credit": 147,
+    "interest_rate": "4.57%",
+    "term_months": 18,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "58%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "申扎县饲草供应中心",
+    "credit_line": 180,
+    "used_credit": 126,
+    "interest_rate": "4.62%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "52%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "卡若区绿色牧业合作社",
+    "credit_line": 212,
+    "used_credit": 130,
+    "interest_rate": "4.60%",
+    "term_months": 18,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "60%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "卡若区家庭牧场",
+    "credit_line": 192,
+    "used_credit": 114,
+    "interest_rate": "4.65%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "54%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "卡若区饲草供应中心",
+    "credit_line": 166,
+    "used_credit": 97,
+    "interest_rate": "4.70%",
+    "term_months": 36,
+    "repayment_status": "关注",
+    "overdue_times": 1,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "48%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "洛隆县绿色牧业合作社",
+    "credit_line": 201,
+    "used_credit": 129,
+    "interest_rate": "4.68%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "80%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "洛隆县家庭牧场",
+    "credit_line": 179,
+    "used_credit": 112,
+    "interest_rate": "4.73%",
+    "term_months": 36,
+    "repayment_status": "关注",
+    "overdue_times": 1,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "74%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "洛隆县饲草供应中心",
+    "credit_line": 153,
+    "used_credit": 93,
+    "interest_rate": "4.78%",
+    "term_months": 12,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "68%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "类乌齐县绿色牧业合作社",
+    "credit_line": 189,
+    "used_credit": 128,
+    "interest_rate": "4.76%",
+    "term_months": 36,
+    "repayment_status": "逾期关注",
+    "overdue_times": 1,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "76%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "类乌齐县家庭牧场",
+    "credit_line": 166,
+    "used_credit": 110,
+    "interest_rate": "4.81%",
+    "term_months": 12,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "70%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "类乌齐县饲草供应中心",
+    "credit_line": 139,
+    "used_credit": 89,
+    "interest_rate": "4.86%",
+    "term_months": 18,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "64%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "江达县绿色牧业合作社",
+    "credit_line": 177,
+    "used_credit": 126,
+    "interest_rate": "4.20%",
+    "term_months": 12,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "72%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "江达县家庭牧场",
+    "credit_line": 154,
+    "used_credit": 106,
+    "interest_rate": "4.25%",
+    "term_months": 18,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "66%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "江达县饲草供应中心",
+    "credit_line": 126,
+    "used_credit": 85,
+    "interest_rate": "4.30%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "60%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "谢通门县绿色牧业合作社",
+    "credit_line": 271,
+    "used_credit": 202,
+    "interest_rate": "4.28%",
+    "term_months": 18,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "68%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "谢通门县家庭牧场",
+    "credit_line": 255,
+    "used_credit": 184,
+    "interest_rate": "4.33%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "62%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "谢通门县饲草供应中心",
+    "credit_line": 233,
+    "used_credit": 164,
+    "interest_rate": "4.38%",
+    "term_months": 36,
+    "repayment_status": "关注",
+    "overdue_times": 1,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "56%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "江孜县绿色牧业合作社",
+    "credit_line": 260,
+    "used_credit": 158,
+    "interest_rate": "4.36%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "64%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "江孜县家庭牧场",
+    "credit_line": 242,
+    "used_credit": 144,
+    "interest_rate": "4.41%",
+    "term_months": 36,
+    "repayment_status": "逾期关注",
+    "overdue_times": 1,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "58%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "江孜县饲草供应中心",
+    "credit_line": 220,
+    "used_credit": 128,
+    "interest_rate": "4.46%",
+    "term_months": 12,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "52%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "康马县绿色牧业合作社",
+    "credit_line": 248,
+    "used_credit": 160,
+    "interest_rate": "4.44%",
+    "term_months": 36,
+    "repayment_status": "逾期关注",
+    "overdue_times": 1,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "60%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "康马县家庭牧场",
+    "credit_line": 229,
+    "used_credit": 144,
+    "interest_rate": "4.49%",
+    "term_months": 12,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "54%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "康马县饲草供应中心",
+    "credit_line": 206,
+    "used_credit": 126,
+    "interest_rate": "4.54%",
+    "term_months": 18,
+    "repayment_status": "关注",
+    "overdue_times": 1,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "48%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "仲巴县绿色牧业合作社",
+    "credit_line": 236,
+    "used_credit": 160,
+    "interest_rate": "4.52%",
+    "term_months": 12,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "80%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "仲巴县家庭牧场",
+    "credit_line": 217,
+    "used_credit": 143,
+    "interest_rate": "4.57%",
+    "term_months": 18,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "74%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "仲巴县饲草供应中心",
+    "credit_line": 193,
+    "used_credit": 124,
+    "interest_rate": "4.62%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "68%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "措那县绿色牧业合作社",
+    "credit_line": 224,
+    "used_credit": 160,
+    "interest_rate": "4.60%",
+    "term_months": 18,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "76%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "措那县家庭牧场",
+    "credit_line": 204,
+    "used_credit": 141,
+    "interest_rate": "4.65%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "70%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "措那县饲草供应中心",
+    "credit_line": 180,
+    "used_credit": 121,
+    "interest_rate": "4.70%",
+    "term_months": 36,
+    "repayment_status": "关注",
+    "overdue_times": 1,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "64%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "改则县绿色牧业合作社",
+    "credit_line": 212,
+    "used_credit": 158,
+    "interest_rate": "4.68%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "72%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "改则县家庭牧场",
+    "credit_line": 192,
+    "used_credit": 138,
+    "interest_rate": "4.73%",
+    "term_months": 36,
+    "repayment_status": "逾期关注",
+    "overdue_times": 1,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "66%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "改则县饲草供应中心",
+    "credit_line": 166,
+    "used_credit": 117,
+    "interest_rate": "4.78%",
+    "term_months": 12,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "60%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "称多县绿色牧业合作社",
+    "credit_line": 201,
+    "used_credit": 122,
+    "interest_rate": "4.76%",
+    "term_months": 36,
+    "repayment_status": "逾期关注",
+    "overdue_times": 1,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "68%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "称多县家庭牧场",
+    "credit_line": 179,
+    "used_credit": 106,
+    "interest_rate": "4.81%",
+    "term_months": 12,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "62%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "称多县饲草供应中心",
+    "credit_line": 153,
+    "used_credit": 89,
+    "interest_rate": "4.86%",
+    "term_months": 18,
+    "repayment_status": "关注",
+    "overdue_times": 1,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "56%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "杂多县绿色牧业合作社",
+    "credit_line": 189,
+    "used_credit": 122,
+    "interest_rate": "4.20%",
+    "term_months": 12,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "64%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "杂多县家庭牧场",
+    "credit_line": 166,
+    "used_credit": 104,
+    "interest_rate": "4.25%",
+    "term_months": 18,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "58%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "杂多县饲草供应中心",
+    "credit_line": 139,
+    "used_credit": 85,
+    "interest_rate": "4.30%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "52%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "玛沁县绿色牧业合作社",
+    "credit_line": 177,
+    "used_credit": 120,
+    "interest_rate": "4.28%",
+    "term_months": 18,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "60%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "玛沁县家庭牧场",
+    "credit_line": 154,
+    "used_credit": 101,
+    "interest_rate": "4.33%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "54%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "玛沁县饲草供应中心",
+    "credit_line": 126,
+    "used_credit": 81,
+    "interest_rate": "4.38%",
+    "term_months": 36,
+    "repayment_status": "关注",
+    "overdue_times": 1,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "48%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "久治县绿色牧业合作社",
+    "credit_line": 271,
+    "used_credit": 193,
+    "interest_rate": "4.36%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "80%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "久治县家庭牧场",
+    "credit_line": 255,
+    "used_credit": 176,
+    "interest_rate": "4.41%",
+    "term_months": 36,
+    "repayment_status": "逾期关注",
+    "overdue_times": 1,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "74%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "久治县饲草供应中心",
+    "credit_line": 233,
+    "used_credit": 157,
+    "interest_rate": "4.46%",
+    "term_months": 12,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "68%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "刚察县绿色牧业合作社",
+    "credit_line": 260,
+    "used_credit": 194,
+    "interest_rate": "4.44%",
+    "term_months": 36,
+    "repayment_status": "逾期关注",
+    "overdue_times": 1,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "76%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "刚察县家庭牧场",
+    "credit_line": 242,
+    "used_credit": 175,
+    "interest_rate": "4.49%",
+    "term_months": 12,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "70%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "刚察县饲草供应中心",
+    "credit_line": 220,
+    "used_credit": 154,
+    "interest_rate": "4.54%",
+    "term_months": 18,
+    "repayment_status": "关注",
+    "overdue_times": 1,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "64%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "泽库县绿色牧业合作社",
+    "credit_line": 248,
+    "used_credit": 151,
+    "interest_rate": "4.52%",
+    "term_months": 12,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "72%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "泽库县家庭牧场",
+    "credit_line": 229,
+    "used_credit": 136,
+    "interest_rate": "4.57%",
+    "term_months": 18,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "66%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "泽库县饲草供应中心",
+    "credit_line": 206,
+    "used_credit": 120,
+    "interest_rate": "4.62%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "60%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "石渠县绿色牧业合作社",
+    "credit_line": 236,
+    "used_credit": 152,
+    "interest_rate": "4.60%",
+    "term_months": 18,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "68%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "石渠县家庭牧场",
+    "credit_line": 217,
+    "used_credit": 136,
+    "interest_rate": "4.65%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "62%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "石渠县饲草供应中心",
+    "credit_line": 193,
+    "used_credit": 118,
+    "interest_rate": "4.70%",
+    "term_months": 36,
+    "repayment_status": "关注",
+    "overdue_times": 1,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "56%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "色达县绿色牧业合作社",
+    "credit_line": 224,
+    "used_credit": 152,
+    "interest_rate": "4.68%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "64%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "色达县家庭牧场",
+    "credit_line": 204,
+    "used_credit": 134,
+    "interest_rate": "4.73%",
+    "term_months": 36,
+    "repayment_status": "逾期关注",
+    "overdue_times": 1,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "58%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "色达县饲草供应中心",
+    "credit_line": 180,
+    "used_credit": 115,
+    "interest_rate": "4.78%",
+    "term_months": 12,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "52%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "红原县绿色牧业合作社",
+    "credit_line": 212,
+    "used_credit": 151,
+    "interest_rate": "4.76%",
+    "term_months": 36,
+    "repayment_status": "逾期关注",
+    "overdue_times": 1,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "60%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "红原县家庭牧场",
+    "credit_line": 192,
+    "used_credit": 132,
+    "interest_rate": "4.81%",
+    "term_months": 12,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "54%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "红原县饲草供应中心",
+    "credit_line": 166,
+    "used_credit": 112,
+    "interest_rate": "4.86%",
+    "term_months": 18,
+    "repayment_status": "关注",
+    "overdue_times": 1,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "建议补保",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "48%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "碌曲县绿色牧业合作社",
+    "credit_line": 201,
+    "used_credit": 150,
+    "interest_rate": "4.20%",
+    "term_months": 12,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "冬季补饲、牦牛防疫、饲草采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "80%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "碌曲县家庭牧场",
+    "credit_line": 179,
+    "used_credit": 129,
+    "interest_rate": "4.25%",
+    "term_months": 18,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "loan_purpose": "棚圈维护、活体交易、疫苗采购",
+    "post_loan_action": "持续监测",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "74%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "100%"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "碌曲县饲草供应中心",
+    "credit_line": 153,
+    "used_credit": 107,
+    "interest_rate": "4.30%",
+    "term_months": 24,
+    "repayment_status": "逾期关注",
+    "overdue_times": 2,
+    "loan_purpose": "饲草储备、冷链运输、订单周转",
+    "post_loan_action": "贷后核查",
+    "insurance_status": "覆盖有效",
+    "policies": [
+      {
+        "type": "牦牛/藏羊养殖保险",
+        "coverage": "68%"
+      },
+      {
+        "type": "雪灾指数保险",
+        "coverage": "待补充"
+      }
+    ],
+    "data_source": "sample",
+    "is_sample": true,
+    "sample_note": "比赛演示用工行授信样例，不代表真实授信记录",
+    "imported_at": "2026-05-29T15:41:15.037993+00:00"
+  },
+  {
+    "subject_name": "百巴村牦牛养殖合作社",
+    "credit_line": 600,
+    "used_credit": 500,
+    "interest_rate": "3.85%",
+    "term_months": 36,
+    "repayment_status": "正常",
+    "overdue_times": 0,
+    "data_source": "real_insurance",
+    "policies": [
+      {
+        "type": "养殖险牛",
+        "insured_qty": 1135,
+        "coverage": "88%"
+      },
+      {
+        "type": "草场保险",
+        "insured_qty": 120000,
+        "coverage": "100%"
+      }
+    ]
+  }
+]
