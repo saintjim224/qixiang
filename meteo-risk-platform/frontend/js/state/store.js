@@ -750,12 +750,18 @@
   }
 
   var PU_ORDER = [
-    { key: "Baseline 1 (Rule-based)", fallback: "基线 1 · 规则评分" },
-    { key: "Baseline 2 (Naive Supervised)", fallback: "基线 2 · 未标注当负例" },
-    { key: "Model 3 (PU Learning Model)", fallback: "本项目 · PU Learning" },
+    { key: "Baseline 1 (Rule-based)", fallback: "基线 1 · 规则评分", ours: false },
+    { key: "Baseline 2 (Naive Supervised)", fallback: "基线 2 · 未标注当负例", ours: false },
+    { key: "Model 3 (PU Learning Model)", fallback: "本项目 · PU Learning", ours: true },
+    // 第三方 pulearn 的 Elkan-Noto 独立实现。放在最后是因为它是**外部佐证**，
+    // 不是本项目的模型；排序上也避免让人误读成"我们的第四个模型"。
+    { key: "Baseline 4 (Elkan-Noto PU)", fallback: "基线 4 · Elkan-Noto (第三方)", ours: false },
   ];
 
-  /** PU 三基线表：行来自接口，顺序与标签由接口的 name_cn 决定，前端不编数值。 */
+  var MODEL3_KEY = "Model 3 (PU Learning Model)";
+  var ELKAN_KEY = "Baseline 4 (Elkan-Noto PU)";
+
+  /** PU 对照表：行来自接口，顺序与标签由接口的 name_cn 决定，前端不编数值。 */
   var puRows = computed(function () {
     var b = puBenchmark.value;
     if (!b || !b.benchmark_results) return [];
@@ -763,16 +769,88 @@
       return b.benchmark_results[o.key];
     }).map(function (o) {
       var m = b.benchmark_results[o.key];
+      // available === false 表示该对照根本没跑起来（如缺 pulearn 库）。
+      // 此时六列指标全为 null，由模板显示"未安装，跳过该对照"，
+      // 绝不能渲染成 0——那是把"没测"说成了"测得 0 分"。
+      var available = m.available !== false;
       return {
         key: o.key,
         name_cn: m.name_cn || o.fallback,
-        accuracy: m.accuracy,
-        precision: m.precision,
-        recall: m.recall,
-        f1_score: m.f1_score,
-        brier_score: m.brier_score,
+        ours: !!o.ours,
+        available: available,
+        unavailable_reason: m.unavailable_reason || "",
+        accuracy: available ? m.accuracy : null,
+        precision: available ? m.precision : null,
+        recall: available ? m.recall : null,
+        f1_score: available ? m.f1_score : null,
+        brier_score: available ? m.brier_score : null,
       };
     });
+  });
+
+  /**
+   * 对照结论必须现算，不能写死。
+   *
+   * 实测：第三方 Elkan-Noto 的 F1 (0.5862) 略高于本项目模型 (0.5769)，Brier 更差
+   * (0.0873 vs 0.0668)。所以"F1 与 Brier 同时最优"这句话是**假的**——如果照原样
+   * 印在页面上，就是在用一句体面的措辞盖过一个能被表里数字当场戳破的结论。
+   * 本 computed 把真实的名次关系算出来，模板据此选择如实表述。
+   */
+  var puVerdict = computed(function () {
+    var rows = puRows.value.filter(function (r) {
+      return r.available && isFinite(Number(r.f1_score));
+    });
+    if (!rows.length) return null;
+
+    var bestF1 = rows[0], bestBrier = rows[0];
+    rows.forEach(function (r) {
+      if (Number(r.f1_score) > Number(bestF1.f1_score)) bestF1 = r;
+      if (Number(r.brier_score) < Number(bestBrier.brier_score)) bestBrier = r;
+    });
+
+    var ours = null;
+    rows.forEach(function (r) {
+      if (r.key === MODEL3_KEY) ours = r;
+    });
+    var elkan = null;
+    rows.forEach(function (r) {
+      if (r.key === ELKAN_KEY) elkan = r;
+    });
+
+    return {
+      bestF1: bestF1,
+      bestBrier: bestBrier,
+      ours: ours,
+      elkan: elkan,
+      // 结论只在"当次真正跑起来的行"范围内成立，行数必须一起说出去
+      nAvailable: rows.length,
+      nTotal: puRows.value.length,
+      // 有对照行没跑起来时，把原因一并带出来，供页面如实说明
+      unavailableReason: (function () {
+        var skip = puRows.value.filter(function (r) {
+          return !r.available;
+        })[0];
+        return skip ? (skip.name_cn + "：" + skip.unavailable_reason) : "";
+      })(),
+      // 只有两项都确实由本项目模型拿下时，才允许说"双优"
+      oursDominates:
+        !!ours &&
+        bestF1.key === MODEL3_KEY &&
+        bestBrier.key === MODEL3_KEY,
+      /** 第三方实现是否给出同向佐证：两者 F1 都远高于朴素监督基线 */
+      thirdPartyAgrees: (function () {
+        if (!ours || !elkan) return false;
+        var naive = null;
+        rows.forEach(function (r) {
+          if (r.key === "Baseline 2 (Naive Supervised)") naive = r;
+        });
+        if (!naive) return false;
+        return (
+          Number(elkan.f1_score) > Number(naive.f1_score) &&
+          Number(ours.f1_score) > Number(naive.f1_score)
+        );
+      })(),
+    };
   });
 
   function puRow(key, field) {
@@ -942,7 +1020,7 @@
     categoryTagClass: categoryTagClass, submitDispatch: submitDispatch,
     loadBenchmarks: loadBenchmarks, loadMethodCompare: loadMethodCompare,
     // 展示用派生量
-    puRows: puRows, puRow: puRow, protocolList: protocolList,
+    puRows: puRows, puRow: puRow, protocolList: protocolList, puVerdict: puVerdict,
     spiChips: spiChips, gdiChips: gdiChips, nppChips: nppChips, priorityChips: priorityChips,
     disasterChips: disasterChips, orDash: orDash, signedPct: signedPct,
     get methodCompareCache() { return methodCompareCache; },

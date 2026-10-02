@@ -65,6 +65,7 @@
         puRows: S.puRows,
         puRow: S.puRow,
         protocolList: S.protocolList,
+        puVerdict: S.puVerdict,
         spiChips: S.spiChips,
         gdiChips: S.gdiChips,
         nppChips: S.nppChips,

@@ -450,6 +450,14 @@ body.dark-theme {
 }
 .method-stat .ms-value.is-flag { color: var(--orange); }
 .method-stat .ms-value.is-ok { color: var(--green); }
+/* 样本量这类"前提条件"附在数值后，字号小但不该淡到读不见 */
+.method-stat .ms-note {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
 
 /* 26 县配对哑铃对照：一行一个县，需要比折线图多得多的纵向空间。
    每行约 14px（26 行 + 轴标签 + 图例），低于此值 8px 的端点圆点会互相咬合。 */
@@ -767,6 +775,23 @@ body.dark-theme {
   background: var(--text-muted);
 }
 .baseline-diagnosis strong { color: var(--text-main); font-weight: 600; }
+
+/* 对照表里"没跑起来"的那一行：说明文字跨列铺开，视觉上就不该像一组数值 */
+.td-skip {
+  color: var(--text-muted);
+  font-size: 11px;
+  font-style: normal;
+  background: rgba(148, 163, 184, 0.06);
+}
+
+/* 第三方佐证段落：附在失效模式分析之后，语气是补充说明而非结论 */
+.verdict-note {
+  font-size: 11px;
+  line-height: 1.6;
+  color: #cbd5e1;
+  margin-top: 4px;
+}
+.verdict-note b { color: var(--text-main); font-weight: 600; }
 
 .shap-summary-box {
   background: rgba(255, 255, 255, 0.02);

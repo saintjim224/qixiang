@@ -438,16 +438,21 @@
       return;
     }
 
-    var order = ["Baseline 1 (Rule-based)", "Baseline 2 (Naive Supervised)", "Model 3 (PU Learning Model)"];
-    var shortLabels = ["基线1 规则评分", "基线2 未标注当负例", "本项目 PU Learning"];
+    // 顺序与上方对照表一致，方便逐行对照；ours 为 true 的那根用状态绿。
+    // 第 4 根（第三方 Elkan-Noto）刻意用中性灰而非顺序色 —— 它不是本项目的模型，
+    // 配色上就不该和"我们的"那根混为一谈。
+    var order = [
+      { key: "Baseline 1 (Rule-based)", label: "基线1 规则评分", color: viz().seq[2] },
+      { key: "Baseline 2 (Naive Supervised)", label: "基线2 未标注当负例", color: viz().seq[1] },
+      { key: "Model 3 (PU Learning Model)", label: "本项目 PU Learning", color: viz().seq[0] },
+      { key: "Baseline 4 (Elkan-Noto PU)", label: "基线4 Elkan-Noto (第三方)", color: viz().neutral },
+    ];
     var metrics = [
       { key: "accuracy", label: "准确率" },
       { key: "precision", label: "精确率" },
       { key: "recall", label: "召回率" },
       { key: "f1_score", label: "F1 分数" },
     ];
-    var seq = viz().seq;
-    var palette = [seq[2], seq[1], seq[0]];
 
     chart.setOption(
       {
@@ -461,19 +466,25 @@
           axisLine: { lineStyle: { color: viz().axis } },
         },
         yAxis: { type: "value", min: 0, max: 1, axisLabel: { color: viz().textMuted, fontSize: 10 }, splitLine: { lineStyle: { color: viz().grid } }, axisLine: { show: false } },
-        series: order.map(function (key, i) {
-          var m = b.benchmark_results[key] || {};
-          return {
-            name: shortLabels[i],
-            type: "bar",
-            barWidth: 16,
-            itemStyle: { color: palette[i], borderRadius: [3, 3, 0, 0] },
-            data: metrics.map(function (mm) {
-              var v = m[mm.key];
-              return v === null || v === undefined ? null : Number(Number(v).toFixed(4));
-            }),
-          };
-        }),
+        // 没跑起来的对照不画柱子，也不进图例——留一根空柱子等于在图上暗示它得了 0 分
+        series: order
+          .filter(function (o) {
+            var m = b.benchmark_results[o.key];
+            return m && m.available !== false;
+          })
+          .map(function (o) {
+            var m = b.benchmark_results[o.key];
+            return {
+              name: o.label,
+              type: "bar",
+              barWidth: 16,
+              itemStyle: { color: o.color, borderRadius: [3, 3, 0, 0] },
+              data: metrics.map(function (mm) {
+                var v = m[mm.key];
+                return v === null || v === undefined ? null : Number(Number(v).toFixed(4));
+              }),
+            };
+          }),
       },
       true
     );

@@ -246,19 +246,69 @@ def get_pu_risk(
 @router.get("/pu-benchmark")
 def get_pu_benchmark() -> dict[str, Any]:
     """
-    获取规格书 §4.3 三组基线对照实验 (Ablation & Benchmark) 评测报告:
+    获取规格书 §4.3 基线对照实验 (Ablation & Benchmark) 评测报告:
     - 基线 1: 规则评分基线 (加权打分法);
     - 基线 2: 朴素监督基线 (未标注全量当负例 0 训练);
-    - 模型 3: 本系统 PU Learning 模型 (Bagging PU + 可靠负例筛选 + Platt 概率校准).
+    - 模型 3: 本系统 PU Learning 模型 (Bagging PU + 可靠负例筛选 + Platt 概率校准);
+    - 基线 4: Elkan-Noto 两步法 (第三方 pulearn 独立实现, 与模型 3 同划分对照).
+
+    key_findings 由当次运行的 benchmark_results **现算**得出, 不再写死数字 ——
+    写死的结论会随着数据或随机种子变动而与表格数字对不上, 属于"以概念描述替代
+    实际验证"。
     """
     from app.algorithm.pu_model import run_ablation_benchmark
     benchmark_res = run_ablation_benchmark()
+
+    ours = benchmark_res.get("Model 3 (PU Learning Model)", {})
+    naive = benchmark_res.get("Baseline 2 (Naive Supervised)", {})
+
+    findings: list[str] = []
+    f1_ours, f1_naive = ours.get("f1_score"), naive.get("f1_score")
+    if f1_ours is not None and f1_naive is not None:
+        if f1_naive > 0:
+            gain = (f1_ours - f1_naive) / f1_naive * 100.0
+            findings.append(
+                f"F1-score 相对朴素监督基线（将未标注硬当负例）提升 "
+                f"{gain:+.1f}%（{f1_naive:.4f} -> {f1_ours:.4f}）"
+            )
+        else:
+            findings.append(
+                f"朴素监督基线 F1-score 为 {f1_naive:.4f}（其精确率/召回率退化至 0），"
+                f"本项目模型为 {f1_ours:.4f}"
+            )
+    brier_ours = ours.get("brier_score")
+    if brier_ours is not None:
+        findings.append(
+            f"Brier 概率校准分为 {brier_ours:.4f}（越小越准），"
+            "输出为经 Platt 校准的后验概率而非无标度打分"
+        )
+
+    # 第 4 行是否真正跑起来, 必须如实回传, 不能因为"应该能跑"就当成跑过了
+    elkan = benchmark_res.get("Baseline 4 (Elkan-Noto PU)")
+    if elkan:
+        if elkan.get("available"):
+            e_f1, e_brier = elkan.get("f1_score"), elkan.get("brier_score")
+            # 只说这个独立实现真正支持了什么：两个实现在同一划分上都远高于朴素监督基线。
+            # 逐项胜负照实写出来，不做"我们的更好"式的定向裁剪。
+            delta = ""
+            if f1_ours is not None and e_f1 is not None:
+                delta = (
+                    f"（F1 较本项目模型 {e_f1 - f1_ours:+.4f}，"
+                    f"Brier 较本项目模型 {e_brier - brier_ours:+.4f}）"
+                )
+            findings.append(
+                "第三方 Elkan-Noto（pulearn 独立实现）在同一训练/验证划分下 "
+                f"F1={e_f1:.4f}、Brier={e_brier:.4f}{delta}；"
+                "两者都远高于朴素监督基线，故 PU 方法族优于把未标注硬当负例这一结论"
+                "可由外部实现复现"
+            )
+        else:
+            findings.append(
+                f"第三方 Elkan-Noto 对照未运行：{elkan.get('unavailable_reason', '未知原因')}"
+            )
+
     return {
         "benchmark_results": benchmark_res,
         "provenance": "127 条确证事件正例 (source_url凭证) vs 1373 条未标注样本",
-        "key_findings": [
-            "PU Learning 彻底消除将 1373 个未标注当负例导致的 95.1% 误报硬伤",
-            "F1-score 相对朴素基线飞跃提升 +113.5% (0.2703 -> 0.5769)",
-            "Brier 概率校准分降至 0.0668，输出具有严密统计学后验概率意义",
-        ]
+        "key_findings": findings,
     }

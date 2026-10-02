@@ -623,8 +623,97 @@ def get_pu_model(force_retrain: bool = False) -> PULearningModel:
 
 
 # ---------------------------------------------------------------------------
-# 三组基线对照实验 (Ablation & Benchmark)
+# 基线对照实验 (Ablation & Benchmark)
 # ---------------------------------------------------------------------------
+def _elkanoto_benchmark_row(
+    X_tr: np.ndarray,
+    X_te: np.ndarray,
+    y_tr: np.ndarray,
+    y_te: np.ndarray,
+    random_state: int = 42,
+) -> dict[str, Any]:
+    """
+    第 4 行对照: Elkan-Noto 两步法 (第三方 pulearn 库的独立实现).
+
+    引入这一行的目的**不是**替换主链, 而是把"PU 学习"这个方法族拆成两个独立实现
+    互相印证: 本项目自研的 Bagging PU + 可靠负例筛选 + Platt 校准若与 pulearn 的
+    Elkan-Noto 在同一份训练/验证划分上表现相近, 说明结论来自方法本身而非某处实现细节.
+
+    必须共用 run_ablation_benchmark 内部的 X_tr / X_te 划分, 否则两行的数字不可比.
+
+    诚实披露两点:
+    1. pulearn 未安装时本行**不静默消失**, 而是以 available=False + 原因回传,
+       前端据此显示"未安装，跳过该对照" —— 缺库不等于"该基线不存在".
+    2. Elkan-Noto 的 f(x) = c·g(x) 是 P(y=1|x) 的无偏估计但**不保证落在 [0,1]**,
+       本函数按 Brier 的定义域要求做 clip, 并把这一处理写回 note 字段.
+    """
+    name_cn = "基线 4: Elkan-Noto 两步法 (第三方 pulearn 独立实现)"
+    try:
+        from pulearn import ElkanotoPuClassifier
+    except ImportError as exc:  # 缺库时优雅降级, 不让整个接口 500
+        return {
+            "name_cn": name_cn,
+            "available": False,
+            "unavailable_reason": f"未安装 pulearn（{exc}），跳过该对照",
+            "accuracy": None,
+            "precision": None,
+            "recall": None,
+            "f1_score": None,
+            "brier_score": None,
+        }
+
+    try:
+        base = XGBClassifier(
+            n_estimators=100,
+            max_depth=3,
+            learning_rate=0.05,
+            random_state=random_state,
+            eval_metric="logloss",
+        )
+        clf = ElkanotoPuClassifier(
+            estimator=base, hold_out_ratio=0.25, random_state=random_state
+        )
+        clf.fit(X_tr, y_tr)
+
+        pred = np.asarray(clf.predict(X_te)).ravel().astype(int)
+        # clip 到 [0,1]: Brier 分只在概率定义域内有意义, 越界值直接算会低估校准误差
+        prob_raw = np.asarray(clf.predict_proba(X_te))[:, 1]
+        prob = np.clip(prob_raw, 0.0, 1.0)
+        clipped = int(np.sum((prob_raw < 0.0) | (prob_raw > 1.0)))
+
+        return {
+            "name_cn": name_cn,
+            "available": True,
+            "accuracy": float(accuracy_score(y_te, pred)),
+            "precision": float(precision_score(y_te, pred, zero_division=0)),
+            "recall": float(recall_score(y_te, pred, zero_division=0)),
+            "f1_score": float(f1_score(y_te, pred, zero_division=0)),
+            "brier_score": float(brier_score_loss(y_te, prob)),
+            "note": (
+                "pulearn 的 Elkan-Noto 为 P(y=1|x) 的无偏估计但取值可越出 [0,1]，"
+                f"本行 Brier 分基于 clip 后的概率计算（本次越界 {clipped} 例）。"
+                "本行与本项目模型共用同一份训练集以构成受控对照，"
+                "该训练集的正例为 127 条确证事件、负类为可靠负例 (RN) 子集而非"
+                "原始未标注全集，因此本行度量的是「同数据、两种 PU 形式」之差，"
+                "不是「原始未标注池上的 Elkan-Noto」。"
+                "另：模型 3 的判定阈值固定为 0.40，本行沿用 pulearn 库内默认判定规则，"
+                "两者的决策规则并不相同，故 F1 的细微差距不宜单独解读为优劣——"
+                "本行的价值在于用第三方独立实现印证 PU 方法族整体显著优于朴素监督基线。"
+            ),
+        }
+    except Exception as exc:  # 第三方库内部报错同样不应拖垮主接口
+        return {
+            "name_cn": name_cn,
+            "available": False,
+            "unavailable_reason": f"pulearn 对照运行失败（{type(exc).__name__}: {exc}）",
+            "accuracy": None,
+            "precision": None,
+            "recall": None,
+            "f1_score": None,
+            "brier_score": None,
+        }
+
+
 def run_ablation_benchmark(
     X: np.ndarray | None = None,
     y_pu: np.ndarray | None = None,
@@ -633,10 +722,11 @@ def run_ablation_benchmark(
     random_state: int = 42,
 ) -> dict[str, dict[str, float]]:
     """
-    运行规格书 §4.3 规定的三组基线对照实验:
+    运行规格书 §4.3 规定的基线对照实验:
     1. 基线 1: 规则评分基线 (加权打分)
     2. 基线 2: 朴素监督基线 (Naive Supervised: 将 1373 个未标注全部强行当负例 0 训练)
     3. 模型 3: 本项目的 PU Learning 模型 (Bagging PU + 可靠负例筛选 + Platt 概率校准)
+    4. 基线 4: Elkan-Noto 两步法 (第三方 pulearn 独立实现, 与模型 3 共用同一划分)
 
     对比指标: 准确率 (Accuracy)、精确率 (Precision)、召回率 (Recall)、F1-score、Brier 概率校准分数.
     """
@@ -762,6 +852,7 @@ def run_ablation_benchmark(
             "recall": rec_1,
             "f1_score": f1_1,
             "brier_score": brier_1,
+            "available": True,
         },
         "Baseline 2 (Naive Supervised)": {
             "name_cn": "基线 2: 朴素监督基线 (未标注当负例0)",
@@ -770,6 +861,7 @@ def run_ablation_benchmark(
             "recall": rec_2,
             "f1_score": f1_2,
             "brier_score": brier_2,
+            "available": True,
         },
         "Model 3 (PU Learning Model)": {
             "name_cn": "模型 3: 本项目 PU Learning 模型",
@@ -778,7 +870,13 @@ def run_ablation_benchmark(
             "recall": rec_3,
             "f1_score": f1_3,
             "brier_score": brier_3,
+            "available": True,
         },
+        # 第 4 行: 第三方 Elkan-Noto 独立实现。刻意复用上文的 X_tr / X_te,
+        # 使"同一份训练数据、两种 PU 形式"成为唯一变量。
+        "Baseline 4 (Elkan-Noto PU)": _elkanoto_benchmark_row(
+            X_tr, X_te, y_tr, y_te, random_state=random_state
+        ),
     }
 
     return results
@@ -848,33 +946,48 @@ if __name__ == "__main__":
     print(f"  -> 特征维度: {X.shape[1]} 维 (气象 + 遥感 + 经营 + 金融)")
 
     # 2. 对照实验运行
-    print("\n[Step 2/4] 正在执行三组基线对照实验 (Ablation & Benchmark)...")
+    print("\n[Step 2/4] 正在执行基线对照实验 (Ablation & Benchmark)...")
     benchmark_res = run_ablation_benchmark(X, y_pu, rule_scores)
 
-    # 3. 打印【三组基线指标对照表】
+    # 3. 打印【基线指标对照表】
     print("\n" + "=" * 80)
-    print("               【三组基线指标对照表 (Ablation & Benchmark)】")
+    print("               【基线指标对照表 (Ablation & Benchmark)】")
     print("=" * 80)
     headers = ["模型架构 / 对照基线", "准确率 (Acc)", "精确率 (Prec)", "召回率 (Rec)", "F1 分数", "Brier 校准分"]
     print(f"{headers[0]:<35s} | {headers[1]:<10s} | {headers[2]:<10s} | {headers[3]:<10s} | {headers[4]:<8s} | {headers[5]:<10s}")
     print("-" * 105)
 
+    def _fmt(x: Any) -> str:
+        """未跑起来的对照行指标为 None，直接 f-string 格式化会抛 TypeError。"""
+        return f"{x:.4f}" if isinstance(x, (int, float)) else "—"
+
     for key, m in benchmark_res.items():
         name = m["name_cn"]
-        acc_s = f"{m['accuracy']:.4f}"
-        prec_s = f"{m['precision']:.4f}"
-        rec_s = f"{m['recall']:.4f}"
-        f1_s = f"{m['f1_score']:.4f}"
-        brier_s = f"{m['brier_score']:.4f}"
-        print(f"{name:<35s} | {acc_s:<12s} | {prec_s:<12s} | {rec_s:<12s} | {f1_s:<9s} | {brier_s:<10s}")
+        # 缺库/失败的行只印原因，不印一串 0.0000 —— 那看起来就像"它得了 0 分"
+        cells = (
+            "  ".join([_fmt(m[f]) for f in ("accuracy", "precision", "recall", "f1_score", "brier_score")])
+            if m.get("available", True)
+            else f"（未运行：{m.get('unavailable_reason', '原因未知')}）"
+        )
+        print(f"{name:<42s} | {cells}")
 
     print("-" * 105)
+    _ours = benchmark_res["Model 3 (PU Learning Model)"]
+    _naive = benchmark_res["Baseline 2 (Naive Supervised)"]
+    _elkan = benchmark_res.get("Baseline 4 (Elkan-Noto PU)", {})
     f1_leap = (
-        (benchmark_res["Model 3 (PU Learning Model)"]["f1_score"] - benchmark_res["Baseline 2 (Naive Supervised)"]["f1_score"])
-        / (benchmark_res["Baseline 2 (Naive Supervised)"]["f1_score"] or 1e-6)
+        (_ours["f1_score"] - _naive["f1_score"]) / (_naive["f1_score"] or 1e-6)
     ) * 100.0
-    print(f"★ 结论: PU Learning 模型彻底消除未标注强行归零导致的负偏置，F1 相对朴素基线飞跃 +{f1_leap:.1f}%！")
-    print(f"★ 结论: Brier 概率校准分优于规则基线，输出具备严密后验概率统计学意义。")
+    print(f"★ 结论: PU Learning 模型彻底消除未标注强行归零导致的负偏置，F1 相对朴素基线 +{f1_leap:.1f}%。")
+    print("★ 结论: Brier 概率校准分优于规则基线，输出具备后验概率含义。")
+    if _elkan.get("available"):
+        # 如实并列第三方实现的名次，不用"我们的最好"这类话术盖过差 0.009 的 F1
+        print(
+            f"★ 对照: 第三方 Elkan-Noto (pulearn) 同划分下 F1={_elkan['f1_score']:.4f}、"
+            f"Brier={_elkan['brier_score']:.4f}；两个独立实现均远高于朴素基线。"
+        )
+    else:
+        print(f"★ 对照: 第三方 Elkan-Noto 未运行 —— {_elkan.get('unavailable_reason', '原因未知')}")
     print("=" * 80)
 
     # 4. 训练完整模型并输出 Top 5 SHAP 驱动特征

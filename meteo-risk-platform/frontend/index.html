@@ -449,7 +449,7 @@
         <div v-else class="pu-benchmark-grid">
           <div class="pu-table-col">
             <div class="sub-title-box">
-              <h4>三组基线指标对照表 (Ablation &amp; Benchmark)</h4>
+              <h4>PU 消融对照表 (Ablation &amp; Benchmark)</h4>
               <span class="text-green text-bold">
                 F1 相对朴素基线 {{ verifyKpi.f1GainText }}（{{ verifyKpi.naiveF1Text }} → {{ verifyKpi.f1Text }}）
               </span>
@@ -466,16 +466,21 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(row, idx) in puRows" :key="row.key" :class="{ 'hl-row': row.key === 'Model 3 (PU Learning Model)' }">
+                <tr v-for="row in puRows" :key="row.key" :class="{ 'hl-row': row.ours }">
                   <td>
-                    <strong v-if="row.key === 'Model 3 (PU Learning Model)'">{{ row.name_cn }}</strong>
+                    <strong v-if="row.ours">{{ row.name_cn }}</strong>
                     <span v-else>{{ row.name_cn }}</span>
                   </td>
-                  <td>{{ num(row.accuracy, 4) }}</td>
-                  <td>{{ num(row.precision, 4) }}</td>
-                  <td>{{ num(row.recall, 4) }}</td>
-                  <td :class="row.key === 'Model 3 (PU Learning Model)' ? 'text-green text-bold' : ''">{{ num(row.f1_score, 4) }}</td>
-                  <td>{{ num(row.brier_score, 4) }}</td>
+                  <!-- 缺库 / 第三方实现报错时，这一行是"没测到"，不是"测得 0 分"：
+                       六列指标一并留空并写明原因，不允许渲染成 0 -->
+                  <td v-if="!row.available" colspan="5" class="td-skip">{{ row.unavailable_reason }}</td>
+                  <template v-else>
+                    <td>{{ num(row.accuracy, 4) }}</td>
+                    <td>{{ num(row.precision, 4) }}</td>
+                    <td>{{ num(row.recall, 4) }}</td>
+                    <td :class="row.ours ? 'text-green text-bold' : ''">{{ num(row.f1_score, 4) }}</td>
+                    <td>{{ num(row.brier_score, 4) }}</td>
+                  </template>
                 </tr>
               </tbody>
             </table>
@@ -497,9 +502,45 @@
                 <li>
                   <strong>本项目 · PU Learning</strong>：两个极端同时消失，召回率
                   {{ num(puRow('Model 3 (PU Learning Model)', 'recall'), 4) }}、精确率
-                  {{ num(puRow('Model 3 (PU Learning Model)', 'precision'), 4) }}，F1 与 Brier 在同一实验下同时最优。
+                  {{ num(puRow('Model 3 (PU Learning Model)', 'precision'), 4) }}。
+                  <!-- 名次关系由 puVerdict 现算，不写死结论：写死的"同时最优"一旦被
+                       表里的数字推翻，就成了用措辞盖过证据。 -->
+                  <template v-if="puVerdict && puVerdict.oursDominates">
+                    在本组 {{ puVerdict.nAvailable }} 行对照中 F1 与 Brier 同时最优。
+                  </template>
+                  <template v-else-if="puVerdict && puVerdict.ours">
+                    Brier 概率校准分 {{ num(puVerdict.ours.brier_score, 4) }} 为全组最低；
+                    F1 为 {{ num(puVerdict.ours.f1_score, 4) }}，
+                    {{ puVerdict.bestF1.ours ? '为全组最高' : '低于 ' + puVerdict.bestF1.name_cn + ' 的 ' + num(puVerdict.bestF1.f1_score, 4) }}。
+                  </template>
                 </li>
               </ul>
+
+              <!-- 第三方实现的佐证：只说它真正证明了什么，不说它没证明的 -->
+              <template v-if="puVerdict && puVerdict.elkan">
+                <h5>第三方独立实现的交叉佐证</h5>
+                <p class="verdict-note">
+                  pulearn（BSD-3）的 Elkan-Noto 两步法与本项目模型共用同一份训练/验证划分：
+                  F1 = {{ num(puVerdict.elkan.f1_score, 4) }}、Brier =
+                  {{ num(puVerdict.elkan.brier_score, 4) }}。
+                  <template v-if="puVerdict.thirdPartyAgrees">
+                    两个独立实现在朴素监督基线（F1
+                    {{ num(puRow('Baseline 2 (Naive Supervised)', 'f1_score'), 4) }}）之上同向大幅领先，
+                    说明"PU 方法族显著优于把未标注样本硬当负例"这一结论可以由外部实现复现，
+                    而不是本项目某处实现细节的产物。
+                  </template>
+                  需要说明的是，本行是<b>外部佐证</b>而非本项目的模型；且模型 3 的判定阈值为
+                  0.40、本行沿用 pulearn 库内默认判定规则，两者决策规则不同，
+                  F1 的细微差距不宜单独解读为优劣。
+                </p>
+              </template>
+              <template v-else-if="puVerdict && puVerdict.nAvailable < 4">
+                <h5>第三方独立实现的交叉佐证</h5>
+                <p class="verdict-note">
+                  对照未运行：{{ puVerdict.unavailableReason || 'pulearn 未安装或运行失败' }}。
+                  该行在表中显示为"未安装，跳过该对照"，不计入上文的 F1 / Brier 比较。
+                </p>
+              </template>
             </div>
           </div>
 
@@ -594,6 +635,14 @@
               <div class="method-stat">
                 <span class="ms-label">{{ currentRegionName }} 现值</span>
                 <span class="ms-value">{{ currentSpi ? currentSpi.spi_value : '—' }} · {{ currentSpi ? currentSpi.drought_level : '—' }}</span>
+              </div>
+              <!-- 干旱指数由多少个历史同月样本拟合而来，是判断该数值有没有气候统计
+                   意义的前提；把它摆在数值旁边，而不是只写在抽屉深处 -->
+              <div class="method-stat">
+                <span class="ms-label">Gamma 拟合样本数</span>
+                <span class="ms-value">{{ currentSpi ? orDash(currentSpi.historical_samples_count) : '—' }} 个历史同月
+                  <span class="ms-note">WMO 建议 ≥30 年</span>
+                </span>
               </div>
             </div>
           </template>
@@ -992,6 +1041,20 @@
           且 ERA5 序列仅 {{ currentSpi ? orDash(currentSpi.historical_years_count) : '—' }} 年，α/β 估计方差偏大，
           故以逐县对照而非单点数值作证。
         </p>
+        <p>
+          <strong>第三方交叉校验（结果对我们不利，照实列出）：</strong>用 spei（MIT，独立实现：
+          各日历月分别拟合 Gamma、按经验频率修正零值概率）在同一份 ERA5 月降水序列上重算 SPI-3 / SPI-12，
+          26 县 × 2 尺度共 52 组对照中，相关系数中位数为 0.57（最低 0.01），
+          按 GB/T 20481-2017 分档的一致率中位数仅 30%。
+          进一步拆开来看，差异的根源不是公式写法：把参考气候改为与 spei 完全相同的全样本口径后，
+          中位相关升至 0.74、分档一致率升至 60%，剩下的分歧来自<b>样本量本身</b>——
+          本系统的 Gamma 参数由 [起始年, 目标年) 区间的历史同月累计降水拟合，
+          ERA5 仅 2020–2025 共 6 年，目标年越早样本越少（最少仅 2 个），
+          而 WMO 对 SPI 的建议是不少于 30 年。
+          因此本系统 SPI 的定位是<b>同口径下的相对趋势与等级重判</b>，
+          不作为绝对气候统计量引用；逐县明细与可复现脚本见
+          <code>tools/cross_validate_spi.py</code>。
+        </p>
         <p class="drawer-prov">适用等级：<prov-badge code="D"></prov-badge> 科学模型派生（输入为 A 级公开观测）</p>
       </template>
 
@@ -1093,6 +1156,6 @@
   <script src="js/charts/indexCharts.js"></script>
   <script src="js/charts/forecastCharts.js"></script>
   <script src="js/charts/decisionCharts.js"></script>
-  <script src="js/app.js?v=20261002_1"></script>
+  <script src="js/app.js?v=20261002_2"></script>
 </body>
 </html>
