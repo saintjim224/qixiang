@@ -121,7 +121,7 @@ test('late county series and indices cannot overwrite a newer selection', async 
 });
 
 // --- 新增派生量的口径测试 -------------------------------------------------
-// 这些数字全部取自 tools/out/aic_value_metrics.json（2026-10-08 实跑），
+// 这些数字全部取自 tools/out/value_metrics.json（2026-10-08 实跑），
 // 用来锁死前端折算口径与后端一致；改了常数、改了公式，这里必须先红。
 
 function rankingPayload(overrides) {

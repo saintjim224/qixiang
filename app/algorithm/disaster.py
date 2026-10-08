@@ -389,7 +389,7 @@ def _same_month_snow_sigma(region_id: str) -> tuple[float, int]:
     """
     本县「当前日历月」历史积雪深度的年际标准差，用作不确定区间的量纲。
 
-    原实现把区间写死成 ±2.5cm / ±4.5cm，是凭空的数字，评委一问来源就崩。
+    原实现把区间写死成 ±2.5cm / ±4.5cm，是凭空的数字，一问来源就站不住。
     改用真实可解释的量：同月各年积雪深度的 1σ，含义是"该月积雪的年际波动幅度"。
     返回 (sigma, 样本年数)。
     """
@@ -535,7 +535,7 @@ def predict_disasters(region_id: str, days_ahead: int = 30) -> dict[str, Any]:
         "gale": gale,
         "frost": frost,
         "drought": drought,
-        # 五灾种一览：便于前端与评委一眼看全，等级统一为 高/中/低/不可用
+        # 五灾种一览：便于前端与调用方一眼看全，等级统一为 高/中/低/不可用
         "disaster_summary": {
             "snow": {"level_code": snow_eval.get("level_code"), "level_cn": snow_eval.get("level_cn")},
             "cold_wave": {"risk": cold_wave.get("cold_wave_risk") if cold_wave.get("available") else "不可用"},

@@ -24,7 +24,7 @@ router = APIRouter(prefix="/api/datasource", tags=["气象数据底座"])
 
 @router.get("/provenance")
 def get_data_provenance_and_tiers() -> dict[str, Any]:
-    """获取全套数据溯源链与五级事实边界分类报告 (答辩必审)."""
+    """获取全套数据溯源链与五级事实边界分类报告（现场核验必查）."""
     # 事件层级的计数一律从数据实时统计，不写死数字——写死过一个 127，
     # 一旦底层标注集变动，界面上的"事实边界"就会与真实数据脱节。
     from app.core.dataio import get_pu_labeled_dataset
@@ -156,7 +156,7 @@ DISASTER_TYPE_MAPPING: dict[str, dict[str, Any]] = {
         "is_meteorological": True,
         "desc": "汛期连续强降水引发草场浸泡与洪涝",
     },
-    # 政策农险赔付实证 (20条 - 工行杯金融科技核心实证闭环)
+    # 政策农险赔付实证 (20 条 - 绿色金融实证闭环)
     "insurance_coverage": {
         "category": "政策农险赔付实证",
         "name_cn": "政策农险理赔实证",

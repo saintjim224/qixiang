@@ -108,7 +108,6 @@
   "coverage_scope": {
     "system_name": "融天气象 - 高原多源时空融合气象灾害预警平台",
     "data_source_mode": "packaged",
-    "competition_track": "赛题方向二：气象赋能行业应用",
     "monitored_regions_count": 26,
     "data_engines": {
       "era5_reanalysis": "已接入 26 县 6 年 (2020-2025) 5.7 万条逐日真实气象记录",

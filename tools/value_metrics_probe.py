@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-"""按 AIC 评分改稿所需的"价值量化指标"取数探针。
+""""价值量化指标"取数探针。
 
-用途：为《参赛作品设计方案说明书》§5.3 提供可复现的真实数值，
+用途：输出面向承灾体与资金动作的价值口径指标，供业务侧与对外材料复跑引用，
      避免文档中出现任何未经计算的字面量。
 
 运行：
@@ -160,7 +160,7 @@ def main() -> int:
     if st.status_code == 200:
         out["coverage_scope"] = st.json()
 
-    out_path = ROOT / "tools" / "out" / "aic_value_metrics.json"
+    out_path = ROOT / "tools" / "out" / "value_metrics.json"
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(out, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"\n已写入 {out_path}")

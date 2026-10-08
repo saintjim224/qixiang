@@ -5,7 +5,7 @@ MeteoRiskPlatform - 核心配置模块
 - **优先**使用作品包内自带的 `app/data/`（由 tools/sync_data.py 从旧项目只读复制）；
 - 找不到时才回退到旧项目 `yak-risk-platform/` 并打印警告。
 
-原实现无条件指向 `../yak-risk-platform/`，评委拿到作品包后一旦旧项目不在原位，
+原实现无条件指向 `../yak-risk-platform/`，用户拿到作品包后一旦旧项目不在原位，
 所有接口都会静默返回空列表——包看着能跑，页面全是空的。
 """
 

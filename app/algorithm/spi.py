@@ -468,7 +468,7 @@ if __name__ == "__main__":
         # 等级变化必须先归一到同一标尺再比：本系统叫「湿润」、旧版叫「偏湿」，
         # 指同一件事，直接比字符串会把这些命名差异也算成"等级变了"。此前这里按
         # 名字比较得出 6/26，而权威接口 /api/index/method-compare 按 GB/T 分档
-        # 归一后得出 level_changed=1，两处结论互相矛盾，评委会同时看到两个不同的
+        # 归一后得出 level_changed=1，两处结论互相矛盾，同一份数据会给出两个不同的
         # "等级改变县数"。现统一走 classify_spi_gb，与接口同源。
         if classify_spi_gb(std_val) != classify_spi_gb(leg_val):
             level_mismatch_count += 1

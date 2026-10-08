@@ -17,7 +17,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 
 from contextlib import asynccontextmanager
-from app.core.branding import COMPETITION, PRODUCT_NAME
+from app.core.branding import PRODUCT_DESCRIPTION, PRODUCT_NAME
 from app.core.config import FRONTEND_DIR
 from app.api import overview, datasource, index, forecast, decision
 
@@ -36,7 +36,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title=PRODUCT_NAME,
-    description=COMPETITION,
+    description=PRODUCT_DESCRIPTION,
     version="1.0.0",
     lifespan=lifespan,
 )
