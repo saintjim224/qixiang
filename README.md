@@ -1,10 +1,66 @@
-# 第八届全球校园人工智能算法精英大赛
-## “智慧气象”算法主题赛 · 赛题方向（二）：气象赋能行业应用
+# 融天气象 · 高原多源时空融合气象灾害预警平台
 
-# 融天气象 - 高原多源时空融合气象灾害预警平台
-### Plateau Meteo-Risk Intelligent Warning & Decision Platform
+**Plateau Meteo-Risk Intelligent Warning & Decision Platform**
+
+青藏高原 4 省区 **26 个高寒牧区县域**的气象灾害预警与草畜平衡决策平台。多源卫星遥感 + 再分析气象驱动，打通「气象监测 → 灾害预警 → 草畜承载 → 应急储备 → 绿色金融」全链路。零构建前端、一键启动、零伪造数据。
+
+![Python](https://img.shields.io/badge/Python-3.10%20~%203.13-3776AB?logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)
+![Vue 3](https://img.shields.io/badge/Vue-3.4-4FC08D?logo=vuedotjs&logoColor=white)
+![ECharts](https://img.shields.io/badge/ECharts-5.5-AA344D?logo=apacheecharts&logoColor=white)
+![Tests](https://img.shields.io/badge/tests-31%20Python%20%7C%2014%20Node-2EA44F)
+
+第八届全球校园人工智能算法精英大赛 ·「智慧气象」算法主题赛 · 赛题方向（二）气象赋能行业应用
 
 > ⚠️ **双盲评审合规声明**：本参赛项目（含代码仓库、文档方案、交互界面及测试用例）严格恪守大赛双盲匿名评审原则，全篇不包含任何高校名称、院系所、指导教师及参赛团队个人姓名信息。
+
+---
+
+## 📂 目录结构
+
+```text
+qixiang/
+├── README.md                      本说明文件（仓库门面）
+├── app/                           FastAPI 后端服务
+│   ├── main.py                    应用入口：静态托管前端 + 挂载 23 个 API 路由
+│   ├── algorithm/                 四大核心算法，每个模块均可 `python -m` 独立运行打印对照表
+│   │   ├── spi.py                 标准 Gamma MLE 气象干旱指数（WMO 推荐理论框架）
+│   │   ├── gdi.py                 草地退化动力学指数（复现 Li et al., 2025, Remote Sensing）
+│   │   ├── pu_model.py            PU Learning 灾害风险评估 + SHAP 归因 ★ 核心创新
+│   │   ├── yield_forecast.py      MODIS 650 样本 NPP 时空预测 + LOYO/LORO 双向验证
+│   │   ├── disaster.py            GB/T 20482 暴雪与干旱复合灾害动力学判定
+│   │   └── carrying.py            草畜平衡承载力与 14 天应急补饲调度测算
+│   ├── api/                       23 个业务 API 端点
+│   │   ├── overview.py            驾驶舱全景、26 县风险色阶、GeoJSON 边界
+│   │   ├── datasource.py          多源气象/遥感台账与溯源凭证
+│   │   ├── index.py               SPI/GDI/PU 指标查询与消融基准
+│   │   ├── forecast.py            NPP 预测、30 天积雪外推、LOYO/LORO 对照
+│   │   └── decision.py            应急补饲预算、绿色金融授信、26 县优先级梯队
+│   ├── core/                      数据 I/O、全局配置、Pydantic 契约
+│   └── data/                      随包数据：26 县 2001–2025 真实 MODIS/ERA5 融合集
+├── frontend/                      纯原生前端（零打包、零 CDN，双击 index.html 即可打开）
+│   ├── index.html                 五页签数据可视化工作台
+│   ├── js/                        IIFE 模块（core / state / ui / charts），统一挂在 window.MR
+│   ├── css/main.css               深色响应式设计令牌与布局
+│   └── vendor/                    本地离线依赖（Vue 3.4.38 + ECharts 5.5.1）
+├── docs/                          参赛材料与工程文档
+│   ├── 参赛作品设计方案说明书.md      主评分件：理论推导、架构、创新层级、应用成效
+│   ├── 可行性测试报告.md             测试规约、基准对照、科学指标达成报告
+│   ├── 参赛前核验与改进清单.md        逐条核验记录与遗留事项
+│   ├── 演示与答辩材料清单.md          演示动线、截图清单、可复用截图命令
+│   ├── Stitch提示词与视觉设计规约.md   视觉规范（示例数值为占位符，不得引用）
+│   ├── images/                    README 与材料用界面截图
+│   ├── design/                    视觉设计提示词包
+│   └── references/                同类作品拆解与启示分析（仅入库分析文本）
+├── tests/                         自动化测试（pytest + node --test）
+├── tools/                         取数与交叉校验脚本（只读，不改动算法主链）
+│   └── out/                       实测输出落盘 —— 文档中所有数值的单一来源
+├── requirements.txt               依赖清单
+├── run.sh / start.bat             一键启动脚本（Linux·macOS / Windows）
+└── .github/workflows/ci.yml       推送后自动执行编译、回归测试与前端语法检查
+```
+
+> **数值来源铁律**：正文与设计稿中的数字一律为占位符，复现任何结论都从 `tools/out/` 下对应的 JSON 取。依据见《参赛作品设计方案说明书》§7.3。
 
 ---
 
@@ -125,64 +181,6 @@ python -m app.algorithm.spi
 python -m app.algorithm.gdi
 python -m app.algorithm.pu_model
 python -m app.algorithm.yield_forecast
-```
-
----
-
-## 📂 项目结构全景
-
-```
-qixiang/
-├── app/                        # 后端服务 (FastAPI)
-│   ├── algorithm/              # 四大核心科学算法模块
-│   │   ├── spi.py              # 标准 Gamma MLE SPI 气象干旱算法 (WMO 推荐理论框架)
-│   │   ├── gdi.py              # 草地退化指数 GDI 复现 (Li et al., 2025, Remote Sensing)
-│   │   ├── pu_model.py         # PU Learning 灾害风险评估与 SHAP TreeExplainer 归因
-│   │   ├── yield_forecast.py   # MODIS 650 样本 NPP 时空预测与 LOYO/LORO 科学评测
-│   │   ├── disaster.py         # GB/T 20482 暴雪与干旱复合灾害动力学判定
-│   │   └── carrying.py         # 草畜平衡承载力与 14 天应急补饲调度测算
-│   ├── api/                    # 23 个业务 API 端点
-│   │   ├── overview.py         # 驾驶舱全景、26 县综合风险色阶、全量 GeoJSON 边界
-│   │   ├── datasource.py       # 多源气象/遥感台账与权威溯源凭证
-│   │   ├── index.py            # SPI/GDI/PU 指标查询与消融实验基准
-│   │   ├── forecast.py         # NPP 预测、30 天积雪外推与 LOYO/LORO 对照
-│   │   └── decision.py         # 应急补饲预算、绿色金融授信与 26 县优先级梯队
-│   ├── core/                   # 核心数据 I/O、全局配置与 Pydantic 契约定义
-│   └── data/                   # 26 县 2001-2025 年 650 样本真实 MODIS/ERA5 融合数据集
-├── frontend/                   # 纯原生前端 (零打包步骤，直开可用)
-│   ├── index.html              # 现代化数据可视化大屏 (5 大主题 Tab)
-│   ├── css/main.css            # 现代化科学设计风格配色系统与响应式流式布局
-│   ├── js/app.js               # 数据交互驱动逻辑 (全量真实后端数据，零伪造假常量)
-│   └── vendor/                 # 本地离线依赖 (Vue 3.4.38 + ECharts 5.5.1，不依赖外网 CDN)
-├── docs/                       # 赛事提交核心方案文档
-│   ├── 参赛作品设计方案说明书.md  # 完整理论推导、架构设计与应用场景论证
-│   ├── 可行性测试报告.md          # 测试规约、基准对照数据与科学指标达成报告
-│   ├── 参赛前核验与改进清单.md    # 逐条核验记录与遗留事项
-│   ├── 演示与答辩材料清单.md      # 演示动线、截图清单与截图命令
-│   ├── images/                 # README 与材料用界面截图
-│   ├── design/                 # 视觉设计提示词与设计规约
-│   └── references/             # 同类作品拆解与启示分析 (仅分析文本)
-├── tests/                      # 自动化测试用例套件 (Python pytest + Node test)
-│   ├── test_spi.py             # SPI 算法边界与零降水混合 CDF
-│   ├── test_gdi.py             # GDI 分级与脆弱性系数
-│   ├── test_pu_model.py        # PU 训练/验证隔离
-│   ├── test_yield_forecast.py  # NPP 基线与 LOYO/LORO 协议
-│   ├── test_forecast_input.py  # 预报输入缺测与降级路径
-│   ├── test_product_contracts.py  # 接口契约与数值留空口径
-│   ├── frontend_state.test.js  # 前端派生量口径回归
-│   └── frontend_charts.test.js # 前端图表语义回归
-├── tools/                      # 取数与交叉校验工具 (只读，不改动算法主链)
-│   ├── value_metrics_probe.py  # 应用成效指标取数
-│   ├── cross_validate_spi.py   # SPI 第三方独立实现交叉校验
-│   ├── evaluate_pu.py          # PU 四基线评测
-│   ├── spi_window_ablation.py  # SPI 拟合窗口消融
-│   ├── audit_event_labels.py   # 事件标签审计队列
-│   ├── sync_data.py            # 数据内嵌打包 (一次性迁移工具)
-│   └── out/                    # 上述脚本的实测输出 (文档数值的单一来源)
-├── requirements.txt            # 依赖清单
-├── start.bat                   # Windows 一键启动脚本
-├── run.sh                      # Linux / macOS 一键启动脚本
-└── README.md                   # 本说明文件
 ```
 
 ---
