@@ -1,0 +1,26 @@
+{
+  "generated_at": "2026-10-03T00:04:46.091548+08:00",
+  "labeled_count": 127,
+  "review_status": "自动线索筛查，尚未核验原文；不得据此认定真假",
+  "event_types": {
+    "rainstorm": 30,
+    "grassland_pressure": 4,
+    "snowstorm": 41,
+    "wind": 5,
+    "vaccination": 1,
+    "disease": 2,
+    "earthquake": 7,
+    "insurance_coverage": 17,
+    "drought": 5,
+    "hail_storm": 4,
+    "rain": 3,
+    "lightning": 2,
+    "landslide": 3,
+    "comprehensive": 1,
+    "cold_wave": 2
+  },
+  "non_meteorological_count": 30,
+  "ambiguous_numeric_count": 29,
+  "cross_county_source_count": 38,
+  "queue": "tools\\out\\event_label_review_queue.csv"
+}

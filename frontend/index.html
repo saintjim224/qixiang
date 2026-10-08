@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>融天气象 | 高原牧区气象风险与应急决策</title>
+  <!--
+    缓存版本号规则：改动本地 css/js 后，更新对应资源的 ?v= 版本号。
+    浏览器对 .css / .js 的强缓存不看文件内容，只认 URL；版本号不改，用户可能继续运行旧代码——
+    而且从页面表现上完全看不出是缓存问题（现象等同于"改了没生效"）。vendor/ 两个库从不改动，故不带版本号。
+    底部 17 个 <script> 的顺序即依赖顺序（IIFE + window.MR 全局命名空间，非 ES Module），
+    调整顺序前请先看 js/core/namespace.js 里的说明。
+  -->
+  <link rel="stylesheet" href="css/main.css?v=20261003_4">
+  <!-- 本地 Vendor 零构建依赖 -->
+  <script src="vendor/vue.global.prod.js"></script>
+  <script src="vendor/echarts.min.js"></script>
+</head>
+<body class="dark-theme">
+
+  <!-- 图标 sprite：内联 SVG，零外链、零构建；替换原有的 emoji 图标 -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <defs>
+      <g id="ic-base" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></g>
+    </defs>
+    <symbol id="ic-map" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.6"/>
+    </symbol>
+    <symbol id="ic-sat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3l9 4.5-9 4.5-9-4.5z"/><path d="M3 12l9 4.5 9-4.5"/><path d="M3 16.5L12 21l9-4.5"/>
+    </symbol>
+    <symbol id="ic-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 20V11"/><path d="M10 20V4"/><path d="M16 20v-6"/><path d="M22 20H2"/>
+    </symbol>
+    <symbol id="ic-trend" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M3 17l6-6 4 4 8-8"/><path d="M15 7h6v6"/>
+    </symbol>
+    <symbol id="ic-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3l7 3v6c0 4.4-2.9 7.9-7 9-4.1-1.1-7-4.6-7-9V6z"/><path d="M9 12l2 2 4-4"/>
+    </symbol>
+    <symbol id="ic-link" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M10 13a5 5 0 0 0 7.1 0l2.4-2.4a5 5 0 0 0-7.1-7.1L11 4.9"/>
+      <path d="M14 11a5 5 0 0 0-7.1 0L4.5 13.4a5 5 0 0 0 7.1 7.1L13 19.1"/>
+    </symbol>
+    <symbol id="ic-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13 2L5 13h6l-1 9 8-11h-6z"/>
+    </symbol>
+    <symbol id="ic-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14"/><path d="M13 6l6 6-6 6"/>
+    </symbol>
+  </svg>
+
+  <div id="app" v-cloak>
+    <!-- 顶部全局导航栏 -->
+    <header class="app-header">
+      <div class="logo-group">
+        <div class="logo-badge" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 28 28" fill="none"><path d="M3 21 10 10l5 8 4-6 6 9H3Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M16 7a4 4 0 1 1 7 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+        <div class="title-wrap">
+          <h1>融天气象</h1>
+          <p class="subtitle">高原牧区风险工作台</p>
+        </div>
+      </div>
+
+      <div class="sidebar-section-label">工作空间</div>
+      <nav class="nav-tabs" aria-label="主要功能">
+        <button
+          v-for="tab in navTabs"
+          :key="tab.id"
+          class="nav-tab-btn"
+          :class="{ active: currentTab === tab.id }"
+          :aria-current="currentTab === tab.id ? 'page' : undefined"
+          @click="switchTab(tab.id)"
+          :title="tab.question"
+        >
+          <span class="tab-icon" aria-hidden="true">
+            <svg width="16" height="16"><use :href="'#' + tab.icon"></use></svg>
+          </span>
+          <span class="tab-label">{{ tab.label }}</span>
+        </button>
+      </nav>
+
+      <div class="header-controls">
+        <div class="region-selector-wrap">
+          <label for="current-region">当前县域</label>
+          <select id="current-region" :value="selectedRegionId" @change="onRegionChange($event.target.value)" :disabled="meta.regions !== 'ok'">
+            <option v-if="meta.regions !== 'ok'" value="">县域清单加载中…</option>
+            <option v-for="r in regions" :key="r.region_id" :value="r.region_id">
+              {{ r.name_cn }} ({{ r.elevation }}m - {{ r.pasture_type }})
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="sidebar-footer"><span class="workspace-dot"></span> 研究演示环境<p>气象监测 · 草畜平衡 · 应急推演</p></div>
+    </header>
+
+    <!-- ==================== 视图 1：风险态势驾驶舱 ==================== -->
+    <main v-show="currentTab === 'cockpit'" class="view-container cockpit-layout">
+      <div class="page-heading"><h2>风险总览</h2><p>查看县域风险分布，关注预报时效与数据可用性。</p></div>
+
+      <!-- 顶部宏观指标栏 -->
+      <section class="overview-metrics-bar">
+        <kpi-card
+          label="监测覆盖县域"
+          :value="macroStats.totalCounties"
+          unit="个县域"
+          sub="西藏 / 青海 / 四川 / 甘肃 4 省区"
+          prov="A"
+          :state="meta.countyRisks"
+          title="来自当前县域风险清单，接口异常时不会显示默认数字"
+        ></kpi-card>
+
+        <kpi-card
+          label="重特大雪灾预警"
+          :value="macroStats.snowWarningCount"
+          unit="县预警中"
+          :tone="macroStats.snowWarningCount > 0 ? 'danger' : ''"
+          prov="D"
+          :state="meta.countyRisks"
+          :sub="snowDataDegraded ? '全域气候态外推，非实时灾情' : '雪灾参考分级 III/IV 级（仅实时驱动计入）'"
+          :title="snowDataDegraded ? '全域实时预报不可达，雪灾等级仅作气候背景参考' : '仅实时预报驱动的县域计入；其余县域仅作气候背景参考'"
+        ></kpi-card>
+
+        <kpi-card
+          label="干旱预警 (SPI-3)"
+          :value="macroStats.droughtWarningCount"
+          unit="县异常预警"
+          tone="warn"
+          prov="D"
+          :state="meta.countyRisks"
+          sub="Gamma MLE 拟合降水指数 (SPI ≤ -1.0)"
+          title="Gamma 参数由该县历史同月累计降水拟合，ERA5 序列仅 6 年，每县可用样本 2–6 个，远低于 WMO 对 SPI 建议的 ≥30 年。用第三方 spei 独立实现交叉校验，26 县 × 2 尺度的分档一致率中位仅 30%（详见风险指数页 SPI 口径抽屉与 tools/cross_validate_spi.py），故 SPI 在此定位为同口径相对趋势与等级重判，不作为绝对气候统计量引用。"
+        ></kpi-card>
+
+        <kpi-card
+          label="草畜平衡指数"
+          :value="macroStats.avgCarryingBalance"
+          unit="全域均值"
+          tone="good"
+          prov="D"
+          :state="meta.countyRisks"
+          sub="样例存栏 ÷ 模型载畜量 (羊单位)"
+          title="分子＝各县脱敏样例主体存栏量折算羊单位（牦牛×4 ＋ 绵羊）；分母＝2025 年 12 月、积雪覆盖 10% 情景下的六维模型载畜量（NPP × NDVI × 季节 × 退化 × 积雪 × 物候）。"
+        ></kpi-card>
+      </section>
+
+      <div class="degraded-notice" v-if="snowDataDegraded">
+        <strong>数据降级提示</strong>：Open-Meteo 实时预报不可达，本轮雪灾等级由 ERA5 历史同期气候态外推得到，
+        <em>不代表实时灾情</em>。全域 {{ orDash(macroStats.realtimeCounties) }} / {{ orDash(macroStats.totalCounties) }} 县由实时预报驱动。
+      </div>
+      <div class="degraded-notice" v-else-if="macroStats.snowDataMode === 'mixed'">
+        <strong>部分县域使用气候背景</strong>：{{ orDash(macroStats.realtimeCounties) }} / {{ orDash(macroStats.totalCounties) }} 县由实时预报驱动；其余县域的雪灾等级为历史同期外推，<em>不代表实时灾情</em>。
+      </div>
+
+      <!-- 主视图：左侧地图（Dominant Anchor）+ 右侧机理卡与演化 -->
+      <div class="cockpit-main-grid">
+        <div class="panel map-panel">
+          <div class="panel-header">
+            <div class="panel-title-wrap">
+              <h3>青藏高原 26 县气象灾害风险空间色阶分布</h3>
+              <p class="panel-question">省界提供宏观地理语境；经纬网与比例尺为投影真实量，随缩放重算</p>
+            </div>
+            <div class="panel-actions">
+              <button class="cross-tab-link-btn" @click="navigateTo('index')" title="查看当前县指数详情">气象指数详查 →</button>
+              <button class="cross-tab-link-btn" @click="navigateTo('forecast')" title="查看当前县生产力预测">NPP 时空预测 →</button>
+              <button class="cross-tab-link-btn" @click="navigateTo('decision')" title="查看当前县应急处置与金融建议">应急调度决策 →</button>
+            </div>
+          </div>
+          <!-- 接口失败时不得渲染"低风险 0"——那是把一个未取到的计数说成了实测 0 -->
+          <div class="map-legend" v-if="meta.countyRisks === 'ok'">
+            <span>等级分布: </span>
+            <span v-for="lv in riskLevelCounts" :key="lv.name" class="map-legend-item">
+              {{ lv.name }}
+              <strong :class="lv.count ? 'is-on' : 'is-off'">{{ lv.count }}</strong>
+            </span>
+          </div>
+          <status-block v-if="meta.countyRisks !== 'ok'" :state="meta.countyRisks" :detail="errors.countyRisks"></status-block>
+          <div id="chartPlateauMap" class="chart-full"></div>
+        </div>
+
+        <div class="cockpit-side-col">
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title-wrap">
+                <h3>{{ currentRegionName }} · 气象机理监测</h3>
+              </div>
+              <div class="panel-actions">
+                <prov-badge :code="currentDisaster && currentDisaster.is_realtime ? 'A' : 'D'"
+                            :note="currentDisaster ? currentDisaster.provenance_note : ''"></prov-badge>
+                <span
+                  class="tag"
+                  :class="currentDisaster && currentDisaster.is_realtime ? 'tag-cyan' : 'tag-warn'"
+                  :title="currentDisaster ? currentDisaster.provenance_note || '' : ''"
+                >{{ currentDisaster && currentDisaster.is_realtime ? 'Open-Meteo 实时预报' : '气候态外推 · 仅供参考' }}</span>
+              </div>
+            </div>
+
+            <status-block v-if="meta.countyRisks !== 'ok'" :state="meta.countyRisks" :detail="errors.countyRisks"></status-block>
+            <template v-else>
+              <div class="degraded-notice" v-if="currentDisaster && !currentDisaster.is_realtime">
+                <strong>气候背景参考</strong>：{{ currentDisaster.provenance_note }}
+              </div>
+              <div class="metrics-grid">
+                <div class="metric-box">
+                  <div class="m-label">日均气温 (D+1 预报)</div>
+                  <div class="m-val">{{ currentMetrics.temp }} <span class="m-unit">℃</span></div>
+                  <div class="m-sub" :title="`16 天预报窗口最低 ${currentMetrics.tempMin} ℃`">
+                    16 天窗口均值 {{ currentMetrics.tempWindowMean }} ℃
+                  </div>
+                </div>
+                <div class="metric-box">
+                  <div class="m-label">积雪深度</div>
+                  <div class="m-val" :class="snowDepthClass">{{ currentMetrics.snow }} <span class="m-unit">cm</span></div>
+                  <div class="m-sub">连续积雪: {{ currentMetrics.snowDays }} 天</div>
+                </div>
+                <div class="metric-box">
+                  <div class="m-label">牧区雪灾等级</div>
+                  <div class="m-val-badge" :class="snowLevelBadgeClass">{{ currentMetrics.snowLevel }}</div>
+                  <div class="m-sub">预报驱动的参考分级</div>
+                </div>
+                <div class="metric-box">
+                  <div class="m-label">季气象干旱</div>
+                  <div class="m-val-badge" :class="currentMetrics.droughtLevel === '正常' ? 'badge-success' : 'badge-warning'">{{ currentMetrics.droughtLevel }}</div>
+                  <div class="m-sub">SPI-3 = {{ currentMetrics.spiVal }}</div>
+                </div>
+                <div class="metric-box metric-box-wide">
+                  <div class="m-label">预报窗口内首触 5 cm 积雪的日序</div>
+                  <div class="m-val">
+                    {{ currentLeadTime ? currentLeadTime.days : '—' }} <span class="m-unit">天</span>
+                  </div>
+                  <div class="m-sub">
+                    按 GB/T 20482 轻度雪灾判据的<b>积雪深度下限 5 cm</b>逐日筛选，取第
+                    {{ currentLeadTime ? currentLeadTime.windowDays : '—' }} 天窗口内首次达标之日；
+                    完整判据另需连续积雪 ≥ 3 天，且该日序是<b>预报序列中的第几天，不是实际灾情发生日</b>。
+                    <template v-if="currentLeadTime && !currentLeadTime.realtime">
+                      本县当前为气候态外推序列，该日序仅代表历史同期平均节律，不构成提前预警能力。
+                    </template>
+                    <template v-else-if="currentLeadTime">本县当前为实时预报窗口。</template>
+                    <template v-else-if="meta.disaster === 'ok'">本窗口内未筛选到达标日。</template>
+                    <template v-else>当前无可用的预报序列。</template>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title-wrap">
+                <h3>前瞻 16 天极端天气演化趋势</h3>
+                <p class="panel-question">温度轴按窗口极值取值，真实波动直接可见</p>
+              </div>
+              <div class="panel-actions">
+                <span class="tag" :class="currentDisaster && currentDisaster.is_realtime ? '' : 'tag-warn'">
+                  {{ currentDisaster && currentDisaster.is_realtime ? 'Open-Meteo 逐日预报' : '气候态外推 · 非预报' }}
+                </span>
+              </div>
+            </div>
+            <div id="chartCockpitForecast" class="chart-box-tall"></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="page-footer">
+        下一页：<button class="cross-tab-link-btn" @click="navigateTo(nextTabId())">{{ nextTab() }} →</button>
+      </p>
+    </main>
+
+    <!-- ==================== 视图 2：气象数据底座 ==================== -->
+    <main v-show="currentTab === 'datasource'" class="view-container">
+      <div class="page-heading"><h2>数据来源</h2><p>查看数据覆盖、来源凭证与适用范围。</p></div>
+
+      <div class="datasource-grid-2">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title-wrap">
+              <h2>数据覆盖时间</h2>
+              <p class="panel-question">展示各数据源的实际覆盖年份与更新周期</p>
+            </div>
+            <span class="tag">数据底座拓扑</span>
+          </div>
+          <status-block v-if="meta.provenance !== 'ok'" :state="meta.provenance" :detail="errors.provenance"></status-block>
+          <div id="chartSourceGantt" class="chart-box-md"></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title-wrap">
+              <h2>样本构成</h2>
+              <p class="panel-question">区分已标注事件、未标注背景与遥感参考值</p>
+            </div>
+          </div>
+          <status-block v-if="meta.verified !== 'ok'" :state="meta.verified" :detail="errors.verified"></status-block>
+          <div id="chartSampleBoundary" class="chart-box-md"></div>
+          <div class="boundary-note">
+            <p>
+              <strong>{{ orDash(verifiedStats.totalVerified) }}</strong> 条为附来源 URL 的<strong>已标注事件</strong>，县域归属和气象关联仍待核验；
+              <strong>{{ orDash(verifiedStats.totalUnlabeled) }}</strong> 条为<strong>未标注背景样本</strong>——
+              它是「未标注」，不代表「无灾害」，模型训练时不作为已确认负例；
+              <strong>{{ nppBenchmark && nppBenchmark.loyo_protocol ? nppBenchmark.loyo_protocol.n_samples : '—' }}</strong>
+              条为 MODIS NPP 年度产品参考值，用于 NPP 模型的留一验证。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel mt-3">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <h2>评估方法与参考阈值</h2>
+            <p class="panel-question">查看风险分级采用的指标与阈值口径</p>
+          </div>
+          <span class="tag">技术选用依据</span>
+        </div>
+        <div class="standards-grid-4">
+          <div class="standard-card">
+            <div>
+              <span class="standard-tag">模型参考阈值</span>
+              <h4>牧区雪灾分级参考阈值</h4>
+              <p class="standard-scale-label">积雪深度断点</p>
+              <div class="scale-bar">
+                <span class="scale-seg" style="flex:5"><i></i>5cm I 级</span>
+                <span class="scale-seg" style="flex:5"><i></i>10cm II 级</span>
+                <span class="scale-seg" style="flex:5"><i></i>15cm III 级</span>
+                <span class="scale-seg" style="flex:5"><i></i>20cm IV 级</span>
+              </div>
+              <div class="standard-thresholds">
+                <div>• 轻度雪灾 (I级): 积雪≥5cm 持续≥3天</div>
+                <div>• 中度雪灾 (II级): 积雪≥10cm 持续≥5天</div>
+                <div>• 重度雪灾 (III级): 积雪≥15cm 持续≥7天</div>
+                <div>• 特重雪灾 (IV级): 积雪≥20cm 持续≥10天</div>
+              </div>
+            </div>
+            <div class="standard-rationale">
+              <strong>适用说明：</strong>以下为当前模型采用的简化积雪阈值，尚未完成与现行标准全文的逐项核验，不能替代正式雪灾等级认定。
+            </div>
+          </div>
+
+          <div class="standard-card">
+            <div>
+              <span class="standard-tag">国家气象标准</span>
+              <h4>GB/T 20481-2017《气象干旱等级》SPI</h4>
+              <p class="standard-scale-label">SPI 分档（全系统统一口径）</p>
+              <div class="scale-bar">
+                <span class="scale-seg scale-seg--dry" style="flex:4"><i></i>≤-2.0 特旱</span>
+                <span class="scale-seg scale-seg--dry" style="flex:4"><i></i>-2.0~-1.5 重旱</span>
+                <span class="scale-seg scale-seg--dry" style="flex:4"><i></i>-1.5~-1.0 中旱</span>
+                <span class="scale-seg scale-seg--dry" style="flex:4"><i></i>-1.0~-0.5 轻旱</span>
+                <span class="scale-seg" style="flex:6"><i></i>-0.5~+0.5 正常</span>
+              </div>
+              <div class="standard-thresholds">
+                <div>• 特旱 (≤ -2.00) / 重旱 (-2.00 ~ -1.50)</div>
+                <div>• 中旱 (-1.50 ~ -1.00) / 轻旱 (-1.00 ~ -0.50)</div>
+                <div>• 正常 (-0.50 ~ +0.50) / 湿润 (&gt; +0.50)</div>
+              </div>
+            </div>
+            <div class="standard-rationale">
+              <strong>选用依据:</strong> 采用两参数 Gamma MLE 拟合代替粗糙正态 Z-score，解决冬季无降水方差塌陷。
+            </div>
+          </div>
+
+          <div class="standard-card">
+            <div>
+              <span class="standard-tag">国际前沿文献</span>
+              <h4>Li et al. (2025) GDI 退化指数</h4>
+              <div class="standard-thresholds">
+                <div v-if="currentGdi && currentGdi.thresholds">• 基本稳定 (GDI &lt; {{ currentGdi.thresholds.theta1_stable_light }})</div>
+                <div v-if="currentGdi && currentGdi.thresholds">• 轻度退化 ({{ currentGdi.thresholds.theta1_stable_light }} ~ {{ currentGdi.thresholds.theta2_light_moderate }})</div>
+                <div v-if="currentGdi && currentGdi.thresholds">• 中度退化 ({{ currentGdi.thresholds.theta2_light_moderate }} ~ {{ currentGdi.thresholds.theta3_moderate_severe }})</div>
+                <div v-if="currentGdi && currentGdi.thresholds">• 重度退化 (≥ {{ currentGdi.thresholds.theta3_moderate_severe }})</div>
+                <div v-else-if="!currentGdi || !currentGdi.thresholds">阈值待计算</div>
+              </div>
+            </div>
+            <div class="standard-rationale">
+              <strong>选用依据:</strong> PCA 降维提取第一主成分并融入脆弱性系数，打破全量平庸同级。
+            </div>
+          </div>
+
+          <div class="standard-card">
+            <div>
+              <span class="standard-tag">农业行业标准</span>
+              <h4>NY/T 635-2015《天然草地载畜量计算》</h4>
+              <div class="standard-thresholds">
+                <div>• 成年母羊折算 = 1.0 羊单位</div>
+                <div>• 成年牦牛 = 4.0 羊单位</div>
+                <div>• 日需干物质 = 体重 × 2.5%</div>
+                <div>• 补饲量 = 缺口系数 × 窗口日需量</div>
+              </div>
+            </div>
+            <div class="standard-rationale">
+              <strong>选用依据:</strong> 将气象灾害直接穿透为防灾干草/精料吨数与预算，形成“气象+农业+金融”闭环。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel mt-3">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <h2>覆盖范围与分析单元</h2>
+            <p class="panel-question">当前接入的监测范围有多大，落到什么空间粒度上</p>
+          </div>
+          <span class="tag">取值范围 · 随数据自动派生</span>
+        </div>
+        <div class="standards-grid-3">
+          <div class="standard-card">
+            <div>
+              <span class="standard-tag">空间范围</span>
+              <h4>监测县域与行政区划</h4>
+              <div class="standard-thresholds">
+                <div>• 纳入监测县域：{{ orDash(coverageScope.counties) }} 个</div>
+                <div>• 覆盖省区：{{ orDash(coverageScope.provinceCount) }} 个</div>
+                <div>• 草场类型：{{ orDash(coverageScope.pastureCount) }} 类</div>
+                <div v-if="coverageScope.pastureTypes && coverageScope.pastureTypes.length">
+                  • {{ coverageScope.pastureTypes.join(' / ') }}
+                </div>
+              </div>
+            </div>
+            <div class="standard-rationale">
+              <strong>口径:</strong> 县域数与省区数直接取自县域清单接口当前返回值，不写死数量；新增或下线县域后本卡自动跟随。
+            </div>
+          </div>
+
+          <div class="standard-card">
+            <div>
+              <span class="standard-tag">分析粒度</span>
+              <h4>时空微切片分析单元</h4>
+              <div class="standard-thresholds">
+                <div>• 微切片总数：{{ orDash(coverageScope.microGrids) }} 个</div>
+                <div>• 构成：县域 × 4 草场类型 × 4 季节 × 5 生理期</div>
+                <div>• 要素：载畜平衡、可采食量、退化度、气象驱动</div>
+              </div>
+            </div>
+            <div class="standard-rationale">
+              <strong>边界:</strong> 微切片是<b>模型派生的分析单元</b>，不是新增的物理观测站点；每个切片的值都由县域气象与生态数据推导而来。
+            </div>
+          </div>
+
+          <div class="standard-card">
+            <div>
+              <span class="standard-tag">数据产品</span>
+              <h4>接入的公开数据产品</h4>
+              <div class="standard-thresholds">
+                <div>• 已接入 {{ orDash(coverageScope.productCount) }} 类公开数据产品</div>
+                <div v-for="p in coverageScope.products" :key="p.name">
+                  • {{ p.name }}（{{ p.range }}）
+                </div>
+              </div>
+            </div>
+            <div class="standard-rationale">
+              <strong>口径:</strong> 逐条来自数据溯源接口的公开产品清单，覆盖区间与要素以接口返回为准；实时气象接口仅提供前瞻窗口，不属于历史序列。
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel mt-3">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <h2>事件记录与来源核验</h2>
+            <p class="panel-question">点击来源查看原文；金额与县域归属需核验后使用</p>
+          </div>
+          <span class="tag">
+            共 {{ orDash(verifiedStats.totalVerified) }} 条已标注事件 · 气象类标签 {{ orDash(verifiedStats.meteorological) }} 条
+          </span>
+        </div>
+
+        <div class="verified-toolbar">
+          <button
+            v-for="cat in verifiedCategories"
+            :key="cat"
+            class="cat-chip"
+            :class="{ active: verifiedSelectedCategory === cat }"
+            @click="filterVerifiedEvents(cat)"
+          >
+            {{ cat }}
+            <span v-if="cat !== '全部' && verifiedStats.types[cat]" class="cat-chip-n">({{ verifiedStats.types[cat] }})</span>
+            <span v-else-if="cat === '全部' && verifiedStats.totalVerified" class="cat-chip-n">({{ verifiedStats.totalVerified }})</span>
+          </button>
+        </div>
+
+        <status-block v-if="meta.verified !== 'ok'" :state="meta.verified" :detail="errors.verified"></status-block>
+        <div v-else class="table-responsive" style="max-height: 420px; overflow-y: auto;">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>发生月份</th>
+                <th>发生县域</th>
+                <th>灾害/实证类型</th>
+                <th>严重程度</th>
+                <th>直接灾损/保额</th>
+                <th>农业保险理赔</th>
+                <th>通报凭证来源</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="ev in verifiedEvents" :key="ev.month + ev.region_id + ev.event_type">
+                <td><strong class="text-cyan">{{ ev.month }}</strong></td>
+                <td>{{ ev.region_name }}</td>
+                <td>
+                  <span class="sub-tag" :class="categoryTagClass(ev.category)">{{ ev.event_type }}</span>
+                  <span v-if="!ev.is_meteorological" class="nonmeteo-tag" title="该记录不直接计入气象灾害频次；是否与气象有关需核验原文">非气象记录</span>
+                </td>
+                <td>{{ ev.severity || '—' }}</td>
+                <td title="原始字段的单位与含义待核验">{{ ev.amount_status === 'pending_review' ? '待核验' : orDash(ev.loss_amount_wan) }}</td>
+                <td title="原始字段的单位与含义待核验">{{ ev.amount_status === 'pending_review' ? '待核验' : orDash(ev.claim_amount_wan) }}</td>
+                <td class="cell-muted link-cell" :title="ev.note || ev.source">
+                  <a v-if="ev.source_url" :href="ev.source_url" target="_blank" rel="noopener">
+                    <svg width="12" height="12" aria-hidden="true"><use href="#ic-link"></use></svg> {{ ev.source }}
+                  </a>
+                  <span v-else>{{ ev.source }}</span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <p class="page-footer">
+        下一页：<button class="cross-tab-link-btn" @click="navigateTo(nextTabId())">{{ nextTab() }} →</button>
+      </p>
+    </main>
+
+    <!-- ==================== 视图 3：气象风险指数 ==================== -->
+    <main v-show="currentTab === 'index'" class="view-container">
+      <div class="page-heading"><h2>风险分析</h2><p>查看历史样本的风险归因、气象指数与模型验证。</p></div>
+
+      <!-- Dominant Anchor：PU 消融矩阵 -->
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <h3>历史风险归因与模型验证</h3>
+            <p class="panel-question">模型使用 {{ orDash(verifiedStats.totalVerified) }} 条已标注事件与 {{ orDash(verifiedStats.totalUnlabeled) }} 条未标注样本；结果受标签质量限制</p>
+          </div>
+          <div class="panel-actions">
+            <span class="tag tag-green">模型验证</span>
+            <button class="cross-tab-link-btn" @click="navigateTo('datasource')">查看事件来源 →</button>
+          </div>
+        </div>
+
+        <div class="pu-benchmark-grid">
+          <details class="pu-table-col validation-details">
+            <summary>模型验证与基线对照<span>查看时间留出与标签诊断</span></summary>
+            <div class="validation-content">
+            <status-block v-if="meta.puBenchmark !== 'ok'" :state="meta.puBenchmark"
+              :message="meta.puBenchmark === 'loading' ? '正在计算时间留出诊断…' : '模型验证结果暂不可用'"
+              :detail="meta.puBenchmark === 'loading' ? '首次计算可能需要数十秒，可继续查看历史归因。' : errors.puBenchmark"></status-block>
+            <button v-if="meta.puBenchmark === 'error'" class="cross-tab-link-btn" @click="loadBenchmarks()">重试模型验证</button>
+            <p class="evaluation-scope" v-if="puBenchmark && puBenchmark.evaluation">
+              {{ puBenchmark.evaluation.name }} · 验证年份 {{ puBenchmark.evaluation.held_out_year }} ·
+              训练 {{ puBenchmark.evaluation.train_count }} 条 / 验证 {{ puBenchmark.evaluation.test_count }} 条。
+              <strong>标签诊断，非真实灾害预测准确率。</strong>
+            </p>
+            <div class="sub-title-box">
+              <h4>末年留出 · 记录标签诊断</h4>
+              <span class="text-green text-bold">
+                本项目标签 F1 {{ verifyKpi.f1Text }} · 朴素基线 {{ verifyKpi.naiveF1Text }}
+              </span>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>模型架构 / 对照基线</th>
+                  <th>标签准确率</th>
+                  <th>标签精确率</th>
+                  <th>已标注召回率</th>
+                  <th>未标注告警率</th>
+                  <th>标签 F1</th>
+                  <th>标签 Brier</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="row in puRows" :key="row.key" :class="{ 'hl-row': row.ours }">
+                  <td>
+                    <strong v-if="row.ours">{{ row.name_cn }}</strong>
+                    <span v-else>{{ row.name_cn }}</span>
+                  </td>
+                  <!-- 缺库 / 第三方实现报错时，这一行是"没测到"，不是"测得 0 分"：
+                       六列指标一并留空并写明原因，不允许渲染成 0 -->
+                   <td v-if="!row.available" colspan="6" class="td-skip">补充对照未启用，暂无可比结果</td>
+                  <template v-else>
+                    <td>{{ num(row.accuracy, 4) }}</td>
+                    <td>{{ num(row.precision, 4) }}</td>
+                    <td>{{ num(row.recall, 4) }}</td>
+                    <td>{{ num(row.unlabeled_alert_rate, 4) }}</td>
+                    <td :class="row.ours ? 'text-green text-bold' : ''">{{ num(row.f1_score, 4) }}</td>
+                    <td>{{ num(row.brier_score, 4) }}</td>
+                  </template>
+                </tr>
+              </tbody>
+            </table>
+            <div id="chartPuBenchmark" class="chart-box-sm"></div>
+
+            <div class="baseline-diagnosis">
+              <h5>如何解读这些结果</h5>
+              <p class="verdict-note">验证期为末年样本，训练、可靠负例筛选和校准只使用此前年份。已标注召回率衡量模型识别有来源记录的能力；未标注告警率不等于误报率。</p>
+              <p class="verdict-note">目前没有经人工核实的真实阴性标签。表中 F1、精确率、准确率和 Brier 仅针对“是否存在记录标签”计算，不能当作真实灾害预测效果；旧版先筛样本再划分的成绩已弃用。</p>
+              <p class="verdict-note">各方法在同一留出集诊断，阈值规则不同；当前记录标签与静态经营特征仍需进一步审查。</p>
+            </div>
+            </div>
+          </details>
+          <div class="pu-shap-col">
+            <div class="sub-title-box">
+              <div>
+                <h4>{{ currentRegionName }} · 历史样本归因</h4>
+                <p class="sub-hint">
+                口径说明：标签包含<strong>气象事件及部分非气象来源记录</strong>，仍待逐条清洗核验。
+                条形方向反映模型与现有标签的统计关联，不等同于致灾因果。
+                </p>
+              </div>
+              <span class="badge" :class="currentPuRisk && currentPuRisk.risk_score >= 60 ? 'badge-danger' : 'badge-mid'"
+                    v-if="meta.pu === 'ok' && currentPuRisk">
+                {{ currentPuRisk.risk_level }} ({{ currentPuRisk.risk_score }} 分)
+              </span>
+            </div>
+
+            <status-block v-if="meta.pu !== 'ok'" :state="meta.pu" :detail="errors.pu"
+                          :message="meta.pu === 'loading' ? '正在加载本县历史归因…' : '本县历史风险暂不可评估'"></status-block>
+            <template v-else>
+              <div class="shap-legend">
+                <span class="lg-item"><i class="lg-swatch lg-up"></i>抬升模型评分</span>
+                <span class="lg-item"><i class="lg-swatch lg-down"></i>压低模型评分</span>
+              </div>
+              <div id="chartPuShap" class="chart-box-md"></div>
+              <div class="shap-summary-box">
+                <p><strong>样本月份 {{ currentPuRisk.month }}：</strong> {{ currentPuRisk.summary }}</p>
+                <p class="sub-hint">以上为历史样本的统计解释，不代表当前灾情。当前处置请结合趋势预测页的预报时效判断。</p>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- 微网格矩阵 -->
+      <div class="panel mt-3">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <h3>微网格风险矩阵 · {{ currentRegionName }}</h3>
+            <p class="panel-question">4 草场类型 × 4 季节 = 16 格，由本县 80 个微网格聚合</p>
+          </div>
+          <div class="btn-group">
+            <span class="filter-lbl">受灾敏感生理群：</span>
+            <button
+              v-for="ag in ageGroups"
+              :key="ag.code"
+              class="filter-chip"
+              :class="{ active: currentAgeGroup === ag.code }"
+              @click="switchAgeGroup(ag.code)"
+            >{{ ag.name }}</button>
+          </div>
+        </div>
+        <div class="grid-matrix-wrap">
+          <div id="chartIndexGridHeatmap" class="chart-box-matrix"></div>
+          <aside class="matrix-insight">
+            <h4>矩阵读数</h4>
+            <div class="insight-row"><span>峰值单元</span><span class="ir-val">{{ matrixInsight.maxLabel }}</span></div>
+            <div class="insight-row"><span>峰值风险值</span><span class="ir-val">{{ matrixInsight.maxValue }}</span></div>
+            <div class="insight-row"><span>最低单元</span><span class="ir-val">{{ matrixInsight.minLabel }}</span></div>
+            <div class="insight-row"><span>季节间最大极差</span><span class="ir-val">{{ matrixInsight.seasonSpread }}</span></div>
+            <div class="insight-row"><span>草场间最大极差</span><span class="ir-val">{{ matrixInsight.grassSpread }}</span></div>
+            <p class="insight-takeaway">{{ matrixInsight.takeaway }}</p>
+          </aside>
+        </div>
+      </div>
+
+      <!-- SPI / GDI 方法对照：半宽并排 -->
+      <div class="method-compare-grid mt-3">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title-wrap">
+              <h3>SPI-3 干旱指数：Gamma MLE 修正的真实影响面</h3>
+            </div>
+            <span class="tag">全域 26 县对照</span>
+          </div>
+          <status-block v-if="meta.methodCompare !== 'ok'" :state="meta.methodCompare" :detail="errors.methodCompare" message="全域方法对照未取得"></status-block>
+          <template v-else>
+            <div class="method-stat-strip">
+              <div class="method-stat">
+                <span class="ms-label">干旱等级被重判的县数</span>
+                <span class="ms-value">{{ spiSummary.level_changed }} / {{ spiSummary.compared_counties }}</span>
+              </div>
+              <div class="method-stat">
+                <span class="ms-label">|ΔSPI| 均值 / 最大</span>
+                <span class="ms-value">{{ spiSummary.mean_abs_delta }} / {{ spiSummary.max_abs_delta }}</span>
+              </div>
+              <div class="method-stat">
+                <span class="ms-label">{{ currentRegionName }} 现值</span>
+                <span class="ms-value">{{ currentSpi ? currentSpi.spi_value : '—' }} · {{ currentSpi ? (currentSpi.drought_level_gb || currentSpi.drought_level) : '—' }}</span>
+              </div>
+              <!-- 干旱指数由多少个历史同月样本拟合而来，是判断该数值有没有气候统计
+                   意义的前提；把它摆在数值旁边，而不是只写在抽屉深处 -->
+              <div class="method-stat">
+                <span class="ms-label">Gamma 拟合样本数</span>
+                <span class="ms-value">{{ currentSpi ? orDash(currentSpi.historical_samples_count) : '—' }} 个历史同月
+                  <span class="ms-note">WMO 建议 ≥30 年</span>
+                </span>
+              </div>
+            </div>
+          </template>
+          <div id="chartSpiSlope" class="slope-chart"></div>
+          <method-chips drawer="spi" :chips="spiChips"></method-chips>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title-wrap">
+              <h3>GDI 草地退化指数：PCA+K-Means 修正的真实影响面</h3>
+            </div>
+            <span class="tag">全域 26 县对照</span>
+          </div>
+          <status-block v-if="meta.methodCompare !== 'ok'" :state="meta.methodCompare" :detail="errors.methodCompare" message="全域方法对照未取得"></status-block>
+          <template v-else>
+            <div class="method-stat-strip">
+              <div class="method-stat">
+                <span class="ms-label">退化等级被重判的县数</span>
+                <span class="ms-value">{{ gdiSummary.level_changed }} / {{ gdiSummary.compared_counties }}</span>
+              </div>
+              <div class="method-stat">
+                <span class="ms-label">|ΔGDI| 均值 / 最大</span>
+                <span class="ms-value">{{ gdiSummary.mean_abs_delta }} / {{ gdiSummary.max_abs_delta }}</span>
+              </div>
+              <div class="method-stat">
+                <span class="ms-label">{{ currentRegionName }} 现值</span>
+                <span class="ms-value">{{ currentGdi ? currentGdi.gdi_value : '—' }} · {{ currentGdi ? (currentGdi.degradation_level_cn || currentGdi.degradation_level) : '—' }}</span>
+              </div>
+            </div>
+          </template>
+          <div id="chartGdiSlope" class="slope-chart"></div>
+          <method-chips drawer="gdi" :chips="gdiChips"></method-chips>
+        </div>
+      </div>
+
+      <p class="page-footer">
+        下一页：<button class="cross-tab-link-btn" @click="navigateTo(nextTabId())">{{ nextTab() }} →</button>
+      </p>
+    </main>
+
+    <!-- ==================== 视图 4：灾害预测与草畜平衡 ==================== -->
+    <main v-show="currentTab === 'forecast'" class="view-container">
+      <div class="page-heading"><h2>趋势预测</h2><p>区分短期天气预报、气候态外推与年度草地生产力预测。</p></div>
+
+      <div class="forecast-grid-charts">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title-wrap">
+              <h3>{{ currentRegionName }} · 积雪深度 30 天演化与不确定区间</h3>
+              <p class="panel-question">{{ currentDisaster && currentDisaster.is_realtime ? '竖线右侧为气候态外推段，来源已改变' : '全时段为气候背景推演，不代表实时灾情' }}</p>
+            </div>
+            <span class="tag" :class="currentDisaster && currentDisaster.is_realtime ? 'tag-cyan' : 'tag-warn'">
+              {{ currentDisaster && currentDisaster.is_realtime ? '前 16 天 Open-Meteo 实时驱动' : '气候态外推 · 非实时' }}
+            </span>
+          </div>
+          <status-block v-if="meta.disaster !== 'ok'" :state="meta.disaster" :detail="errors.disaster"></status-block>
+          <div id="chartMultiDisaster" class="chart-box-lg"></div>
+          <div class="sub-hint" v-if="uncertaintyInfo">
+            阴影带 = 本县同月历史积雪深度年际标准差
+            <strong>±{{ uncertaintyInfo.sigma }} cm</strong>（{{ uncertaintyInfo.years }} 年样本，{{ uncertaintyInfo.method }}）。
+          </div>
+          <div class="disaster-chips" v-if="disasterChips.length">
+            <span v-for="c in disasterChips" :key="c.k" class="dchip">
+              <span>{{ c.k }}</span><strong>{{ c.v }}</strong>
+            </span>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title-wrap">
+              <h3>年度 NPP · 历史对照与情景预测</h3>
+              <p class="panel-question">区分遥感参考值、历史拟合与目标年份预测</p>
+            </div>
+            <span class="tag">MODIS 年度产品</span>
+          </div>
+          <status-block v-if="meta.series !== 'ok' && meta.series !== 'loading'" :state="meta.series" :detail="errors.series"></status-block>
+          <div id="chartNppCompare" class="chart-box-lg"></div>
+          <div class="sub-hint">
+            灰点为历史遥感参考值，灰线为训练内拟合，绿色菱形为目标年情景预测。
+            预测沿用末年气象特征，不代表目标年的天气预报；独立留一验证结果见下方。
+          </div>
+        </div>
+      </div>
+
+      <div class="panel mt-3">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <h3>NPP 时空预测模型验证</h3>
+            <p class="panel-question">以下为单独计算的分组验证结果；不使用上方训练内拟合曲线评分</p>
+          </div>
+          <span class="tag tag-green">按年份与县域留一验证</span>
+        </div>
+
+        <status-block v-if="meta.nppBenchmark !== 'ok'" :state="meta.nppBenchmark"
+          :message="meta.nppBenchmark === 'loading' ? '正在计算 NPP 留一验证…' : 'NPP 验证结果暂不可用'"
+          :detail="meta.nppBenchmark === 'loading' ? '首次计算可能需要数十秒，可继续查看预测曲线。' : errors.nppBenchmark"></status-block>
+        <button v-if="meta.nppBenchmark === 'error'" class="cross-tab-link-btn" @click="loadBenchmarks()">重试 NPP 验证</button>
+        <div v-show="meta.nppBenchmark === 'ok'" id="chartMaeReduction" class="chart-box-sm"></div>
+
+        <div class="protocol-grid mt-3">
+          <div class="protocol-section" v-for="proto in protocolList" :key="proto.key">
+            <div class="protocol-header">
+              <h4>{{ proto.protocol }}（{{ proto.n_folds }} 轮，{{ proto.n_samples }} 样本）</h4>
+            </div>
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>模型方案</th>
+                  <th>MAE (95% CI)</th>
+                  <th>RMSE (95% CI)</th>
+                  <th>R²</th>
+                  <th>相对基线误差降低</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="row in proto.rows" :key="row.name" :class="{ 'hl-row': row.isOurs }">
+                  <td><strong v-if="row.isOurs">{{ row.name }}</strong><span v-else>{{ row.name }}</span></td>
+                  <td>{{ row.mae }} ± {{ row.mae_ci95 }}</td>
+                  <td>{{ row.rmse }} ± {{ row.rmse_ci95 }}</td>
+                  <td>{{ row.r2 }}</td>
+                  <td>
+                    <span v-if="row.isOurs" class="text-green text-bold">
+                      vs B1: {{ signedPct(row.reduction_vs_b1_pct) }} | vs B2: {{ signedPct(row.reduction_vs_b2_pct) }} | vs B3: {{ signedPct(row.reduction_vs_b3_pct) }}
+                    </span>
+                    <span v-else class="text-muted">基线基准 (Baseline)</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <method-chips drawer="npp" :chips="nppChips"></method-chips>
+      </div>
+
+      <p class="page-footer">
+        下一页：<button class="cross-tab-link-btn" @click="navigateTo(nextTabId())">{{ nextTab() }} →</button>
+      </p>
+    </main>
+
+    <!-- ==================== 视图 5：应用与决策 ==================== -->
+    <main v-show="currentTab === 'decision'" class="view-container">
+      <div class="page-heading"><h2>应急方案</h2><p>测算草料与资金需求，登记本地模拟处置方案。</p></div>
+
+      <div class="decision-layout-grid">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title-wrap">
+              <h3>{{ currentRegionName }} · 草料与资金测算</h3>
+              <p class="panel-question">按养殖场景估算资源需求，形成可调整的应急计划</p>
+            </div>
+            <prov-badge :code="'E'"></prov-badge>
+          </div>
+
+          <status-block v-if="meta.decision !== 'ok'" :state="meta.decision" :detail="errors.decision"></status-block>
+          <template v-else-if="currentDecision">
+            <div v-if="feedDemand && !feedDemand.is_realtime" class="degraded-notice">
+              <strong>当前为气候背景推演</strong>：实时预报不可用或不完整。以下数量按历史同期气候及设定参数测算，不能直接作为当前调度指令。
+            </div>
+            <div class="decision-cards-3">
+              <div class="dec-card">
+                <div class="dec-badge">应急补饲调度</div>
+                <div class="dec-val">{{ feedDemand ? feedDemand.recommended_hay_tons : '—' }} <span class="dec-unit">吨干草</span></div>
+                <div class="dec-val-sub">精饲料: <strong>{{ feedDemand ? feedDemand.recommended_grain_tons : '—' }} 吨</strong></div>
+                <div class="dec-desc">
+                  按 1000 头成年牦牛群 {{ orDash(feedDemand && feedDemand.forecast_days) }} 天窗口测算，
+                  档位判定为 <strong>{{ orDash(feedDemand && feedDemand.feed_mode) }}</strong>
+                  （窗口均温 {{ orDash(feedDemand && feedDemand.mean_temp_c) }} ℃、平均积雪 {{ orDash(feedDemand && feedDemand.mean_snow_depth_cm) }} cm）；
+                  干草 0.85 元/kg、精料 3.60 元/kg 计价，预估采购成本 {{ orDash(feedDemand && feedDemand.total_feed_cost_wan) }} 万元。
+                </div>
+              </div>
+              <div class="dec-card">
+                <div class="dec-badge badge-danger">灾害暴露敞口</div>
+                <div class="dec-val text-danger">{{ orDash(currentDecision.estimated_loss_exposure_wan) }} <span class="dec-unit">万元</span></div>
+                <div class="dec-val-sub">总暴露牲畜资产: <strong>{{ orDash(currentDecision.total_exposed_assets_wan) }} 万元</strong></div>
+                <div class="dec-desc">按每头 8,500 元和设定损失率估算，仅用于比较应急情景，非实际灾损。</div>
+              </div>
+              <div class="dec-card">
+                <div class="dec-badge badge-green">资金需求情景测算</div>
+                <div class="dec-val text-green">{{ orDash(currentDecision.resilience_credit_quota_wan) }} <span class="dec-unit">万元</span></div>
+                <div class="dec-val-sub">参考额度 · 非授信审批</div>
+                <div class="dec-desc">按草料成本 × 1.5 + 牲畜资产 × 0.15 估算，未对接金融机构。</div>
+              </div>
+            </div>
+
+            <div class="action-list-box mt-3" v-if="currentDecision.recommended_actions && currentDecision.recommended_actions.length">
+              <h3>分级应急防灾行动建议清单</h3>
+              <div v-for="(act, idx) in currentDecision.recommended_actions" :key="idx" class="action-item">
+                <span class="action-idx">0{{ idx + 1 }}</span>
+                <span class="action-text">{{ act }}</span>
+              </div>
+            </div>
+          </template>
+
+          <div class="panel mt-3">
+            <div class="panel-header">
+              <div class="panel-title-wrap">
+                <h3>应急处置推演 · 模拟调度记录</h3>
+              </div>
+              <span class="tag tag-green">演示环境 · 仅保存本地记录</span>
+            </div>
+            <div class="dispatch-action-wrap">
+              <div class="dispatch-form-card">
+                <div class="dispatch-form-title">登记 {{ currentRegionName }} 模拟调拨方案</div>
+
+                <div class="dispatch-field-group">
+                   <label>计划调拨干草 (吨)</label>
+                  <input type="number" min="0" step="0.1" aria-label="计划调拨干草吨数" v-model.number="dispatchForm.hay_tons" class="dispatch-input"
+                         :placeholder="feedDemand ? String(feedDemand.recommended_hay_tons) : '—'" />
+                </div>
+                <div class="dispatch-field-group">
+                   <label>计划调拨精饲料 (吨)</label>
+                  <input type="number" min="0" step="0.1" aria-label="计划调拨精饲料吨数" v-model.number="dispatchForm.grain_tons" class="dispatch-input"
+                         :placeholder="feedDemand ? String(feedDemand.recommended_grain_tons) : '—'" />
+                </div>
+                <div class="dispatch-field-group">
+                  <label>处置动作类型</label>
+                  <select v-model="dispatchForm.action_type" class="dispatch-input">
+                    <option value="应急补饲与转场防寒">应急补饲与转场防寒</option>
+                    <option value="全人工重度应急保畜补饲">全人工重度应急保畜补饲</option>
+                    <option value="暴雪封路定点投送">暴雪封路定点投送</option>
+                    <option value="弱质幼畜紧急避险救助">弱质幼畜紧急避险救助</option>
+                  </select>
+                </div>
+                <div class="dispatch-field-group">
+                   <label>模拟经办角色</label>
+                  <input type="text" v-model="dispatchForm.operator_role" class="dispatch-input" />
+                </div>
+
+                <p class="sub-hint" v-if="feedDemand && feedDemand.unit_prices_yuan_per_kg">预算按本次计划量重算；演示单价：干草 {{ feedDemand.unit_prices_yuan_per_kg.hay }} 元/kg、精料 {{ feedDemand.unit_prices_yuan_per_kg.grain }} 元/kg。</p>
+                <div class="dispatch-guard" v-if="!dispatchReady">
+                   本县补饲需求尚未算出，<strong>暂不能登记</strong>——不会以占位数值生成模拟方案。
+                </div>
+                <button class="dispatch-btn" :disabled="dispatchSubmitting || !dispatchReady" @click="submitDispatch">
+                  <svg width="14" height="14" aria-hidden="true"><use href="#ic-bolt"></use></svg>
+                   <span>{{ dispatchSubmitting ? '正在保存模拟记录...' : '登记模拟处置方案' }}</span>
+                </button>
+                <div v-if="dispatchToast" class="dispatch-toast" :class="'is-' + dispatchToastTone">{{ dispatchToast }}</div>
+              </div>
+
+              <div class="audit-table-wrap">
+                <div class="audit-head">
+                   <span>演示处置记录 ({{ meta.dispatch === 'ok' ? dispatchLogs.length + ' 笔' : '—' }})</span>
+                  <span class="audit-head-sub">
+                     计划干草合计 {{ orDash(dispatchStats.hay) }} 吨 · 精料 {{ orDash(dispatchStats.grain) }} 吨
+                  </span>
+                </div>
+                <status-block v-if="meta.dispatch !== 'ok'" :state="meta.dispatch" :detail="errors.dispatch"></status-block>
+                <table v-else class="data-table">
+                  <thead>
+                    <tr>
+                       <th>记录编号</th>
+                       <th>登记时间</th>
+                      <th>目标县域</th>
+                       <th>计划物资</th>
+                      <th>处置动作</th>
+                      <th>状态</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="log in dispatchLogs" :key="log.dispatch_id">
+                        <td>
+                          <code class="dispatch-id">{{ log.dispatch_id }}</code>
+                          <span class="status-pill archived" v-if="log.data_source === 'sample'">随包样例</span>
+                          <span class="status-pill executing" v-else>本地模拟</span>
+                        </td>
+                      <td class="cell-muted">{{ (log.timestamp || '').slice(0, 16).replace('T', ' ') }}</td>
+                      <td><strong>{{ log.region_name }}</strong></td>
+                      <td>{{ log.hay_tons }}t 干草 / {{ log.grain_tons }}t 精料<br><span class="cell-muted">预算 {{ orDash(log.feed_cost_wan) }} 万元</span></td>
+                      <td class="cell-sm">{{ log.action_type }}</td>
+                      <td>
+                        <span class="status-pill" :class="log.status && (log.status.includes('ARCHIVED') || log.status.includes('入库')) ? 'archived' : 'executing'">
+                           {{ log.data_source === 'sample' ? '样例记录' : '模拟登记' }}
+                        </span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="panel mt-3">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <h3>全域 26 县应急资源投放优先级排序</h3>
+            <p class="panel-question">按综合评分比较县域优先级；颜色表示当前情景的补饲档位</p>
+          </div>
+          <div class="panel-actions">
+            <button class="cross-tab-link-btn" @click="navigateTo('cockpit')">返回驾驶舱空间分布 →</button>
+            <button class="cross-tab-link-btn" @click="navigateTo('index')">查看当前县气象指数 →</button>
+            <span class="tag" :class="prioritySummary && prioritySummary.realtime === prioritySummary.countyCount ? '' : 'tag-warn'">
+              未来 14 天窗口 · 实时驱动 {{ prioritySummary ? prioritySummary.realtime : '—' }}/{{ prioritySummary ? prioritySummary.countyCount : '—' }} 县
+            </span>
+          </div>
+        </div>
+
+        <status-block v-if="meta.priority !== 'ok'" :state="meta.priority" :detail="errors.priority"></status-block>
+        <template v-else-if="prioritySummary">
+          <div class="priority-kpi-row">
+            <div class="pk-item">
+              <div class="pk-label">全域应急补饲需求</div>
+              <div class="pk-val">{{ prioritySummary.hayTons }} <span class="pk-unit">吨干草</span></div>
+              <div class="pk-sub">精饲料 {{ prioritySummary.grainTons }} 吨 · 采购成本 {{ prioritySummary.costWan }} 万元</div>
+            </div>
+            <div class="pk-item">
+              <div class="pk-label">情景中需补饲的县域</div>
+              <div class="pk-val">{{ prioritySummary.needCount }} <span class="pk-unit">/ {{ prioritySummary.countyCount }} 县</span></div>
+              <div class="pk-sub">按模型参考阈值计算，实际处置需结合现场核实</div>
+            </div>
+            <div class="pk-item">
+              <div class="pk-label">按优先级累计覆盖</div>
+              <div class="pk-val">第 {{ orDash(prioritySummary.p50) }} <span class="pk-unit">县累计覆盖 50%</span></div>
+              <div class="pk-sub">自上而下按本表顺序投放，第 {{ orDash(prioritySummary.p80) }} 县即可覆盖 80% 全域补饲需求</div>
+            </div>
+            <div class="pk-item">
+              <div class="pk-label">资金参考额度测算</div>
+              <div class="pk-val">{{ prioritySummary.creditWan }} <span class="pk-unit">万元</span></div>
+              <div class="pk-sub">按饲草采购成本 ×1.5 + 牲畜资产 ×0.15 测算</div>
+            </div>
+          </div>
+          <div class="status-legend">
+            <span class="status-legend-label">补饲档位：</span>
+            <span class="status-legend-item"><i class="sw-calm"></i>全草场放牧</span>
+            <span class="status-legend-item"><i class="sw-light"></i>轻度补充防寒</span>
+            <span class="status-legend-item"><i class="sw-half"></i>半草场半补饲</span>
+            <span class="status-legend-item"><i class="sw-full"></i>全人工重度补饲</span>
+          </div>
+          <div id="chartPriorityRank" class="priority-chart"></div>
+          <method-chips drawer="priority" :chips="priorityChips"></method-chips>
+        </template>
+      </div>
+
+      <div class="panel mt-3">
+        <div class="panel-header">
+          <div class="panel-title-wrap">
+            <h2>全域资源投放效益测算</h2>
+            <p class="panel-question">同一套补饲口径下的情景复算：分级投放相比“不分级、一律满额备料”减少了多少投入</p>
+          </div>
+          <span class="tag">情景复算 · 非采购结算</span>
+        </div>
+
+        <status-block v-if="meta.priority !== 'ok'" :state="meta.priority" :detail="errors.priority"></status-block>
+        <template v-else-if="prioritySummary">
+          <div class="degraded-notice" v-if="prioritySummary.realtime === 0">
+            <strong>预报源档位</strong>：本轮 {{ orDash(prioritySummary.countyCount) }} 县全部由<strong>气候态外推</strong>驱动
+            （实时预报接口当前不可达），补饲需求与损失敞口整体偏高；实时预报恢复后，同一套口径会给出明显更低的数值。
+            引用本页任何数字前，请先确认「全域资源投放优先级」面板中的实时驱动县数。
+          </div>
+          <div class="priority-kpi-row">
+            <div class="pk-item">
+              <div class="pk-label">满额兜底口径干草需求</div>
+              <div class="pk-val">{{ orDash(num(prioritySummary.fullRationTons, 1)) }} <span class="pk-unit">吨</span></div>
+              <div class="pk-sub">
+                按 {{ orDash(prioritySummary.herdSize) }} 头/县 × {{ orDash(prioritySummary.feedDays) }} 天 × 4.2 kg/头·天 折算，
+                不计草场分档
+              </div>
+            </div>
+            <div class="pk-item">
+              <div class="pk-label">分级投放实际需求</div>
+              <div class="pk-val">{{ orDash(prioritySummary.hayTons) }} <span class="pk-unit">吨</span></div>
+              <div class="pk-sub">即左下全域需求，随预报窗口与纳入县域数变化</div>
+            </div>
+            <div class="pk-item">
+              <div class="pk-label">相对满额兜底的减少量</div>
+              <div class="pk-val">{{ orDash(num(prioritySummary.savingsTons, 1)) }} <span class="pk-unit">吨</span></div>
+              <div class="pk-sub">
+                按 {{ prioritySummary.hayPriceYuanPerKg }} 元/kg 折约 {{ orDash(num(prioritySummary.savingsWan, 1)) }} 万元；
+                同口径复算值，非真实采购节省
+              </div>
+            </div>
+            <div class="pk-item">
+              <div class="pk-label">差异化额度区间（逐县）</div>
+              <div class="pk-val">{{ orDash(prioritySummary.creditRange) }} <span class="pk-unit">万元</span></div>
+              <div class="pk-sub">县域间最小至最大的情景测算额度，未对接授信审批</div>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>测算口径</th>
+                  <th>数值</th>
+                  <th>说明与边界</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>满额兜底干草需求</td>
+                  <td><strong class="text-cyan">{{ orDash(num(prioritySummary.fullRationTons, 1)) }} 吨</strong></td>
+                  <td>忽略草场分档与已存栏草料，全部县域按同一满量标准备料</td>
+                </tr>
+                <tr>
+                  <td>分级投放干草需求</td>
+                  <td><strong class="text-cyan">{{ orDash(prioritySummary.hayTons) }} 吨</strong></td>
+                  <td>按各县级补饲强度档位逐县测算后求和，即本轮建议投放量</td>
+                </tr>
+                <tr>
+                  <td>减少量 / 占满额比例</td>
+                  <td><strong class="text-cyan">{{ orDash(num(prioritySummary.savingsTons, 1)) }} 吨</strong></td>
+                  <td>
+                    相当于满额口径的
+                    {{
+                      prioritySummary.savingsTons === null || !prioritySummary.fullRationTons
+                        ? '—'
+                        : num(prioritySummary.savingsTons / prioritySummary.fullRationTons * 100, 1) + '%'
+                    }}；两项均为同口径复算，非实盘消耗对比
+                  </td>
+                </tr>
+                <tr>
+                  <td>折算金额</td>
+                  <td><strong class="text-cyan">{{ orDash(num(prioritySummary.savingsWan, 1)) }} 万元</strong></td>
+                  <td>按干草情景单价 {{ prioritySummary.hayPriceYuanPerKg }} 元/kg 折算；单价只影响金额，不影响吨数</td>
+                </tr>
+                <tr>
+                  <td>逐县额度区间</td>
+                  <td><strong class="text-cyan">{{ orDash(prioritySummary.creditRange) }} 万元</strong></td>
+                  <td>由「饲草成本 × 1.5 + 活体资产 × 0.15」逐县测算的最小值与最大值，未对接授信审批流程</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <method-chips drawer="priority" :chips="priorityChips"></method-chips>
+        </template>
+      </div>
+
+      <p class="page-footer">切换县域，查看对应风险、预测与处置建议。</p>
+    </main>
+
+    <!-- ==================== 方法论口径抽屉（内容只折叠、不删除） ==================== -->
+    <method-drawer :active-key="drawerKey">
+      <template #spi>
+        <p>
+          新方法采用 WMO 推荐的两参数 Gamma MLE + 零降水概率 q 框架，替换旧实现「丢弃零样本 + 硬编码起始年」
+          的简化 Z-score。图中一行一个县（按新方法取值排序），空心圆点为旧实现取值、实心圆点为新方法取值，
+          两点之间的连线即该县的修正幅度；连线与实心点标红表示该县的干旱等级判定被改写。
+          贯穿全图的虚线为判定阈值（−1.0 中旱 / −1.5 重旱），灰底带为 SPI 正常区间。
+        </p>
+        <p>
+          <strong>坦白说明：</strong>在统一阈值标尺下，26 县中仅
+          {{ spiSummary ? spiSummary.level_changed : '—' }} 县被重判、其余
+          {{ spiSummary ? spiSummary.level_unchanged : '—' }} 县等级不变——逐县连线几乎全部短到看不见，
+          说明在本序列长度下旧简化式已足够稳健；Gamma 拟合的价值在于极端分位的可外推性，而非当期均值的整体位移。
+          且 ERA5 序列仅 {{ currentSpi ? orDash(currentSpi.historical_years_count) : '—' }} 年，α/β 估计方差偏大，
+          故以逐县对照而非单点数值作证。
+        </p>
+        <p>
+          <strong>第三方交叉校验（结果对我们不利，照实列出）：</strong>用 spei（MIT，独立实现：
+          各日历月分别拟合 Gamma、按经验频率修正零值概率）在同一份 ERA5 月降水序列上重算 SPI-3 / SPI-12，
+          26 县 × 2 尺度共 52 组对照中，相关系数中位数为 0.57（最低 0.01），
+          按 GB/T 20481-2017 分档的一致率中位数仅 30%。
+          进一步拆开来看，差异的根源不是公式写法：把参考气候改为与 spei 完全相同的全样本口径后，
+          中位相关升至 0.74、分档一致率升至 60%，剩下的分歧来自<b>样本量本身</b>——
+          本系统的 Gamma 参数由 [起始年, 目标年) 区间的历史同月累计降水拟合，
+          ERA5 仅 2020–2025 共 6 年，目标年越早样本越少（最少仅 2 个），
+          而 WMO 对 SPI 的建议是不少于 30 年。
+          因此本系统 SPI 的定位是<b>同口径下的相对趋势与等级重判</b>，
+          不作为绝对气候统计量引用；逐县明细与可复现脚本见
+          <code>tools/cross_validate_spi.py</code>。
+        </p>
+        <p class="drawer-prov">适用等级：<prov-badge code="D"></prov-badge> 科学模型派生（输入含公开再分析与遥感产品）</p>
+      </template>
+
+      <template #gdi>
+        <p>
+          * 复现 Li et al. (2025) 的 PCA + K-Means + 曲率判定链，主成分由 NPP / NDVI / 植被覆盖 / 产草量
+          四指标构成（全域统一权重，PC1 方差贡献率
+          {{ currentGdi ? (currentGdi.pca_variance_ratio * 100).toFixed(1) : '—' }}%），
+          再以高寒草甸 0.70 / 草原 1.00 / 荒漠 1.35 的物理脆弱系数放大。
+          图中一行一个县（按新方法取值排序），空心圆点为旧实现取值、实心圆点为新方法取值；
+          连线与实心点标红表示该县的退化等级判定被改写。贯穿全图的虚线为曲率判定阈值
+          （{{ currentGdi && currentGdi.thresholds ? currentGdi.thresholds.theta2_light_moderate : '—' }} 轻→中度 /
+          {{ currentGdi && currentGdi.thresholds ? currentGdi.thresholds.theta3_moderate_severe : '—' }} 中→重度）。
+        </p>
+        <p>
+          <strong>结论差异：</strong>26 县中 {{ gdiSummary ? gdiSummary.level_changed : '—' }} 县退化等级被重判，
+          |ΔGDI| 均值 {{ gdiSummary ? gdiSummary.mean_abs_delta : '—' }}——逐县连线几乎全部指向左侧
+          （新方法取值系统性低于旧实现）。两种评分口径不同，数值降低不能单独证明哪一种更准确。
+        </p>
+        <p>
+          <strong>客观披露：</strong>NDVI 与植被覆盖度高度共线，PC1 方差贡献率含共线性抬升成分。
+        </p>
+        <p class="drawer-prov">适用等级：<prov-badge code="D"></prov-badge> 科学模型派生（输入为 A 级 MODIS 观测）</p>
+      </template>
+
+      <template #npp>
+        <p>
+          <strong>科学指标客观说明：</strong>
+        </p>
+        <p>
+          (1) LOYO 每次留出一年，其余年份参与训练，包含测试年份之后的数据；它是留年验证，
+          不能证明严格向未来预测的能力。当前 Ridge 使用平方损失与 L2 正则化；MAE 较低、RMSE
+          较高只是本次验证的结果，尚不能据此归因于特定灾种。
+        </p>
+        <p>
+          (2) 汇总 R² 同时包含县际差异与年际变化。气候态均值基线也有较高 R²，
+          因此不能只凭汇总 R² 判断年际预测是否准确；还需逐县误差与滚动时间验证。
+        </p>
+        <p>
+          (3) 在留一县 (LORO) 验证中，本模型 MAE 低于所列基线，但 R² 仍为负值，
+          跨县迁移能力不足，不能直接用作未验证县域的业务预测。
+        </p>
+        <p class="drawer-prov">适用等级：<prov-badge code="D"></prov-badge> 模型派生（MODIS 年度产品参考值 {{ nppBenchmark && nppBenchmark.loyo_protocol ? nppBenchmark.loyo_protocol.n_samples : '—' }} 条）</p>
+      </template>
+
+      <template #priority>
+        <p>
+          排序依据为各县<strong>综合风险分</strong>（横条长度；由 SPI-3 干旱、GDI 草地退化、PU 风险评分
+          与载畜压力按 0.40 / 0.30 / 0.15 / 0.15 权重合成）。
+        </p>
+        <p>
+          横条颜色为按当前模型的积雪与气温参考阈值判定的<strong>补饲档位</strong>——
+          长度回答「先投哪个县」，颜色回答「要不要动手」。补饲强度由各县预报窗口的均温与积雪实况驱动分档，
+          而非全域统一按重度雪灾满额测算。
+        </p>
+        <p>
+          <strong>覆盖口径说明：</strong>"第 N 县累计覆盖 50%"是按<strong>本图自上而下的顺序</strong>重算的
+          （横条按综合风险分降序），不是后端按补饲量排序的结果，因此与图上名次一致。
+        </p>
+        <p class="drawer-prov">适用等级：<prov-badge code="E"></prov-badge> 下游应用模拟（建议值，非观测事实）</p>
+      </template>
+
+      <template #verified>
+        <p>
+          <strong>口径提醒：</strong>{{ orDash(verifiedStats.totalVerified) }} 条已标注事件中，气象类标签 {{ orDash(verifiedStats.meteorological) }} 条，
+          非气象灾种 {{ orDash(verifiedStats.nonMeteorological) }} 条（政策农险赔付实证、次生地质灾害）。
+          保险理赔/疫病救助是极端气象诱发后的<strong>下游赔付凭证</strong>，地震滑坡是地质过程，
+          二者都不是气象灾种本身，<strong>不计入</strong>气象灾害频次统计。
+        </p>
+      </template>
+    </method-drawer>
+  </div>
+
+  <script>
+    // 保险兜底：若弱网或缓存导致未及时卸下遮罩，自动解除 v-cloak 呈现
+    window.addEventListener('DOMContentLoaded', function () {
+      setTimeout(function () {
+        var app = document.getElementById('app');
+        if (app && app.hasAttribute('v-cloak')) {
+          console.warn('[MeteoRisk] 挂载用时超限，强制解除 v-cloak');
+          app.removeAttribute('v-cloak');
+        }
+      }, 1500);
+    });
+  </script>
+
+  <!-- 零构建前端：经典 script + window.MR 命名空间，加载顺序即依赖顺序 -->
+  <script src="js/core/namespace.js?v=20261003_4"></script>
+  <script src="js/core/tokens.js?v=20261003_4"></script>
+  <script src="js/core/format.js?v=20261003_4"></script>
+  <script src="js/core/api.js?v=20261003_4"></script>
+  <script src="js/core/provenance.js?v=20261003_4"></script>
+  <script src="js/charts/theme.js?v=20261003_4"></script>
+  <script src="js/charts/manager.js?v=20261003_4"></script>
+  <script src="js/ui/states.js?v=20261003_4"></script>
+  <script src="js/ui/method.js?v=20261003_4"></script>
+  <script src="js/ui/router.js?v=20261003_4"></script>
+  <script src="js/state/store.js?v=20261003_4"></script>
+  <script src="js/charts/cockpit.js?v=20261003_4"></script>
+  <script src="js/charts/datasourceCharts.js?v=20261003_4"></script>
+  <script src="js/charts/indexCharts.js?v=20261003_4"></script>
+  <script src="js/charts/forecastCharts.js?v=20261003_4"></script>
+  <script src="js/charts/decisionCharts.js?v=20261003_4"></script>
+  <script src="js/app.js?v=20261003_4"></script>
+</body>
+</html>

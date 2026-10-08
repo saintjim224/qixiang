@@ -1,0 +1,121 @@
+{
+  "priority": {
+    "county_count": 26,
+    "coverage": {
+      "p50": 5,
+      "p80": 11,
+      "p90": 13
+    },
+    "totals": {
+      "county_count": 26,
+      "hay_tons": 358.4,
+      "grain_tons": 71.3,
+      "feed_cost_wan": 56.16,
+      "loss_exposure_wan": 225.25,
+      "credit_quota_wan": 3399.26
+    },
+    "credit_quota_range_wan": [
+      127.5,
+      137.18
+    ],
+    "assumptions": {
+      "herd_size_per_county": 1000,
+      "forecast_days": 14,
+      "price_hay_yuan_per_kg": 0.85,
+      "price_grain_yuan_per_kg": 3.6,
+      "full_ration_kg_per_head_day": 4.2
+    },
+    "b2_savings_vs_full_ration": {
+      "full_ration_hay_tons": 1528.8,
+      "actual_hay_tons": 358.4,
+      "saved_hay_tons": 1170.4,
+      "saved_cost_wan": 99.5,
+      "saved_pct": 76.6
+    },
+    "forecast_source": {
+      "realtime_counties": 26,
+      "county_count": 26,
+      "regime": "realtime_forecast",
+      "note": "实时驱动县数为 0 时，全部档位由气候态外推序列驱动，资源需求整体偏高"
+    }
+  },
+  "lead_time": {
+    "trigger_cm": 5.0,
+    "counties_with_trigger": 7,
+    "counties_probed": 26,
+    "tier_breakdown": {
+      "climatological_projection": 7
+    },
+    "detail": [
+      {
+        "region_id": "naqu-seni",
+        "lead_days": 5,
+        "confidence_tier": "climatological_projection"
+      },
+      {
+        "region_id": "naqu-nierong",
+        "lead_days": 5,
+        "confidence_tier": "climatological_projection"
+      },
+      {
+        "region_id": "naqu-anduo",
+        "lead_days": 6,
+        "confidence_tier": "climatological_projection"
+      },
+      {
+        "region_id": "naqu-shenzha",
+        "lead_days": 14,
+        "confidence_tier": "climatological_projection"
+      },
+      {
+        "region_id": "shannan-cuona",
+        "lead_days": 4,
+        "confidence_tier": "climatological_projection"
+      },
+      {
+        "region_id": "yushu-zaduo",
+        "lead_days": 9,
+        "confidence_tier": "climatological_projection"
+      },
+      {
+        "region_id": "haibei-gangcha",
+        "lead_days": 4,
+        "confidence_tier": "climatological_projection"
+      }
+    ],
+    "note": "提前量＝预报窗口内首次积雪达阈值的日序，非实际灾情发生日；气候态外推档（climatological_projection）只代表历史同期节律，不构成预警能力"
+  },
+  "drought_false_alarm": {
+    "compared_counties": 26,
+    "class_changed": 1,
+    "detail": [
+      {
+        "region_id": "rikaze-zhongba",
+        "old": "特涝",
+        "new": "重涝"
+      }
+    ],
+    "spi_summary": {
+      "available_counties": 26,
+      "mean_abs_delta": 0.0985,
+      "max_abs_delta": 0.55,
+      "min_abs_delta": 0.0,
+      "level_changed": 1,
+      "level_unchanged": 25,
+      "compared_counties": 26
+    }
+  },
+  "coverage_scope": {
+    "system_name": "融天气象 - 高原多源时空融合气象灾害预警平台",
+    "data_source_mode": "packaged",
+    "competition_track": "赛题方向二：气象赋能行业应用",
+    "monitored_regions_count": 26,
+    "data_engines": {
+      "era5_reanalysis": "已接入 26 县 6 年 (2020-2025) 5.7 万条逐日真实气象记录",
+      "modis_ecological": "已接入 25 年 MOD17A3HGF NPP 与 22 年物候序列",
+      "standards_embedded": "GB/T 20482-2006 牧区雪灾国家标准 & SPI-3 气象干旱指标",
+      "grid_resolution": "2,080 时空网格微切片 (26县 × 4草场 × 4季节 × 5生理期)"
+    },
+    "status": "operational"
+  }
+}

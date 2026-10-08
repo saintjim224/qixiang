@@ -1,0 +1,47 @@
+[
+  {
+    "dispatch_id": "DSP-20261003-SENI-C05F",
+    "timestamp": "2026-10-03T00:34:04",
+    "region_id": "naqu-seni",
+    "region_name": "那曲市色尼区",
+    "hay_tons": 10.0,
+    "grain_tons": 2.0,
+    "feed_cost_wan": 1.57,
+    "action_type": "应急补饲与转场防寒",
+    "operator_role": "界面回归测试（隔离记录）",
+    "credit_action": "模拟草料资金参考额度 2.35 万元，按计划草料预算 1.57 万元 × 1.5 测算；未对接金融系统",
+    "status": "模拟登记",
+    "memo": "针对那曲市色尼区计划开展应急补饲与转场防寒，计划干草10吨、精饲料2吨",
+    "data_source": "runtime_simulation"
+  },
+  {
+    "dispatch_id": "DSP-20261001-NAQU-001",
+    "timestamp": "2026-10-01T08:30:15+08:00",
+    "region_id": "naqu-seni",
+    "region_name": "那曲市色尼区",
+    "hay_tons": 17.6,
+    "grain_tons": 3.5,
+    "feed_cost_wan": 2.76,
+    "action_type": "轻度补充防寒与暖棚转场",
+    "operator_role": "平台演示操作员",
+    "credit_action": "模拟信贷额度测算 (131.64 万元)，未对接金融系统",
+    "status": "样例记录",
+    "memo": "针对0-1岁幼畜及老龄母牛启动定点暖棚补饲与防风雪巡查",
+    "data_source": "sample"
+  },
+  {
+    "dispatch_id": "DSP-20260930-MAQIN-002",
+    "timestamp": "2026-09-30T16:45:00+08:00",
+    "region_id": "guoluo-maqin",
+    "region_name": "果洛州玛沁县",
+    "hay_tons": 38.2,
+    "grain_tons": 7.6,
+    "feed_cost_wan": 5.98,
+    "action_type": "高寒雪灾全人工重度应急补饲",
+    "operator_role": "平台演示操作员",
+    "credit_action": "模拟信贷额度测算 (285.50 万元)，未对接金融系统",
+    "status": "样例记录",
+    "memo": "阿尼玛卿雪山北麓强降雪预警，调拨省级应急储备库草料38吨",
+    "data_source": "sample"
+  }
+]

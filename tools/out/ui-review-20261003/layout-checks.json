@@ -1,0 +1,61 @@
+{
+  "captured_at": "2026-10-02T16:54:04.022Z",
+  "desktop": [
+    {
+      "page": "数据来源",
+      "errors": [],
+      "scrollWidth": 1425,
+      "viewport": 1425
+    },
+    {
+      "page": "风险分析",
+      "errors": [],
+      "scrollWidth": 1425,
+      "viewport": 1425
+    },
+    {
+      "page": "应急方案",
+      "errors": [],
+      "scrollWidth": 1425,
+      "viewport": 1425
+    },
+    {
+      "page": "风险总览",
+      "errors": [],
+      "scrollWidth": 1425,
+      "viewport": 1425
+    }
+  ],
+  "mobile": [
+    {
+      "page": "风险总览",
+      "errors": [],
+      "scrollWidth": 375,
+      "viewport": 375
+    },
+    {
+      "page": "数据来源",
+      "errors": [],
+      "scrollWidth": 375,
+      "viewport": 375
+    },
+    {
+      "page": "风险分析",
+      "errors": [],
+      "scrollWidth": 375,
+      "viewport": 375
+    },
+    {
+      "page": "趋势预测",
+      "errors": [],
+      "scrollWidth": 375,
+      "viewport": 375
+    },
+    {
+      "page": "应急方案",
+      "errors": [],
+      "scrollWidth": 375,
+      "viewport": 375
+    }
+  ]
+}

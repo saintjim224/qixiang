@@ -1,0 +1,881 @@
+"""
+MeteoRiskPlatform - 正例-未标注学习 (PU Learning) 灾害风险评估算法模块
+=============================================================================
+方法与边界:
+- P 是现有来源记录对应的标签，U 是未标注样本；来源仍需人工核验。
+- Bagging OOB 预测仅从训练期 U 中筛选候选可靠负例 (RN)，RN 并非核验真值。
+- 在 P/RN 代理标签上进行 sigmoid 校准，输出模型风险评分，不等同真实致灾概率。
+- 时间留出诊断由 pu_evaluation 执行：先划分，再筛 RN、拟合及校准。
+  F1、准确率、精确率和 Brier 仅衡量记录标签，不代表真实灾害识别效果。
+- SHAP TreeExplainer 解释基础分类器的特征贡献，不构成因果解释。
+"""
+
+from __future__ import annotations
+
+import logging
+import sys
+from pathlib import Path
+from typing import Any
+import numpy as np
+
+# 确保 Windows 终端输出 UTF-8
+if sys.platform == "win32":
+    try:
+        sys.stdout.reconfigure(encoding="utf-8")
+    except Exception:
+        pass
+
+# 确保项目根目录在 sys.path 中以支持独立运行
+_PROJECT_ROOT = Path(__file__).resolve().parents[2]
+if str(_PROJECT_ROOT) not in sys.path:
+    sys.path.insert(0, str(_PROJECT_ROOT))
+
+# 机器学习与可解释性库
+from sklearn.metrics import (
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    brier_score_loss,
+)
+from sklearn.model_selection import train_test_split
+from sklearn.calibration import CalibratedClassifierCV
+from xgboost import XGBClassifier
+import shap
+
+from app.core.dataio import load_table, get_pu_labeled_dataset
+from app.core.schemas import PuRiskPrediction, ShapFeatureContribution
+
+logger = logging.getLogger(__name__)
+
+# ---------------------------------------------------------------------------
+# 16 维特征体系元数据规范
+# ---------------------------------------------------------------------------
+FEATURE_NAMES: list[str] = [
+    "temperature_c",             # 平均气温
+    "precipitation_mm_24h",     # 月累计降水量
+    "wind_speed_mps",            # 平均风速
+    "snow_depth_cm",             # 最大积雪深度
+    "cold_wave_risk",            # 寒潮风险等级 (0:低, 1:中, 2:高)
+    "snowstorm_risk",            # 暴雪风险等级 (0:低, 1:中, 2:高)
+    "drought_risk",              # 干旱风险等级 (0:低, 1:中, 2:高)
+    "ndvi",                      # 植被生长指数 NDVI
+    "ndvi_change_pct",           # NDVI 相对变率 (%)
+    "vegetation_cover_pct",      # 植被覆盖度 (%)
+    "snow_cover_pct",            # 积雪覆盖率 (%)
+    "degradation_level",         # 草场退化等级 (0:稳定, 1:轻度, 2:中度, 3:重度)
+    "carrying_capacity",         # 理论载畜量 (羊单位)
+    "avg_score",                 # 经营主体信用评分 (0-100)
+    "avg_insurance_coverage",    # 政策性保险覆盖率 (%)
+    "finance_risk_score",        # 区域金融履约风险指数 (0-100)
+]
+
+FEATURE_LABELS_CN: dict[str, str] = {
+    "temperature_c": "平均气温 (°C)",
+    "precipitation_mm_24h": "月累计降水量 (mm)",
+    "wind_speed_mps": "平均风速 (m/s)",
+    "snow_depth_cm": "最大积雪深度 (cm)",
+    "cold_wave_risk": "寒潮风险等级",
+    "snowstorm_risk": "暴雪风险等级",
+    "drought_risk": "干旱风险等级",
+    "ndvi": "植被生长指数 (NDVI)",
+    "ndvi_change_pct": "NDVI 相对变率 (%)",
+    "vegetation_cover_pct": "植被覆盖度 (%)",
+    "snow_cover_pct": "积雪覆盖率 (%)",
+    "degradation_level": "草场退化等级",
+    "carrying_capacity": "理论载畜量 (羊单位)",
+    "avg_score": "经营主体信用评分",
+    "avg_insurance_coverage": "政策性保险覆盖率 (%)",
+    "finance_risk_score": "区域金融风险指数",
+}
+
+FEATURE_UNITS: dict[str, str] = {
+    "temperature_c": "°C",
+    "precipitation_mm_24h": "mm",
+    "wind_speed_mps": "m/s",
+    "snow_depth_cm": "cm",
+    "cold_wave_risk": "级",
+    "snowstorm_risk": "级",
+    "drought_risk": "级",
+    "ndvi": "",
+    "ndvi_change_pct": "%",
+    "vegetation_cover_pct": "%",
+    "snow_cover_pct": "%",
+    "degradation_level": "级",
+    "carrying_capacity": "羊单位",
+    "avg_score": "分",
+    "avg_insurance_coverage": "%",
+    "finance_risk_score": "分",
+}
+
+
+# ---------------------------------------------------------------------------
+# 数据提取与 16 维特征空间构建
+# ---------------------------------------------------------------------------
+def _safe_float(val: Any, default: float = 0.0) -> float:
+    """安全转换为 float，剔除空字符串、百分号并做异常兜底。"""
+    if val is None or val == "":
+        return default
+    try:
+        return float(val)
+    except (ValueError, TypeError):
+        try:
+            return float(str(val).replace("%", ""))
+        except (ValueError, TypeError):
+            return default
+
+
+def extract_pu_features() -> tuple[np.ndarray, np.ndarray, np.ndarray, list[dict[str, Any]]]:
+    """
+    从数据底层提取 1500 条样本的 16 维环境与经营金融特征矩阵:
+    - 127 条确证事件 (s=1, positive)
+    - 1373 条未标注样本 (s=0, unlabeled)
+    - 规则打分 baseline 基准值
+    """
+    weather_rows = load_table("weather_data")
+    remote_rows = load_table("remote_sensing_data")
+    subject_rows = load_table("business_subjects")
+    finance_rows = load_table("finance_credit")
+    positives, unlabeled = get_pu_labeled_dataset()
+
+    risk_encode = {"低": 0, "中": 1, "高": 2}
+    degradation_encode = {"基本稳定": 0, "轻度退化": 1, "中度退化": 2, "重度退化": 3}
+    repayment_encode = {"正常": 0, "关注": 1, "逾期": 2, "异常": 3}
+
+    # 1. 经营特征聚合 (区域静态)
+    subj_by_region: dict[str, list[dict[str, Any]]] = {}
+    for s in subject_rows:
+        subj_by_region.setdefault(s.get("region_id", ""), []).append(s)
+
+    biz_by_region: dict[str, dict[str, float]] = {}
+    for rid, subjs in subj_by_region.items():
+        scores = [float(s.get("score", 70)) for s in subjs]
+        coverages = [_safe_float(s.get("insurance_coverage", 70), 70.0) for s in subjs]
+        biz_by_region[rid] = {
+            "avg_score": float(np.mean(scores)) if scores else 70.0,
+            "avg_coverage": float(np.mean(coverages)) if coverages else 70.0,
+        }
+
+    # 2. 金融特征聚合 (区域静态)
+    fin_by_name = {f.get("subject_name", ""): f for f in finance_rows}
+    fin_by_region: dict[str, float] = {}
+    for rid, subjs in subj_by_region.items():
+        fin_scores = []
+        for s in subjs:
+            fdata = fin_by_name.get(s.get("name", ""), {})
+            if fdata:
+                st = repayment_encode.get(str(fdata.get("repayment_status", "正常")), 0)
+                ov = int(fdata.get("overdue_times", 0))
+                fin_scores.append(min(100.0, st * 20.0 + ov * 15.0))
+        fin_by_region[rid] = float(np.mean(fin_scores)) if fin_scores else 50.0
+
+    # 3. 按 (region_id, month) 映射气象与遥感数据
+    wx_monthly: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    for w in weather_rows:
+        rid = w.get("region_id", "")
+        month = str(w.get("observed_at", ""))[:7]
+        if rid and month:
+            wx_monthly.setdefault((rid, month), []).append(w)
+
+    rm_monthly: dict[tuple[str, str], list[dict[str, Any]]] = {}
+    for r in remote_rows:
+        rid = r.get("region_id", "")
+        month = str(r.get("scene_date", ""))[:7]
+        if rid and month:
+            rm_monthly.setdefault((rid, month), []).append(r)
+
+    # 4. 组装 1500 条样本
+    all_raw_samples = [(p, 1) for p in positives] + [(u, 0) for u in unlabeled]
+    X_rows: list[list[float]] = []
+    y_labels: list[int] = []
+    rule_scores_list: list[float] = []
+    sample_meta: list[dict[str, Any]] = []
+
+    for item, s_label in all_raw_samples:
+        rid = item.get("region_id", "")
+        month = item.get("month", "")
+        wx_list = wx_monthly.get((rid, month), [])
+        rm_list = rm_monthly.get((rid, month), [])
+
+        # 气象特征聚合
+        if wx_list:
+            temps = [float(x.get("temperature_c", 0.0)) for x in wx_list]
+            precip = [float(x.get("precipitation_mm_24h", 0.0)) for x in wx_list]
+            winds = [float(x.get("wind_speed_mps", 0.0)) for x in wx_list]
+            snows = [float(x.get("snow_depth_cm", 0.0)) for x in wx_list]
+            colds = [risk_encode.get(str(x.get("cold_wave_risk", "中")), 1) for x in wx_list]
+            storms = [risk_encode.get(str(x.get("snowstorm_risk", "中")), 1) for x in wx_list]
+            droughts = [risk_encode.get(str(x.get("drought_risk", "中")), 1) for x in wx_list]
+
+            avg_temp = float(np.mean(temps))
+            sum_precip = float(np.sum(precip))
+            avg_wind = float(np.mean(winds))
+            max_snow = float(np.max(snows))
+            worst_cold = float(np.max(colds))
+            worst_storm = float(np.max(storms))
+            worst_drought = float(np.max(droughts))
+            wx_score = max(worst_cold, worst_storm, worst_drought) * 35.0
+        else:
+            avg_temp = sum_precip = avg_wind = max_snow = 0.0
+            worst_cold = worst_storm = worst_drought = 1.0
+            wx_score = 35.0
+
+        # 遥感特征聚合
+        if rm_list:
+            ndvis = [_safe_float(x.get("ndvi"), 0.4) for x in rm_list]
+            ndvi_changes = [_safe_float(x.get("ndvi_change"), 0.0) for x in rm_list]
+            vegs = [_safe_float(x.get("vegetation_cover"), 50.0) for x in rm_list]
+            snow_covs = [_safe_float(x.get("snow_cover"), 10.0) for x in rm_list]
+            degs = [degradation_encode.get(str(x.get("degradation_level", "轻度退化")), 1) for x in rm_list]
+            caps = [_safe_float(x.get("carrying_capacity_sheep_unit"), 20000.0) for x in rm_list]
+
+            avg_ndvi = float(np.mean(ndvis))
+            avg_ndvi_change = float(np.mean(ndvi_changes))
+            avg_veg = float(np.mean(vegs))
+            max_snow_cov = float(np.max(snow_covs))
+            worst_deg = float(np.max(degs))
+            avg_cap = float(np.mean(caps))
+            rm_score = (1.0 - avg_ndvi) * 50.0 + worst_deg * 12.0 + (10.0 if avg_ndvi_change < -5 else 0.0)
+        else:
+            avg_ndvi = 0.4
+            avg_ndvi_change = 0.0
+            avg_veg = 50.0
+            max_snow_cov = 10.0
+            worst_deg = 1.0
+            avg_cap = 20000.0
+            rm_score = 40.0
+
+        # 经营与保险增信逻辑
+        biz = biz_by_region.get(rid, {"avg_score": 70.0, "avg_coverage": 70.0})
+        avg_s = biz["avg_score"]
+        avg_cv = biz["avg_coverage"]
+        biz_risk = max(0.0, min(100.0, 100.0 - avg_s))
+        if avg_cv >= 90:
+            biz_risk -= 10.0
+        elif avg_cv >= 80:
+            biz_risk -= 5.0
+        elif avg_cv < 60:
+            biz_risk += 15.0
+        elif avg_cv < 75:
+            biz_risk += 5.0
+        biz_risk = max(0.0, min(100.0, biz_risk))
+
+        # 金融风险
+        fin_risk = fin_by_region.get(rid, 50.0)
+
+        # 组装 16 维特征向量
+        feat_vector = [
+            avg_temp, sum_precip, avg_wind, max_snow,
+            worst_cold, worst_storm, worst_drought,
+            avg_ndvi, avg_ndvi_change, avg_veg, max_snow_cov,
+            worst_deg, avg_cap,
+            avg_s, avg_cv, fin_risk,
+        ]
+        X_rows.append(feat_vector)
+        y_labels.append(s_label)
+
+        # 规则加权综合打分 (0-100)
+        rule_score = wx_score * 0.30 + rm_score * 0.25 + biz_risk * 0.20 + fin_risk * 0.25
+        rule_scores_list.append(rule_score)
+
+        sample_meta.append({
+            "region_id": rid,
+            "month": month,
+            "year": month[:4],
+            "label_status": item.get("label_status", "unlabeled"),
+            "source_url": item.get("source_url", ""),
+            "event_type": item.get("event_type", "none"),
+        })
+
+    X = np.array(X_rows, dtype=np.float64)
+    y_pu = np.array(y_labels, dtype=np.int32)
+    rule_scores = np.array(rule_scores_list, dtype=np.float64)
+    return X, y_pu, rule_scores, sample_meta
+
+
+# ---------------------------------------------------------------------------
+# PU 学习算法核心类 (Bagging PU + Reliable Negatives + Platt Calibration)
+# ---------------------------------------------------------------------------
+class PULearningModel:
+    """
+    正例-未标注学习 (PU Learning) 灾害风险评估模型。
+    融合 Bagging-based PU 两步筛选法与 Platt 概率校准 (CalibratedClassifierCV)，
+    并无缝集成 SHAP TreeExplainer 边际效应归因解释链。
+    """
+
+    def __init__(
+        self,
+        n_bags: int = 25,
+        bagging_ratio: float = 2.0,
+        rn_percentile: float = 65.0,
+        random_state: int = 42,
+    ) -> None:
+        self.n_bags = n_bags
+        self.bagging_ratio = bagging_ratio
+        self.rn_percentile = rn_percentile
+        self.random_state = random_state
+
+        self.is_fitted: bool = False
+        self.calibrated_model: CalibratedClassifierCV | None = None
+        self.base_estimator: XGBClassifier | None = None
+        self.explainer: shap.TreeExplainer | None = None
+
+        self.reliable_negative_indices: np.ndarray | None = None
+        self.ambiguous_indices: np.ndarray | None = None
+        self.oob_risk_scores: np.ndarray | None = None
+
+    def fit(self, X: np.ndarray, y_pu: np.ndarray) -> "PULearningModel":
+        """
+        训练 PU 学习模型:
+        1. Bagging PU 集成子空间采样，评估未标注集 U 的袋外 (OOB) 致灾风险;
+        2. 依据 OOB 分布筛选出 Reliable Negatives (可靠负例, RN)，剔除潜在未标注正例;
+        3. 组合确证正例 (P) 与可靠负例 (RN)，基于 Platt Scaling 训练校准分类器;
+        4. 初始化 SHAP TreeExplainer 解释器.
+        """
+        pos_idx = np.where(y_pu == 1)[0]
+        un_idx = np.where(y_pu == 0)[0]
+        n_pos = len(pos_idx)
+        n_un = len(un_idx)
+
+        if n_pos < 3 or n_un < 3:
+            raise ValueError("三折校准至少需要 3 条已标注事件和 3 条未标注样本")
+
+        sample_size = min(n_un - 1, max(1, int(n_pos * self.bagging_ratio)))
+        oob_preds = np.zeros(n_un, dtype=np.float64)
+        oob_counts = np.zeros(n_un, dtype=np.int32)
+
+        rng = np.random.RandomState(self.random_state)
+
+        # 阶段 1: Bagging PU 进行未标注样本风险评估与潜在正例分离
+        for b in range(self.n_bags):
+            sub_un_rel = rng.choice(n_un, size=sample_size, replace=False)
+            sub_un = un_idx[sub_un_rel]
+
+            # 标记袋外 (OOB) 样本
+            mask_oob = np.ones(n_un, dtype=bool)
+            mask_oob[sub_un_rel] = False
+            oob_rel = np.where(mask_oob)[0]
+
+            bag_X = np.vstack([X[pos_idx], X[sub_un]])
+            bag_y = np.hstack([np.ones(n_pos), np.zeros(sample_size)])
+
+            bag_clf = XGBClassifier(
+                n_estimators=50,
+                max_depth=3,
+                learning_rate=0.05,
+                random_state=self.random_state + b,
+                eval_metric="logloss",
+                subsample=0.8,
+                colsample_bytree=0.8,
+            )
+            bag_clf.fit(bag_X, bag_y)
+
+            if len(oob_rel) > 0:
+                oob_preds[oob_rel] += bag_clf.predict_proba(X[un_idx[oob_rel]])[:, 1]
+                oob_counts[oob_rel] += 1
+
+        valid_oob = oob_counts > 0
+        if int(np.sum(valid_oob)) < 3:
+            raise ValueError("可用袋外样本不足，无法筛选可靠负例")
+        avg_oob = np.full(n_un, np.nan, dtype=np.float64)
+        avg_oob[valid_oob] = oob_preds[valid_oob] / oob_counts[valid_oob]
+        self.oob_risk_scores = avg_oob
+
+        # 阶段 2: 提取 Reliable Negatives (可靠负例)
+        # OOB 风险值最低的分位段判定为可靠负例，其余作为潜在高风险/模糊样本剔除
+        rn_threshold = float(np.percentile(avg_oob[valid_oob], self.rn_percentile))
+        rn_rel = np.where(valid_oob & (avg_oob <= rn_threshold))[0]
+        ambig_rel = np.where(~valid_oob | (avg_oob > rn_threshold))[0]
+        if len(rn_rel) < 3:
+            raise ValueError("训练期可靠负例不足，无法完成三折校准")
+
+        self.reliable_negative_indices = un_idx[rn_rel]
+        self.ambiguous_indices = un_idx[ambig_rel]
+
+        # 阶段 3: 基于 P + RN 训练概率校准模型
+        X_pu_train = np.vstack([X[pos_idx], X[self.reliable_negative_indices]])
+        y_pu_train = np.hstack([np.ones(n_pos), np.zeros(len(self.reliable_negative_indices))])
+
+        base_estimator = XGBClassifier(
+            n_estimators=80,
+            max_depth=3,
+            learning_rate=0.05,
+            random_state=self.random_state,
+            eval_metric="logloss",
+            subsample=0.85,
+            colsample_bytree=0.85,
+        )
+
+        calibrated = CalibratedClassifierCV(
+            estimator=base_estimator,
+            method="sigmoid",  # Platt Scaling
+            cv=3,
+        )
+        calibrated.fit(X_pu_train, y_pu_train)
+
+        self.calibrated_model = calibrated
+        # 提取校准模型底层的拟合树模型用于 SHAP 解释
+        self.base_estimator = calibrated.calibrated_classifiers_[0].estimator
+        self.explainer = shap.TreeExplainer(self.base_estimator)
+        self.is_fitted = True
+
+        return self
+
+    def predict_proba(self, X: np.ndarray) -> np.ndarray:
+        """输出基于 P/RN 代理标签校准的风险评分，不等同真实致灾概率。"""
+        if not self.is_fitted or self.calibrated_model is None:
+            raise RuntimeError("模型尚未训练，请先调用 fit()！")
+        X_arr = np.asarray(X, dtype=np.float64)
+        if X_arr.ndim == 1:
+            X_arr = X_arr.reshape(1, -1)
+        probs = self.calibrated_model.predict_proba(X_arr)[:, 1]
+        return np.clip(probs, 0.0, 1.0)
+
+    def predict(self, X: np.ndarray, threshold: float = 0.50) -> np.ndarray:
+        """输出二分类离散预测 (0: 正常/未致灾, 1: 致灾高风险)。"""
+        probs = self.predict_proba(X)
+        return (probs >= threshold).astype(int)
+
+    def predict_risk(
+        self,
+        features: np.ndarray | list[float] | dict[str, float],
+        region_id: str = "custom_region",
+        month: str = "2024-12",
+        top_k: int = 5,
+    ) -> PuRiskPrediction:
+        """封装输出符合系统规范的 PuRiskPrediction 契约对象。"""
+        explanation = self.explain_risk(features, region_id=region_id, month=month, top_k=top_k)
+        return explanation["pu_prediction"]
+
+    def explain_risk(
+        self,
+        features: np.ndarray | list[float] | dict[str, float],
+        region_id: str = "custom_region",
+        month: str = "2024-12",
+        top_k: int = 5,
+    ) -> dict[str, Any]:
+        """
+        基于 SHAP TreeExplainer 计算 16 维特征的边际贡献度:
+        - 输出边际 SHAP 贡献值与贡献百分比
+        - 标注增险 (increase_risk) 与减险 (decrease_risk) 方向
+        - 生成自然语言归因解释与分级应急减灾动作清单
+        """
+        if not self.is_fitted or self.explainer is None:
+            raise RuntimeError("模型尚未训练，请先调用 fit()！")
+
+        # 格式化特征向量
+        if isinstance(features, dict):
+            feat_vec = [float(features.get(name, 0.0)) for name in FEATURE_NAMES]
+        else:
+            feat_vec = [float(x) for x in features]
+
+        if len(feat_vec) != len(FEATURE_NAMES):
+            raise ValueError(f"输入特征维度为 {len(feat_vec)}，必须严格为 16 维！")
+
+        X_input = np.array(feat_vec, dtype=np.float64).reshape(1, -1)
+
+        # 概率与风险分预测
+        calibrated_prob = float(self.predict_proba(X_input)[0])
+        risk_score = round(calibrated_prob * 100.0, 2)
+
+        # 风险等级判定
+        if calibrated_prob >= 0.80:
+            risk_level = "极高风险"
+        elif calibrated_prob >= 0.50:
+            risk_level = "高风险"
+        elif calibrated_prob >= 0.20:
+            risk_level = "中风险"
+        else:
+            risk_level = "低风险"
+
+        # 计算 SHAP 边际贡献
+        shap_values = self.explainer.shap_values(X_input)
+        if isinstance(shap_values, list):
+            sv = np.asarray(shap_values[1] if len(shap_values) > 1 else shap_values[0])[0]
+        elif shap_values.ndim == 3:
+            sv = shap_values[0, :, 1]
+        else:
+            sv = shap_values[0]
+
+        abs_sum = float(np.sum(np.abs(sv))) or 1e-6
+
+        # 构建全部 16 维特征解释明细
+        all_features_detail: list[dict[str, Any]] = []
+        for i, name in enumerate(FEATURE_NAMES):
+            shap_val = float(sv[i])
+            pct = round((abs(shap_val) / abs_sum) * 100.0, 2)
+            direction = "increase_risk" if shap_val > 0 else "decrease_risk"
+            all_features_detail.append({
+                "feature_name": name,
+                "feature_label_cn": FEATURE_LABELS_CN.get(name, name),
+                "feature_value": feat_vec[i],
+                "unit": FEATURE_UNITS.get(name, ""),
+                "shap_value": round(shap_val, 4),
+                "contribution_pct": pct,
+                "direction": direction,
+            })
+
+        # 按贡献绝对值降序排序，选取 Top-K
+        sorted_details = sorted(all_features_detail, key=lambda x: abs(x["shap_value"]), reverse=True)
+        top_k_list = sorted_details[:top_k]
+
+        schema_top_features = [
+            ShapFeatureContribution(
+                feature_name=d["feature_name"],
+                feature_label_cn=d["feature_label_cn"],
+                shap_value=d["shap_value"],
+                contribution_pct=d["contribution_pct"],
+                direction=d["direction"],
+            )
+            for d in top_k_list
+        ]
+
+        pu_prediction = PuRiskPrediction(
+            region_id=region_id,
+            month=month,
+            calibrated_risk_prob=round(calibrated_prob, 4),
+            risk_score=risk_score,
+            risk_level=risk_level,
+            top_shap_features=schema_top_features,
+            confidence_tier="statistical_calibrated",
+        )
+
+        # 组合自然语言摘要与管理建议
+        top_increasing = [d for d in top_k_list if d["direction"] == "increase_risk"]
+        top_decreasing = [d for d in top_k_list if d["direction"] == "decrease_risk"]
+
+        # 叙述文本使用中文县名，避免把机器 slug (如 naqu-seni) 直接暴露在结论里
+        try:
+            from app.core.dataio import get_region_meta
+
+            _meta = get_region_meta(region_id) or {}
+        except Exception:
+            _meta = {}
+        display_region = _meta.get("region_name") or _meta.get("name_cn") or region_id
+
+        summary_parts = [
+            f"县域 [{display_region}] 在 [{month}] 评估结果为【{risk_level}】",
+            f"(模型风险评分 {calibrated_prob:.1%}, 综合风险分 {risk_score:.1f})。",
+        ]
+        if top_increasing:
+            drivers_str = "、".join(
+                [f"{d['feature_label_cn']} ({d['feature_value']}{d['unit']})" for d in top_increasing]
+            )
+            summary_parts.append(f"主要增险诱因包含: {drivers_str}。")
+        if top_decreasing:
+            buffers_str = "、".join(
+                [f"{d['feature_label_cn']} ({d['feature_value']}{d['unit']})" for d in top_decreasing]
+            )
+            summary_parts.append(f"有效缓释因子为: {buffers_str}。")
+
+        # 生成精细化建议
+        recommendations: list[str] = []
+        driver_keys = {d["feature_name"] for d in top_increasing}
+
+        if "snow_depth_cm" in driver_keys or "snowstorm_risk" in driver_keys:
+            recommendations.append("暴雪与积雪风险显著：建议按 60 天补饲周期调度应急储备干草与精饲料，排查老旧暖棚荷载。")
+        if "temperature_c" in driver_keys or "cold_wave_risk" in driver_keys:
+            recommendations.append("极端低温寒潮逼近：针对 0-1 岁初生犊牛实施强制暖棚舍饲，严禁深入高山阴坡放牧。")
+        if "carrying_capacity" in driver_keys or "degradation_level" in driver_keys:
+            recommendations.append("草场载畜超载或中重度退化：建议启动错峰转场，划定禁牧轮牧缓冲区，防范牧草损耗踩踏。")
+        if "avg_insurance_coverage" in driver_keys:
+            recommendations.append("政策性保险覆盖率偏低：缺乏损失兜底缓冲，建议信贷经理协助对接政策性农业保险保单。")
+
+        if not recommendations:
+            recommendations.append("当前致灾因子相对平稳，执行常态化气象墒情监测与巡牧。")
+
+        return {
+            "pu_prediction": pu_prediction,
+            "region_id": region_id,
+            "month": month,
+            "calibrated_risk_prob": round(calibrated_prob, 4),
+            "risk_score": risk_score,
+            "risk_level": risk_level,
+            "confidence_tier": "statistical_calibrated",
+            "top_drivers": top_k_list,
+            "top_shap_features": top_k_list,
+            "all_features": sorted_details,
+            "summary": "".join(summary_parts),
+            "recommendations": recommendations,
+        }
+
+
+# ---------------------------------------------------------------------------
+# 全局单例与快速访问
+# ---------------------------------------------------------------------------
+_PU_MODEL_SINGLETON: PULearningModel | None = None
+
+
+def get_pu_model(force_retrain: bool = False) -> PULearningModel:
+    """获取全局训练好的 PU 学习模型单例。"""
+    global _PU_MODEL_SINGLETON
+    if _PU_MODEL_SINGLETON is None or force_retrain:
+        logger.info("[pu_model] 正在构建 16 维特征矩阵并训练 PU 学习模型...")
+        X, y_pu, _, _ = extract_pu_features()
+        model = PULearningModel(n_bags=30, bagging_ratio=2.0, rn_percentile=65.0, random_state=42)
+        model.fit(X, y_pu)
+        _PU_MODEL_SINGLETON = model
+        logger.info("[pu_model] PU 学习模型训练完成并已缓存。")
+    return _PU_MODEL_SINGLETON
+
+
+# ---------------------------------------------------------------------------
+# 基线对照实验 (Ablation & Benchmark)
+# ---------------------------------------------------------------------------
+def _elkanoto_benchmark_row(
+    X_tr: np.ndarray,
+    X_te: np.ndarray,
+    y_tr: np.ndarray,
+    y_te: np.ndarray,
+    random_state: int = 42,
+) -> dict[str, Any]:
+    """
+    第 4 行对照: Elkan-Noto 两步法 (第三方 pulearn 库的独立实现).
+
+    引入这一行的目的**不是**替换主链, 而是把"PU 学习"这个方法族拆成两个独立实现
+    互相印证: 本项目自研的 Bagging PU + 可靠负例筛选 + Platt 校准若与 pulearn 的
+    Elkan-Noto 在同一份训练/验证划分上表现相近, 说明结论来自方法本身而非某处实现细节.
+
+    必须共用 run_ablation_benchmark 内部的 X_tr / X_te 划分, 否则两行的数字不可比.
+
+    诚实披露两点:
+    1. pulearn 未安装时本行**不静默消失**, 而是以 available=False + 原因回传,
+       前端据此显示"未安装，跳过该对照" —— 缺库不等于"该基线不存在".
+    2. Elkan-Noto 的 f(x) = c·g(x) 是 P(y=1|x) 的无偏估计但**不保证落在 [0,1]**,
+       本函数按 Brier 的定义域要求做 clip, 并把这一处理写回 note 字段.
+    """
+    name_cn = "基线 4: Elkan-Noto 两步法 (第三方 pulearn 独立实现)"
+    try:
+        from pulearn import ElkanotoPuClassifier
+    except ImportError as exc:  # 缺库时优雅降级, 不让整个接口 500
+        return {
+            "name_cn": name_cn,
+            "available": False,
+            "unavailable_reason": f"未安装 pulearn（{exc}），跳过该对照",
+            "accuracy": None,
+            "precision": None,
+            "recall": None,
+            "f1_score": None,
+            "brier_score": None,
+        }
+
+    try:
+        base = XGBClassifier(
+            n_estimators=100,
+            max_depth=3,
+            learning_rate=0.05,
+            random_state=random_state,
+            eval_metric="logloss",
+        )
+        clf = ElkanotoPuClassifier(
+            estimator=base, hold_out_ratio=0.25, random_state=random_state
+        )
+        clf.fit(X_tr, y_tr)
+
+        pred = np.asarray(clf.predict(X_te)).ravel().astype(int)
+        # clip 到 [0,1]: Brier 分只在概率定义域内有意义, 越界值直接算会低估校准误差
+        prob_raw = np.asarray(clf.predict_proba(X_te))[:, 1]
+        prob = np.clip(prob_raw, 0.0, 1.0)
+        clipped = int(np.sum((prob_raw < 0.0) | (prob_raw > 1.0)))
+
+        return {
+            "name_cn": name_cn,
+            "available": True,
+            "accuracy": float(accuracy_score(y_te, pred)),
+            "precision": float(precision_score(y_te, pred, zero_division=0)),
+            "recall": float(recall_score(y_te, pred, zero_division=0)),
+            "f1_score": float(f1_score(y_te, pred, zero_division=0)),
+            "brier_score": float(brier_score_loss(y_te, prob)),
+            "labeled_positive_recall": float(np.mean(pred[y_te == 1])) if np.any(y_te == 1) else None,
+            "unlabeled_alert_rate": float(np.mean(pred[y_te == 0])) if np.any(y_te == 0) else None,
+            "metric_target": "observed_annotation_not_disaster_truth",
+            "note": (
+                "第三方 Elkan-Noto 使用相同训练期的原始 P/U 数据，"
+                f"本行 Brier 分基于 clip 后的概率计算（本次越界 {clipped} 例）。"
+                "验证期 U 没有真实阴性标签，F1 与 Brier 仅是记录标签诊断。"
+                "本项目阈值固定为 0.40，本行沿用库默认规则，阈值差异也会影响名次。"
+            ),
+        }
+    except Exception as exc:  # 第三方库内部报错同样不应拖垮主接口
+        return {
+            "name_cn": name_cn,
+            "available": False,
+            "unavailable_reason": f"pulearn 对照运行失败（{type(exc).__name__}: {exc}）",
+            "accuracy": None,
+            "precision": None,
+            "recall": None,
+            "f1_score": None,
+            "brier_score": None,
+        }
+
+
+def run_ablation_benchmark(
+    X: np.ndarray | None = None,
+    y_pu: np.ndarray | None = None,
+    rule_scores: np.ndarray | None = None,
+    test_size: float = 0.25,
+    random_state: int = 42,
+    sample_meta: list[dict[str, Any]] | None = None,
+) -> dict[str, dict[str, Any]]:
+    """兼容入口：默认末年留出，先划分后训练；指标仅描述记录标签。"""
+    from app.algorithm.pu_evaluation import run_pu_evaluation
+    return run_pu_evaluation(
+        X=X, y_pu=y_pu, rule_scores=rule_scores,
+        sample_meta=sample_meta, test_size=test_size, random_state=random_state,
+    )["benchmark_results"]
+
+
+def predict_county_pu_risk(region_id: str, month: str | None = None) -> dict[str, Any]:
+    """
+    针对指定县域进行 PU 学习灾害风险评估与 SHAP 特征边际贡献归因。
+    """
+    model = get_pu_model()
+    X, y_pu, rule_scores, sample_meta = extract_pu_features()
+
+    matched_indices = [
+        i for i, m in enumerate(sample_meta)
+        if m.get("region_id") == region_id and (month is None or m.get("month") == month)
+    ]
+    if matched_indices:
+        idx = matched_indices[-1]
+        feat = X[idx]
+        target_m = sample_meta[idx].get("month", "2024-12")
+        return model.explain_risk(feat, region_id=region_id, month=target_m, top_k=5)
+
+    county_indices = [i for i, m in enumerate(sample_meta) if m.get("region_id") == region_id]
+    if county_indices:
+        # 该县有样本但缺目标月份 → 用该县自身的样本均值代表（同县内插，属保守可接受的降级）
+        feat = np.mean(X[county_indices], axis=0)
+        target_m = month or "2024-12"
+        return model.explain_risk(feat, region_id=region_id, month=target_m, top_k=5)
+
+    # 无任何样本时必须显式失败。
+    #
+    # 旧实现此处回落到 feat = np.mean(X, axis=0)，即**全域 26 县所有样本的特征均值**，
+    # 然后照常输出校准概率、风险分级与一整套 SHAP 归因——对一个根本不存在的县也能
+    # 生成一份看起来完全可信的灾害评估。这是规格书 §6 明令禁止的"伪造/以概念描述
+    # 替代实际验证"，且因不抛异常，API 层无法拦截。改为抛错，由 _unavailable() 转 503。
+    from app.core.dataio import load_region_list
+
+    known = {r.get("region_id") for r in load_region_list()}
+    if region_id not in known:
+        raise ValueError(
+            f"未知县域 '{region_id}'：仅支持 region_list.csv 中的 {len(known)} 个县域，"
+            f"拒绝用全域均值特征为该区域编造风险评估。"
+        )
+    raise ValueError(
+        f"县域 '{region_id}' 在 PU 训练样本中无任何记录，无法给出概率评估"
+        f"（不做全域均值替代）。"
+    )
+
+
+# ---------------------------------------------------------------------------
+# 命令行独立运行与验证
+# ---------------------------------------------------------------------------
+if __name__ == "__main__":
+    print("=" * 80)
+    print("  融天气象 (MeteoRiskPlatform) · PU Learning 灾害风险评估算法模块")
+    print("  遵循规格书 §4.3: 解决 1373 个未标注当负例硬伤，重建正例-未标注学习体系")
+    print("=" * 80)
+
+    # 1. 特征提取
+    print("\n[Step 1/4] 正在从底层加载真实观测与凭证标签，提取 16 维特征矩阵...")
+    X, y_pu, rule_scores, meta = extract_pu_features()
+    n_pos = int(np.sum(y_pu == 1))
+    n_un = int(np.sum(y_pu == 0))
+    print(f"  -> 总样本数: {len(X)} 条")
+    print(f"  -> 已标注来源记录 (P, 仍待人工核验): {n_pos} 条")
+    print(f"  -> 未标注样本 (U, 严禁当负例): {n_un} 条")
+    print(f"  -> 特征维度: {X.shape[1]} 维 (气象 + 遥感 + 经营 + 金融)")
+
+    # 2. 对照实验运行
+    print("\n[Step 2/4] 正在执行基线对照实验 (Ablation & Benchmark)...")
+    benchmark_res = run_ablation_benchmark(X, y_pu, rule_scores, sample_meta=meta)
+
+    # 3. 打印【基线指标对照表】
+    print("\n" + "=" * 80)
+    print("               【基线指标对照表 (Ablation & Benchmark)】")
+    print("=" * 80)
+    headers = ["模型架构 / 对照基线", "标签准确率", "标签精确率", "已标注召回率", "标签 F1", "标签 Brier"]
+    print(f"{headers[0]:<35s} | {headers[1]:<10s} | {headers[2]:<10s} | {headers[3]:<10s} | {headers[4]:<8s} | {headers[5]:<10s}")
+    print("-" * 105)
+
+    def _fmt(x: Any) -> str:
+        """未跑起来的对照行指标为 None，直接 f-string 格式化会抛 TypeError。"""
+        return f"{x:.4f}" if isinstance(x, (int, float)) else "—"
+
+    for key, m in benchmark_res.items():
+        name = m["name_cn"]
+        # 缺库/失败的行只印原因，不印一串 0.0000 —— 那看起来就像"它得了 0 分"
+        cells = (
+            "  ".join([_fmt(m[f]) for f in ("accuracy", "precision", "recall", "f1_score", "brier_score")])
+            if m.get("available", True)
+            else f"（未运行：{m.get('unavailable_reason', '原因未知')}）"
+        )
+        print(f"{name:<42s} | {cells}")
+
+    print("-" * 105)
+    _ours = benchmark_res["Model 3 (PU Learning Model)"]
+    _naive = benchmark_res["Baseline 2 (Naive Supervised)"]
+    _elkan = benchmark_res.get("Baseline 4 (Elkan-Noto PU)", {})
+    print(
+        f"记录标签诊断: PU F1={_ours['f1_score']:.4f}，"
+        f"朴素基线 F1={_naive['f1_score']:.4f}，绝对差值 "
+        f"{_ours['f1_score'] - _naive['f1_score']:+.4f}。"
+    )
+    print("边界: 未标注样本不是真实阴性；F1 与 Brier 不能证明实际灾害效果或真实概率校准。")
+    if _elkan.get("available"):
+        print(
+            f"对照: 第三方 Elkan-Noto (pulearn) 同划分下标签 F1={_elkan['f1_score']:.4f}、"
+            f"标签 Brier={_elkan['brier_score']:.4f}。"
+        )
+    else:
+        print(f"★ 对照: 第三方 Elkan-Noto 未运行 —— {_elkan.get('unavailable_reason', '原因未知')}")
+    print("=" * 80)
+
+    # 4. 训练完整模型并输出 Top 5 SHAP 驱动特征
+    print("\n[Step 3/4] 正在训练全量 PU Learning 模型并拟合 SHAP TreeExplainer 解释链...")
+    pu_model = PULearningModel(n_bags=30, bagging_ratio=2.0, rn_percentile=65.0, random_state=42)
+    pu_model.fit(X, y_pu)
+
+    print(f"  -> 自动识别可靠负例 (RN): {len(pu_model.reliable_negative_indices)} 条")
+    print(f"  -> 自动隔离模糊/潜在风险样本 (Ambiguous): {len(pu_model.ambiguous_indices)} 条")
+
+    # 全局 SHAP 重要性评估
+    X_pu_all = np.vstack([X[y_pu == 1], X[pu_model.reliable_negative_indices]])
+    shap_vals_matrix = pu_model.explainer.shap_values(X_pu_all)
+    if isinstance(shap_vals_matrix, list):
+        sv_mat = np.asarray(shap_vals_matrix[1] if len(shap_vals_matrix) > 1 else shap_vals_matrix[0])
+    elif shap_vals_matrix.ndim == 3:
+        sv_mat = shap_vals_matrix[:, :, 1]
+    else:
+        sv_mat = shap_vals_matrix
+
+    global_shap_importance = np.mean(np.abs(sv_mat), axis=0)
+    top5_idx = np.argsort(global_shap_importance)[::-1][:5]
+
+    print("\n" + "=" * 80)
+    print("             【全域灾害风险 Top 5 SHAP 驱动特征 (TreeExplainer)】")
+    print("=" * 80)
+    total_shap_imp = float(np.sum(global_shap_importance)) or 1.0
+    for rank, idx in enumerate(top5_idx, 1):
+        f_name = FEATURE_NAMES[idx]
+        f_label = FEATURE_LABELS_CN[f_name]
+        mean_shap = float(global_shap_importance[idx])
+        pct = (mean_shap / total_shap_imp) * 100.0
+        print(f"  第 {rank} 名: {f_label:<24s} ({f_name:<22s}) | 边际贡献: {mean_shap:.4f} ({pct:.1f}%)")
+    print("=" * 80)
+
+    # 5. 单样本可解释性接口示例
+    print("\n[Step 4/4] 验证单样本可解释性 explain_risk 接口调用...")
+    sample_idx = int(np.where(y_pu == 1)[0][0])
+    sample_feat = X[sample_idx]
+    sample_explanation = pu_model.explain_risk(
+        sample_feat, region_id=meta[sample_idx]["region_id"], month=meta[sample_idx]["month"], top_k=5
+    )
+    print(f"  -> 目标县域: {sample_explanation['region_id']} ({sample_explanation['month']})")
+    print(f"  -> 代理标签校准评分: {sample_explanation['calibrated_risk_prob']:.4f}")
+    print(f"  -> 综合风险分: {sample_explanation['risk_score']} ({sample_explanation['risk_level']})")
+    print(f"  -> 风险归因摘要: {sample_explanation['summary']}")
+    print(f"  -> 防灾处置动作: {sample_explanation['recommendations'][0]}")
+    print("\n[OK] 本次诊断与解释示例运行完成；标签核验和独立验证仍需继续。")

@@ -1,0 +1,37 @@
+{
+  "_note": [
+    "本文件不是 tools/value_metrics_probe.py 的常规产物，而是**气候态外推档**的一次实拍快照。",
+    "背景：/api/decision/priority-ranking 的补饲档位由本次预报窗口驱动，而实时预报接口（Open-Meteo）可达与否会整体切换档位。",
+    "实测：实时预报可达时 hay_tons=358.4、loss_exposure_wan=225.25；不可达（回退气候态外推）时 hay_tons=964.0、loss_exposure_wan=2048.5。",
+    "本快照取自 2026-10-08 一次回退状态下的运行实例（GET /api/decision/priority-ranking?herd_size=1000&days=14），",
+    "用于在《参赛作品设计方案说明书》§5.3 中并列披露两档口径，避免只呈现有利档位。",
+    "复现方式：在无外网出口的环境中启动服务后调用同一接口；系统会以 realtime_counties 字段披露当前档位。"
+  ],
+  "captured_at": "2026-10-08",
+  "endpoint": "/api/decision/priority-ranking?herd_size=1000&days=14",
+  "regime": "climatological_projection",
+  "realtime_counties": 0,
+  "county_count": 26,
+  "totals": {
+    "county_count": 26,
+    "hay_tons": 964.0,
+    "grain_tons": 192.8,
+    "feed_cost_wan": 151.42,
+    "loss_exposure_wan": 2048.5,
+    "credit_quota_wan": 3542.2
+  },
+  "coverage": { "p50": 9, "p80": 16, "p90": 21 },
+  "credit_quota_range_wan": [131.64, 141.38],
+  "b2_savings_vs_full_ration": {
+    "full_ration_hay_tons": 1528.8,
+    "actual_hay_tons": 964.0,
+    "saved_hay_tons": 564.8,
+    "saved_cost_wan": 48.0,
+    "saved_pct": 36.9
+  },
+  "feed_mode_distribution": {
+    "全人工重度补饲 (雪灾应急)": 10,
+    "半草场半补饲": 4,
+    "轻度补充防寒": 12
+  }
+}
