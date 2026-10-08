@@ -4,6 +4,7 @@
 
 青藏高原 4 省区 **26 个高寒牧区县域**的气象灾害预警与草畜平衡决策平台。多源卫星遥感 + 再分析气象驱动，打通「气象监测 → 灾害预警 → 草畜承载 → 应急储备 → 绿色金融」全链路。零构建前端、一键启动、零伪造数据。
 
+[![CI](https://github.com/saintjim224/qixiang/actions/workflows/ci.yml/badge.svg)](https://github.com/saintjim224/qixiang/actions/workflows/ci.yml)
 ![Python](https://img.shields.io/badge/Python-3.10%20~%203.13-3776AB?logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688?logo=fastapi&logoColor=white)
 ![Vue 3](https://img.shields.io/badge/Vue-3.4-4FC08D?logo=vuedotjs&logoColor=white)
